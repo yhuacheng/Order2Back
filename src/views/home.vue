@@ -126,7 +126,6 @@
 				nowDate: '',
 				nowTime: '',
 				nowWeek: '',
-
 				// 顶部tabs相关参数
 				activePath: '',
 				activeTab: '1', //默认显示的tab

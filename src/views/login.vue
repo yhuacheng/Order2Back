@@ -74,6 +74,7 @@
 						login(params).then(res => {
 							sessionStorage.setItem('userId', res.Id)
 							sessionStorage.setItem('userName', res.Name)
+							sessionStorage.setItem('userPhone', res.Phone)
 							_this.btnLoading = false
 							this.$router.push('/welcome')
 						}).catch((e) => {

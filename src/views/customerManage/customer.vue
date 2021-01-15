@@ -145,10 +145,9 @@
 			<el-table border :data="tableData3" id="exportTable3" style="width: 100%" :header-cell-style="{background:'#fafafa'}"
 			 @row-click="rowClick3" ref="table3">
 				<el-table-column type="index" label="序号" align="center" width="50"></el-table-column>
-				<el-table-column prop="Id" label="编码" align="center"></el-table-column>
 				<el-table-column prop="Name" label="姓名" align="center"></el-table-column>
 				<el-table-column prop="LoginName" label="账号" align="center"></el-table-column>
-				<el-table-column prop="RoolId" label="角色" align="center" :formatter="roleToTxt" width="200"></el-table-column>
+				<el-table-column prop="RoleName" label="角色" align="center"></el-table-column>
 				<el-table-column prop="RecommentNumber" label="推荐码" align="center"></el-table-column>
 			</el-table>
 			<div slot="footer" class="dialog-footer">
@@ -237,7 +236,6 @@
 				btnShow2: false, //充值扣款按钮是否显示
 				btnShow3: false, //重新分配所属用户按钮是否显示
 				userModal: false, //用户信息弹窗
-				roleData: [], //角色数据
 				tableData3: []
 			}
 		},
@@ -500,12 +498,12 @@
 					userId: _this.customerId,
 					keyWord: _this.searchForm2.searchWords,
 					state: _this.searchForm2.state,
-					pageNum: _this.pageIndex2,
-					pagesize: _this.pageSize2,
+					pageIndex: _this.pageIndex2,
+					pageSize: _this.pageSize2,
 				}
 				customerBalance(params).then(res => {
 					_this.tableData2 = res.list
-					_this.total2 = Number(res.total)
+					_this.total2 = Number(res.TotalCount)
 					_this.allNow = res.list[0].AccountBalance
 					_this.allIn = res.list[0].AccumulatedIncone
 					_this.allOut = res.list[0].AccumulatedExpenditure
@@ -558,68 +556,27 @@
 				_this.getBalanceData()
 			},
 
-			//跳转到客户交易记录
-			viewMoney() {
-				this.$router.push('/customerMoney')
-			},
-
-			//跳转到客户充值扣款记录
-			viewLog() {
-				this.$router.push('/customerLog')
-			},
-
 			//打开分配人员弹窗
 			userModalShow() {
 				let _this = this
 				_this.getUserData()
 			},
 
-			//角色数字转文字
-			roleToTxt(val) {
-				let _this = this
-				let roleText = ''
-				let roleId = val.RoolId
-				if (roleId == null) {
-					roleId = ''
-				}
-				let roleIdArr = roleId.trim().split('')
-				for (let item in roleIdArr) {
-					let roleId1 = roleIdArr[item]
-					for (let item2 in _this.roleData) {
-						let roleId2 = _this.roleData[item2].Id
-						if (Number(roleId1) == Number(roleId2)) {
-							roleText += '、' + _this.roleData[item2].RoleName
-						}
-					}
-				}
-				return roleText.substring(1)
-			},
-
-			//获取角色数据
-			getRoleData() {
-				let _this = this
-				let params = {}
-				roleList(params).then(res => {
-					_this.roleData = res.list
-				}).catch((e) => {})
-			},
-
 			//获取操作员列表
 			getUserData() {
 				let _this = this
-				_this.getRoleData()
 				let params = {
 					name: '',
-					pageNum: 1,
-					pagesize: 100000000,
+					pageIndex: 1,
+					pageSize: 100000000,
 				}
 				userList(params).then(res => {
 					let arr = []
-					for (let x in res.list) {
-						let state = res.list[x].State
+					for (let x in res.Entity) {
+						let state = res.Entity[x].State
 						//如果用户状态为有效
 						if (state == 1) {
-							arr.push(res.list[x])
+							arr.push(res.Entity[x])
 						}
 					}
 					_this.tableData3 = arr
@@ -674,7 +631,3 @@
 		}
 	}
 </script>
-
-<style>
-
-</style>

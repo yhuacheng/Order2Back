@@ -296,29 +296,31 @@
 			//获取sessionStorage读取刷新前的数据，并按刷新前的tabs顺序重新生成tabs
 			getSessionTabs() {
 				const sessionTabs = JSON.parse(sessionStorage.getItem("tabsItem"))
-				if (sessionTabs.currTabsItem.length != 0 && sessionTabs.currTabsPath.length != 0) {
-					for (let i = 0; i < sessionTabs.currTabsItem.length; i++) {
-						this.tabsItem.push({
-							title: sessionTabs.currTabsItem[i].title,
-							name: sessionTabs.currTabsItem[i].name,
-							closable: true,
-							ref: sessionTabs.currTabsItem[i].ref,
-							content: sessionTabs.currTabsItem[i].content
+				if (sessionTabs) {
+					if (sessionTabs.currTabsItem.length != 0 && sessionTabs.currTabsPath.length != 0) {
+						for (let i = 0; i < sessionTabs.currTabsItem.length; i++) {
+							this.tabsItem.push({
+								title: sessionTabs.currTabsItem[i].title,
+								name: sessionTabs.currTabsItem[i].name,
+								closable: true,
+								ref: sessionTabs.currTabsItem[i].ref,
+								content: sessionTabs.currTabsItem[i].content
+							})
+						}
+						for (let j = 0; j < sessionTabs.currTabsPath.length; j++) {
+							this.tabsPath.push({
+								name: sessionTabs.currTabsPath[j].name,
+								path: sessionTabs.currTabsPath[j].path
+							})
+						}
+						this.activeTab = sessionTabs.currActiveTabs
+						this.tabIndex = sessionTabs.currIndex
+						//避免强制修改url 出现浏览器的url输入框的路径和当前tabs选中的路由路径不匹配
+						const activePath = this.tabsPath.filter(item => item.name == this.activeTab)
+						this.$router.push({
+							path: activePath[0].path
 						})
 					}
-					for (let j = 0; j < sessionTabs.currTabsPath.length; j++) {
-						this.tabsPath.push({
-							name: sessionTabs.currTabsPath[j].name,
-							path: sessionTabs.currTabsPath[j].path
-						})
-					}
-					this.activeTab = sessionTabs.currActiveTabs
-					this.tabIndex = sessionTabs.currIndex
-					//避免强制修改url 出现浏览器的url输入框的路径和当前tabs选中的路由路径不匹配
-					const activePath = this.tabsPath.filter(item => item.name == this.activeTab)
-					this.$router.push({
-						path: activePath[0].path
-					})
 				}
 			}
 		},

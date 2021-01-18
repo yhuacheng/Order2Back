@@ -76,12 +76,12 @@ export default new Router({
 				{
 					path: '/customerMoney',
 					component: () => import('./views/customerManage/customerMoney.vue'),
-					name: '客户交易记录'
+					name: '充值扣款记录'
 				},
 				{
 					path: '/customerLog',
 					component: () => import('./views/customerManage/customerLog.vue'),
-					name: '充值扣款记录'
+					name: '客户交易日志'
 				}
 			]
 		},
@@ -130,8 +130,8 @@ export default new Router({
 					name: '增值费'
 				},
 				{
-					path: '/code',
-					component: () => import('./views/systemManage/code.vue'),
+					path: '/codes',
+					component: () => import('./views/systemManage/codes.vue'),
 					name: '推荐码'
 				},
 				{

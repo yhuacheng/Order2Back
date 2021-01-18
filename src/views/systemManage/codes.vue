@@ -8,6 +8,7 @@
 				</el-form-item>
 				<el-form-item label="状态">
 					<el-select v-model="searchForm.state" placeholder="请选择状态">
+						<el-option value="-1" label="全部"></el-option>
 						<el-option value="1" label="有效"></el-option>
 						<el-option value="0" label="无效"></el-option>
 					</el-select>
@@ -23,12 +24,12 @@
 		<el-table border :data="tableData" v-loading="listLoading" id="exportTable" style="width: 100%" :header-cell-style="{background:'#fafafa'}"
 		 ref="table">
 			<el-table-column type="index" label="序号" align="center" width="50"></el-table-column>
-			<el-table-column prop="Rnumber" label="推荐码" align="center"></el-table-column>
+			<el-table-column prop="RecommentNumber" label="推荐码" align="center"></el-table-column>
 			<el-table-column prop="Name" label="姓名" align="center"></el-table-column>
-			<el-table-column prop="States" label="状态" align="center">
+			<el-table-column prop="State" label="状态" align="center">
 				<template slot-scope="scope">
-					<span v-if="scope.row.States==1" class="success">有效</span>
-					<span v-if="scope.row.States==0" class="danger">无效</span>
+					<span v-if="scope.row.State==1" class="success">有效</span>
+					<span v-if="scope.row.State==0" class="danger">无效</span>
 				</template>
 			</el-table-column>
 			<el-table-column label="操作" align="center" width="100">
@@ -57,7 +58,7 @@
 		codeState
 	} from '@/api/api';
 	export default {
-		name: 'code',
+		name: 'codes',
 		data() {
 			return {
 				title: '',
@@ -71,7 +72,7 @@
 				btnLoading: false,
 				searchForm: {
 					searchWords: '',
-					state: ''
+					state: '-1'
 				},
 				editForm: {
 					count: ''
@@ -107,8 +108,8 @@
 				}
 				codeList(params).then(res => {
 					_this.listLoading = false
-					_this.tableData = res.list
-					_this.total = Number(res.total)
+					_this.tableData = res.Entity
+					_this.total = Number(res.TotalCount)
 				}).catch((e) => {})
 			},
 
@@ -163,7 +164,7 @@
 				let _this = this
 				_this.searchForm = {
 					searchWords: '',
-					state: ''
+					state: '-1'
 				}
 				_this.pageIndex = 1
 				_this.getAllData()

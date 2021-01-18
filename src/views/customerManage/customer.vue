@@ -24,8 +24,8 @@
 		 @selection-change="handleSelectionChange" @row-click="rowClick" ref="table">
 			<el-table-column type="selection" align="center"></el-table-column>
 			<el-table-column type="index" label="序号" align="center" width="50"></el-table-column>
-			<el-table-column prop="Id" label="编码" align="center"></el-table-column>
-			<el-table-column prop="Name" label="名称" align="center"></el-table-column>
+			<el-table-column prop="Id" label="客户编码" align="center"></el-table-column>
+			<el-table-column prop="Name" label="客户名称" align="center"></el-table-column>
 			<el-table-column prop="Phone" label="手机" align="center"></el-table-column>
 			<el-table-column prop="WeCate" label="微信" align="center"></el-table-column>
 			<el-table-column prop="QQ" label="QQ" align="center"></el-table-column>
@@ -54,8 +54,9 @@
 		</el-col>
 
 		<!--充值/扣款-->
-		<el-dialog :title="title" :visible.sync="editModal" :close-on-click-modal="false" :before-close="closeEditModal">
-			<el-form :model="editForm" ref="editForm" :rules='Rules' label-width='120px' status-icon>
+		<el-dialog :title="title" :visible.sync="editModal" :close-on-click-modal="false" :before-close="closeEditModal"
+		 width="30%">
+			<el-form :model="editForm" ref="editForm" :rules='Rules' label-width='100px' status-icon>
 				<el-form-item label="编码：" prop="code">
 					<span>{{editForm.code}}</span>
 				</el-form-item>
@@ -70,9 +71,9 @@
 				</el-form-item>
 			</el-form>
 			<div slot="footer" class="dialog-footer">
-				<el-button type="primary" @click="editSubmit(1)" v-show="doType=='add'" :loading="btnLoading">确 定</el-button>
-				<el-button type="primary" @click="editSubmit(0)" v-show="doType=='edit'" :loading="btnLoading">确 定</el-button>
 				<el-button @click="closeEditModal">取 消</el-button>
+				<el-button type="primary" @click="editSubmit(1)" v-show="doType=='add'" :loading="btnLoading">提 交</el-button>
+				<el-button type="primary" @click="editSubmit(0)" v-show="doType=='edit'" :loading="btnLoading">提 交</el-button>
 			</div>
 		</el-dialog>
 
@@ -125,15 +126,15 @@
 			<!--工具条-->
 			<el-col :span="24" class="toolbar">
 				<el-pagination style="float: right;" @size-change="handleSizeChange2" @current-change="handleCurrentChange2"
-				 :current-page="pageIndex2" :page-sizes="[10, 20, 50, 100]" :page-size="10" layout="total, sizes, prev, pager, next, jumper"
+				 :current-page="pageIndex2" :page-sizes="[10, 20, 50, 100]" :page-size="pageSize2" layout="total, sizes, prev, pager, next, jumper"
 				 :total="total2">
 				</el-pagination>
 			</el-col>
 
 			<div slot="footer" class="dialog-footer">
 				<div style="float: left;">
-					<span>余额：<span class="danger">{{allNow}}</span></span>
-					<span class="ml30">总收入：<span class="danger">{{allIn}}</span></span>
+					<span>余额：<span class="primary">{{allNow}}</span></span>
+					<span class="ml30">总收入：<span class="success">{{allIn}}</span></span>
 					<span class="ml30">总支出：<span class="danger">{{allOut}}</span></span>
 				</div>
 				<el-button @click="closeBalanceModal">关 闭</el-button>
@@ -148,7 +149,7 @@
 				<el-table-column prop="Name" label="姓名" align="center"></el-table-column>
 				<el-table-column prop="LoginName" label="账号" align="center"></el-table-column>
 				<el-table-column prop="RoleName" label="角色" align="center"></el-table-column>
-				<el-table-column prop="RecommentNumber" label="推荐码" align="center"></el-table-column>
+				<el-table-column prop="Code" label="推荐码" align="center"></el-table-column>
 			</el-table>
 			<div slot="footer" class="dialog-footer">
 				<el-button @click="userModal=false">关 闭</el-button>
@@ -298,7 +299,7 @@
 					Id: sessionStorage.getItem('userId')
 				}
 				phoneCode(params).then(res => {
-					if (res.Code == 'ok') {
+					if (res.IsSuccess) {
 						_this.codeInput()
 					}
 				}).catch((e) => {})
@@ -327,7 +328,7 @@
 					Code: value
 				}
 				phoneCodeCheck(params).then(res => {
-					if (res.Code == 'ok') {
+					if (res.IsSuccess) {
 						sessionStorage.setItem('code', 'pass')
 					}
 				}).catch((e) => {})
@@ -345,7 +346,7 @@
 					_this.doType = 'add'
 					let data = _this.checkBoxData[0]
 					_this.editForm = {
-						name: data.CustomerName,
+						name: data.Name,
 						code: data.Id,
 						phone: data.Phone
 					}
@@ -367,7 +368,7 @@
 					let data = _this.checkBoxData[0]
 					_this.editForm = {
 						code: data.Id,
-						name: data.CustomerName,
+						name: data.Name,
 						phone: data.Phone
 					}
 				} else {
@@ -488,7 +489,6 @@
 				_this.title = '客户【' + row.Id + '】余额信息'
 				_this.customerId = row.Id
 				_this.getBalanceData()
-				_this.balanceModal = true //打开模态框
 			},
 
 			// 获取余额信息列表数据
@@ -502,11 +502,12 @@
 					pageSize: _this.pageSize2,
 				}
 				customerBalance(params).then(res => {
-					_this.tableData2 = res.list
+					_this.balanceModal = true //打开模态框
+					_this.tableData2 = res.Entity
 					_this.total2 = Number(res.TotalCount)
-					_this.allNow = res.list[0].AccountBalance
-					_this.allIn = res.list[0].AccumulatedIncone
-					_this.allOut = res.list[0].AccumulatedExpenditure
+					_this.allNow = res.Entity[0].AccountBalance
+					_this.allIn = res.Entity[0].AccumulatedIncone
+					_this.allOut = res.Entity[0].AccumulatedExpenditure
 				}).catch((e) => {})
 			},
 

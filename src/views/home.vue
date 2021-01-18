@@ -3,7 +3,7 @@
 
 		<el-col :span="24" class="header">
 			<el-col :span="4" class="logo" :class="collapsed?'logo-collapse-width':'logo-width'">
-				<span @click="$router.push('/welcome')" style="cursor: pointer;">
+				<span @click="$router.push('welcome')" style="cursor: pointer;">
 					<i class="el-icon-price-tag"></i>{{collapsed?'':sysName}}
 				</span>
 			</el-col>
@@ -328,14 +328,13 @@
 		watch: {
 			'$route': function(to) { //监听路由的变化，动态生成tabs
 				let flag = true //判断是否需要新增页面
-				if (to.name && to.path != '/welcome') {
+				if (to.name) {
 					for (let i = 0; i < this.$refs.tabs.length; i++) {
-						if (i != 0) { //首页不判断 如果页面已存在，则直接定位当页面，否则新增tab页面
-							if (this.$refs.tabs[i].label == to.name) {
-								this.activeTab = this.$refs.tabs[i].name //定位到已打开页面
-								flag = false
-								break
-							}
+						// 如果页面已存在，则直接定位当页面，否则新增tab页面
+						if (this.$refs.tabs[i].label == to.name) {
+							this.activeTab = this.$refs.tabs[i].name //定位到已打开页面
+							flag = false
+							break
 						}
 					}
 					//新增页面

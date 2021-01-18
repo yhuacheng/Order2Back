@@ -22,7 +22,7 @@
 			<el-table-column prop="Name" label="姓名" align="center"></el-table-column>
 			<el-table-column prop="LoginName" label="账号" align="center"></el-table-column>
 			<el-table-column prop="RoleName" label="角色" align="center"></el-table-column>
-			<el-table-column prop="RecommentNumber" label="推荐码" align="center"></el-table-column>
+			<el-table-column prop="Code" label="推荐码" align="center"></el-table-column>
 			<el-table-column prop="Phone" label="手机" align="center"></el-table-column>
 			<el-table-column prop="Email" label="邮箱" align="center"></el-table-column>
 			<el-table-column prop="State" label="状态" align="center">
@@ -61,7 +61,7 @@
 				<el-form-item label="密码" prop="password">
 					<el-input v-model="editForm.password"></el-input>
 				</el-form-item>
-				<el-form-item label="推荐码" prop="code" v-if="role.indexOf(5)<0">
+				<el-form-item label="推荐码" prop="code">
 					<el-select style="width: 100%;" v-model="editForm.code" filterable placeholder="请选择推荐码" :disabled="doType=='edit'">
 						<el-option v-for="item in codeData" :key="item.Id" :label="item.RecommentNumber" :value="item.Id">
 						</el-option>
@@ -137,7 +137,7 @@
 				selectId: '',
 				roleData: [], //角色数据
 				codeData: [], //推荐码数据
-				role: sessionStorage.getItem('roleId'),
+				role: [],
 				searchForm: {
 					searchWords: ''
 				},
@@ -200,7 +200,7 @@
 				let _this = this
 				let params = {}
 				codeNoUsed(params).then(res => {
-					_this.codeData = res.list
+					_this.codeData = res
 				}).catch((e) => {})
 			},
 
@@ -267,7 +267,7 @@
 					loginname: row.LoginName,
 					password: row.Password,
 					state: row.State,
-					code: row.RecommentNumber,
+					code: row.Code,
 					phone: row.Phone,
 					email: row.Email,
 					resmks: row.Remarks
@@ -281,7 +281,7 @@
 					if (valid) {
 						_this.btnLoading = true
 						let params = Object.assign({}, _this.editForm)
-						params.id = _this.checkBoxData[0].Id
+						params.id = _this.selectId
 						userEdit(params).then(res => {
 							_this.btnLoading = false
 							_this.closeModal()

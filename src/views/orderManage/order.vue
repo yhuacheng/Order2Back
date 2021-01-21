@@ -155,7 +155,7 @@
 		</el-col>
 
 		<!-- 分配任务（任务列表） -->
-		<el-dialog :title="title" width="90%" :visible.sync="taskModal" :close-on-click-modal="false" :before-close="closeTaskModal">
+		<el-dialog v-dialogDrag :title="title" width="90%" :visible.sync="taskModal" :close-on-click-modal="false" :before-close="closeTaskModal">
 			<div class="mt-10">
 				<el-button type="primary" size="small" :disabled="disabledMore2" @click="timeModalShow(2)">分配任务</el-button>
 			</div>
@@ -218,7 +218,7 @@
 			</div>
 		</el-dialog>
 		<!-- 分配任务（任务执行时间） -->
-		<el-dialog center title="任务执行时间" width="30%" :visible.sync="timeModal" :close-on-click-modal="false" :before-close="closeTimeModal"
+		<el-dialog v-dialogDrag center title="任务执行时间" width="30%" :visible.sync="timeModal" :close-on-click-modal="false" :before-close="closeTimeModal"
 		 style="top: -30vh;">
 			<div class="textCen">
 				<el-date-picker v-model="taskTime" type="datetime" :picker-options="pickerOptions" placeholder="请选择任务执行时间" style="width: 320px;"></el-date-picker>
@@ -229,7 +229,7 @@
 			</div>
 		</el-dialog>
 		<!-- 分配任务（人员列表） -->
-		<el-dialog title="操作员列表" width="40%" :visible.sync="userModal" :close-on-click-modal="false">
+		<el-dialog v-dialogDrag title="操作员列表" width="40%" :visible.sync="userModal" :close-on-click-modal="false">
 			<el-table border :data="tableData3" id="exportTable3" style="width: 100%" :header-cell-style="{background:'#fafafa'}"
 			 @row-click="rowClick3" ref="table3">
 				<el-table-column type="index" label="序号" align="center" width="50"></el-table-column>
@@ -242,7 +242,7 @@
 			</div>
 		</el-dialog>
 		<!--服务费和汇率修改-->
-		<el-dialog :title="titleFee" width="30%" :visible.sync="editModal" :close-on-click-modal="false" :before-close="closeModal">
+		<el-dialog v-dialogDrag :title="titleFee" width="30%" :visible.sync="editModal" :close-on-click-modal="false" :before-close="closeModal">
 			<el-form :model="editForm" ref="editForm" :rules='Rules' label-width='100px' status-icon>
 				<el-form-item label="服务费" prop="fee">
 					<el-input v-model="editForm.fee"></el-input>
@@ -257,7 +257,7 @@
 			</div>
 		</el-dialog>
 		<!-- 订单查看 -->
-		<el-dialog width="70%" :title="title" :visible.sync="viewModal" :close-on-click-modal="false">
+		<el-dialog v-dialogDrag width="70%" :title="title" :visible.sync="viewModal" :close-on-click-modal="false">
 			<el-form :model='view' ref='view' label-width='150px'>
 				<el-row>
 					<el-col :span="12">
@@ -401,7 +401,7 @@
 			</div>
 		</el-dialog>
 		<!--查看产品图大图-->
-		<el-dialog :title='title2' :visible.sync='imageModal' :close-on-click-modal='false' :before-close="closeImageModal">
+		<el-dialog v-dialogDrag :title='title2' :visible.sync='imageModal' :close-on-click-modal='false' :before-close="closeImageModal">
 			<div class="txtCenter">
 				<img :src='orderProductImgUrl' style="max-width: 80%;" />
 			</div>

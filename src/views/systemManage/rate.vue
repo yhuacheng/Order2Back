@@ -177,7 +177,7 @@
 					pageSize: 100000000
 				}
 				countryList(params).then(res => {
-					_this.countryData = res.list
+					_this.countryData = res.result.Entity
 				}).catch((e) => {})
 			},
 

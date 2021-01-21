@@ -4,7 +4,8 @@
 		<el-col :span="24" class="header">
 			<el-col :span="4" class="logo" :class="collapsed?'logo-collapse-width':'logo-width'">
 				<span @click="$router.push('welcome')" style="cursor: pointer;">
-					<i class="el-icon-price-tag"></i>{{collapsed?'':sysName}}
+					<i class="el-icon-price-tag"></i>
+					<span>{{collapsed?'':sysName}}</span>
 				</span>
 			</el-col>
 			<el-col :span="4">

@@ -44,7 +44,8 @@
 		</el-col>
 
 		<!-- 新增/修改 -->
-		<el-dialog v-dialogDrag :title="title" :visible.sync="editModal" :close-on-click-modal="false" :before-close="closeModal" width="30%">
+		<el-dialog v-dialogDrag :title="title" :visible.sync="editModal" :close-on-click-modal="false" :before-close="closeModal"
+		 width="30%">
 			<el-form :model='editForm' ref='editForm' :rules='Rules' label-width='100px' status-icon>
 				<el-form-item label="国家" prop="CountryId">
 					<el-select style="width: 100%;" v-model="editForm.CountryId" filterable placeholder="请选择国家">
@@ -131,7 +132,7 @@
 						{
 							pattern: /^[0-9]+([.]{1}[0-9]+){0,1}$/,
 							message: '服务费格式不正确',
-							trigger: ['blur']
+							trigger: 'blur'
 						}
 					]
 				}
@@ -150,7 +151,7 @@
 					pageSize: 100000000
 				}
 				countryList(params).then(res => {
-					_this.countryData = res.list
+					_this.countryData = res.result.Entity
 				}).catch((e) => {})
 			},
 
@@ -161,12 +162,12 @@
 				let params = {
 					currencyName: _this.searchForm.searchWords,
 					pageIndex: _this.pageIndex,
-					pageSize: _this.pageSize,
+					pageSize: _this.pageSize
 				}
 				serviceFeeList(params).then(res => {
 					_this.listLoading = false
-					_this.tableData = res.list
-					_this.total = Number(res.total)
+					_this.tableData = res.Entity
+					_this.total = Number(res.TotalCount)
 				}).catch((e) => {})
 			},
 

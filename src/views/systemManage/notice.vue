@@ -5,7 +5,7 @@
 			<el-button type="primary" @click='submit'>提 交</el-button>
 		</div>
 	</section>
-</template> 
+</template>
 
 <script>
 	import {
@@ -42,7 +42,7 @@
 				let _this = this
 				let params = {}
 				noticeGet(params).then(res => {
-					_this.content = res[0].Notice
+					_this.content = res.Notice
 				}).catch((e) => {})
 			},
 

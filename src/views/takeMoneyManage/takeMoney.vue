@@ -110,13 +110,13 @@
 				let params = {
 					keyWord: _this.searchForm.searchWords,
 					state: _this.searchForm.state,
-					pageNum: _this.pageIndex,
-					pagesize: _this.pageSize,
+					pageIndex: _this.pageIndex,
+					pageSize: _this.pageSize,
 				}
 				takemoneyList(params).then(res => {
 					_this.listLoading = false
-					_this.tableData = res.list
-					_this.total = Number(res.total)
+					_this.tableData = res.Entity
+					_this.total = Number(res.TotalCount)
 				}).catch((e) => {})
 			},
 

@@ -17,13 +17,13 @@
 		<el-table border :data="tableData" v-loading="listLoading" id="exportTable" style="width: 100%" :header-cell-style="{background:'#fafafa'}"
 		 ref="table">
 			<el-table-column type="index" label="序号" align="center" width="50"></el-table-column>
-			<el-table-column prop="RcurrencyName" label="货币名称" align="center"></el-table-column>
-			<el-table-column prop="RcurrencyNumber" label="货币编码" align="center"></el-table-column>
-			<el-table-column prop="RcurrencySymbol" label="货币符号" align="center"></el-table-column>
-			<el-table-column prop="Rexchangerate" label="货币汇率" align="center"></el-table-column>
-			<el-table-column prop="CcountryName" label="关联国家" align="center"></el-table-column>
-			<el-table-column prop="handFee" label="官方手续费率" align="center"></el-table-column>
-			<el-table-column prop="handMoney" label="固定手续费用" align="center"></el-table-column>
+			<el-table-column prop="CurrencyName" label="货币名称" align="center"></el-table-column>
+			<el-table-column prop="CurrencyNumber" label="货币编码" align="center"></el-table-column>
+			<el-table-column prop="CurrencySymbol" label="货币符号" align="center"></el-table-column>
+			<el-table-column prop="ExchangeRate" label="货币汇率" align="center"></el-table-column>
+			<el-table-column prop="CountryName" label="关联国家" align="center"></el-table-column>
+			<el-table-column prop="HandFee" label="官方手续费率" align="center"></el-table-column>
+			<el-table-column prop="HandMoney" label="固定手续费用" align="center"></el-table-column>
 			<el-table-column label="操作" align="center" width="100">
 				<template v-slot="scope">
 					<el-button size="mini" type="primary" @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
@@ -40,7 +40,8 @@
 		</el-col>
 
 		<!--新增/修改-->
-		<el-dialog v-dialogDrag :title="title" :visible.sync="editModal" :close-on-click-modal="false" :before-close="closeModal" width="30%">
+		<el-dialog v-dialogDrag :title="title" :visible.sync="editModal" :close-on-click-modal="false" :before-close="closeModal"
+		 width="30%">
 			<el-form :model='editForm' ref='editForm' :rules='Rules' label-width='110px' status-icon>
 				<el-form-item label='货币名称' prop='CurrencyName'>
 					<el-input v-model='editForm.CurrencyName'></el-input>
@@ -188,12 +189,12 @@
 				let params = {
 					CurrencyName: _this.searchForm.searchWords,
 					pageIndex: _this.pageIndex,
-					pageSize: _this.pageSize,
+					pageSize: _this.pageSize
 				}
 				rateList(params).then(res => {
 					_this.listLoading = false
-					_this.tableData = res.list
-					_this.total = Number(res.total)
+					_this.tableData = res.Entity
+					_this.total = Number(res.TotalCount)
 				}).catch((e) => {})
 			},
 
@@ -238,15 +239,15 @@
 				_this.getCountryData() //获取国家数据
 				_this.title = '汇率编辑'
 				_this.doType = 'edit'
-				_this.selectId = row.Rid
+				_this.selectId = row.Id
 				_this.editForm = {
-					CurrencyName: row.RcurrencyName,
-					Currencynumber: row.RcurrencyNumber,
-					CurrencySymbol: row.RcurrencySymbol,
-					Exchangerate: row.Rexchangerate,
-					CountryId: row.cId,
-					HandFee: row.handFee,
-					HandMoney: row.handMoney
+					CurrencyName: row.CurrencyName,
+					Currencynumber: row.CurrencyNumber,
+					CurrencySymbol: row.CurrencySymbol,
+					Exchangerate: row.ExchangeRate,
+					CountryId: row.CountryId,
+					HandFee: row.HandFee,
+					HandMoney: row.HandMoney
 				}
 			},
 

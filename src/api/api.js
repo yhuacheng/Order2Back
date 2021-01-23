@@ -1,6 +1,6 @@
 import {
-  get,
-  post
+	get,
+	post
 } from './http'
 
 export const login = (params) => post('/api/Login/UserLogin', params) //登录
@@ -35,11 +35,6 @@ export const countryEdit = (params) => post('/api/Country/ChangeCountry', params
 export const noticeAdd = (params) => post('/api/HomePage/AddHomePage', params) //公告添加
 export const noticeGet = (params) => get('/api/BackUser/GetHomeSystem', params) //公告内容获取
 
-export const addedServiceList = (params) => get('/api/IncrementServiceFee/GetIncrementServiceFee', params) //增值服务费列表
-export const addedServiceAdd = (params) => post('/api/IncrementServiceFee/AddIncrementServiceFee', params) //增值服务费新增
-export const addedServiceEdit = (params) => post('/api/IncrementServiceFee/ChangeIncrementServiceFee', params) //增值服务费修改
-export const addedServiceState = (params) => post('/api/IncrementServiceFee/ChangeState', params) //更改增值服务费状态
-
 export const rateList = (params) => get('/api/Rate/GetRate', params) //货币汇率列表
 export const rateAdd = (params) => post('/api/Rate/AddRate', params) //货币汇率新增
 export const rateEdit = (params) => post('/api/Rate/ChangeRate', params) //货币汇率修改
@@ -48,6 +43,15 @@ export const serviceFeeList = (params) => get('/api/Fee/GetFee', params) //服�
 export const serviceFeeAdd = (params) => post('/api/Fee/AddFee', params) //服务费新增
 export const serviceFeeEdit = (params) => post('/api/Fee/ChangeFee', params) //服务费修改
 export const serviceFeeState = (params) => post('/api/Fee/ChangeFeeState', params) //更改服务费状态
+
+export const addedServiceList = (params) => get('/api/IncrementServiceFee/GetIncrementServiceFee', params) //增值服务费列表
+export const addedServiceAdd = (params) => post('/api/IncrementServiceFee/AddIncrementServiceFee', params) //增值服务费新增
+export const addedServiceEdit = (params) => post('/api/IncrementServiceFee/ChangeIncrementServiceFee', params) //增值服务费修改
+export const addedServiceState = (params) => post('/api/IncrementServiceFee/ChangeState', params) //更改增值服务费状态
+
+export const serviceOtherList = (params) => get('/api/ServiceType/GetServiceType', params) //特殊服务费列表
+export const serviceOtherAdd = (params) => post('/api/ServiceType/AddServiceType', params) //特殊服务费新增
+export const serviceOtherEdit = (params) => post('/api/ServiceType/ChangeServiceType', params) //特殊服务费修改
 
 export const customerList = (params) => get('/api/CustomerAppointment/GetCustomerAppointment', params) //客户列表
 export const customerState = (params) => post('/api/CustomerAppointment/ChangeCustomerState', params) //更改客户状态

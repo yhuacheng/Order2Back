@@ -3,9 +3,9 @@
 		<!--工具条-->
 		<el-col :span="24" class="toolbar">
 			<el-button type="primary" size="mini" @click="addModalShow">新增</el-button>
-			<el-button type="primary" size="mini" :disabled="disabled" @click="editModalShow">修改</el-button>
+			<el-button type="warning" size="mini" :disabled="disabled" @click="editModalShow">修改</el-button>
 			<el-button type="success" size="mini" :disabled="disabled" @click="changeState(1)">有效</el-button>
-			<el-button type="warning" size="mini" :disabled="disabled" @click="changeState(0)">无效</el-button>
+			<el-button type="danger" size="mini" :disabled="disabled" @click="changeState(0)">无效</el-button>
 		</el-col>
 
 		<el-table border :data="tableData" v-loading="listLoading" id="exportTable" style="width: 100%" :header-cell-style="{background:'#fafafa'}"
@@ -159,7 +159,7 @@
 				let params = {}
 				payTypeList(params).then(res => {
 					_this.listLoading = false
-					_this.tableData = res.list
+					_this.tableData = res
 				}).catch((e) => {})
 			},
 
@@ -230,7 +230,7 @@
 			// 图片上传
 			handleAvatarSuccess(res, file) {
 				if (res.Data != '') {
-					this.editForm.Image = res.Data
+					this.editForm.Image = res.data
 				}
 				this.imageUrl = URL.createObjectURL(file.raw);
 				this.$message.success('二维码上传成功！')

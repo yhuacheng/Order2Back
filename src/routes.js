@@ -130,6 +130,11 @@ export default new Router({
 					name: '增值费'
 				},
 				{
+					path: '/serviceOther',
+					component: () => import('./views/systemManage/serviceOther.vue'),
+					name: '特殊服务费'
+				},
+				{
 					path: '/codes',
 					component: () => import('./views/systemManage/codes.vue'),
 					name: '推荐码'

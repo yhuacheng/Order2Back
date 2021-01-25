@@ -76,19 +76,6 @@
 				},
 				editForm: {
 					count: ''
-				},
-				Rules: {
-					count: [{
-							required: true,
-							message: '数量不能为空',
-							trigger: 'blur'
-						},
-						{
-							pattern: /^([1-9]|10)$/,
-							message: '数量必须为大于0且小于等于10的整数',
-							trigger: 'blur'
-						}
-					]
 				}
 			}
 		},

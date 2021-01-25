@@ -135,10 +135,10 @@
 			},
 
 			//更改状态
-			changeState(val) {
+			changeState(index, row, val) {
 				let _this = this
 				let params = {
-					Id: _this.checkBoxData[0].Id,
+					Id: row.Id,
 					State: val
 				}
 				codeState(params).then((res) => {

@@ -1,9 +1,6 @@
 <template>
 	<section>
 		<el-card class="mt10">
-			<div slot="header" class="clearfix">
-				<span>数据统计</span>
-			</div>
 			<el-row :gutter="30" class="mt10 mb15">
 				<el-col :span="3" :xs="12">
 					<el-card shadow="hover" class="box-card">
@@ -120,29 +117,29 @@
 				doingTask: 0,
 				taskNoAllot: 0,
 				chartData1: {
-					columns: ['状态', '数量'],
+					columns: ['state', 'num'],
 					rows: []
 				},
 				chartData2: {
-					columns: ['状态', '数量'],
+					columns: ['state', 'num'],
 					rows: []
 				},
 				chartData3: {
-					columns: ['状态', '数量'],
+					columns: ['state', 'num'],
 					rows: []
 				},
 				chartSettings4: {
 					stack: {
-						'xxx': ['heji', 'meiri', 'tj']
+						'xxx': ['heji', 'meiri', 'bili']
 					},
 					labelMap: {
 						'heji': '已完成',
 						'meiri': '进行中',
-						'tj': '完成率'
+						'bili': '完成率'
 					}
 				},
 				chartData4: {
-					columns: ['userName', 'heji', 'meiri', 'tj'],
+					columns: ['userName', 'heji', 'meiri', 'bili'],
 					rows: []
 				}
 			}
@@ -153,9 +150,9 @@
 			this.orderCountShow()
 			this.taskCountShow()
 			this.taskNoAllotShow()
-			// this.orderDataShow()
-			// this.taskDataShow()
-			this.taskProgressShow()
+			this.orderNumChart()
+			this.taskNumChart()
+			this.taskProgressChart()
 		},
 
 		methods: {
@@ -194,8 +191,96 @@
 				}).catch((e) => {})
 			},
 
-			//任务进度数据
-			taskProgressShow() {
+			//订单数量统计图
+			orderNumChart() {
+				let _this = this
+				let params = {
+					keyWord: '',
+					countryId: 0,
+					type: 0,
+					Diff: 0,
+					startTime: '',
+					endTime: '',
+					ServerType: 0
+				}
+				orderStateNum(params).then(res => {
+					let data = res
+					let arry = []
+					arry.push({
+						'state': '待确认',
+						'num': res.OrderStateInOne
+					}, {
+						'state': '待分配',
+						'num': res.OrderStateInTwo
+					}, {
+						'state': '已分配',
+						'num': res.OrderStateInThree
+					}, {
+						'state': '已完成',
+						'num': res.OrderStateInFour
+					}, {
+						'state': '已取消',
+						'num': res.OrderStateInFive
+					})
+					_this.chartData1.rows = arry
+				}).catch((e) => {})
+			},
+
+			//任务数量统计图
+			taskNumChart() {
+				let _this = this
+				let params = {
+					Id: 1,
+					Key: 'Michale_009',
+					keyWord: '',
+					RoolId: 1,
+					countryId: 0,
+					type: 0,
+					Diff: 0,
+					startTime: '',
+					endTime: '',
+					startEvaluateTime: '',
+					endEvaluateTime: '',
+					startDealTime: '',
+					endDealTime: '',
+					ServerType: 0,
+					RepeatState: 0,
+					PayState: 0
+				}
+				taskStateNum(params).then(res => {
+					let data = res
+					let arry = []
+					arry.push({
+						'state': '待分配',
+						'num': res.OrderStateInOne
+					}, {
+						'state': '待购买',
+						'num': res.OrderStateInTwo
+					}, {
+						'state': '待确认出单',
+						'num': res.OrderStateInThree
+					}, {
+						'state': '待评价',
+						'num': res.OrderStateInFour
+					}, {
+						'state': '待确认评价',
+						'num': res.OrderStateInFive
+					}, {
+						'state': '已完成',
+						'num': res.OrderStateInSix
+					}, {
+						'state': '已取消',
+						'num': res.OrderStateInSeven
+					}, {
+						'state': '异常',
+						'num': res.OrderStateInEight
+					})
+					_this.chartData2.rows = arry
+				}).catch((e) => {})
+			},
+
+			//任务进度统计图
+			taskProgressChart() {
 				let _this = this
 				let nameArry = []
 				let okDataArry = []
@@ -205,7 +290,7 @@
 					data.forEach(item => {
 						item.heji = item.heji ? item.heji : 0
 						item.meiri = item.meiri ? item.meiri : 0
-						item.tj = Number(item.heji / (Number(item.heji) + Number(item.meiri))).toFixed(2)
+						item.bili = Number(item.heji / (Number(item.heji) + Number(item.meiri))).toFixed(2)
 					})
 					_this.chartData4.rows = data
 				}).catch((e) => {})

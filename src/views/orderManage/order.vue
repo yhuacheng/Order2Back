@@ -79,7 +79,6 @@
 				</el-badge>
 			</div>
 		</el-col>
-
 		<!--列表-->
 		<pl-table border :data="tableData" v-loading="listLoading" id="exportTable" style="width: 100%" :header-cell-style="{background:'#fafafa'}"
 		 @selection-change="handleSelectionChange" @row-click="rowClick" ref="table" use-virtual max-height="900" :row-height="80">
@@ -89,9 +88,9 @@
 				<template slot-scope="scope">
 					<i class="el-icon-document-copy" @click.stop="copy(scope.$index,scope.row)"></i>
 					<el-link type="primary" :underline="false" @click.stop="viewModalShow(scope.$index,scope.row)">{{scope.row.OrderNumber}}</el-link>
-					<p>
+					<div>
 						<span v-if="scope.row.Overtime<0"><span class="danger fz10">超时</span></span>
-					</p>
+					</div>
 				</template>
 			</pl-table-column>
 			<pl-table-column prop="OrderProductPictures" label="产品图" align="center">
@@ -100,14 +99,14 @@
 					 @click.stop="showImage(scope.$index,scope.row)" />
 				</template>
 			</pl-table-column>
-			<pl-table-column prop="ServiceType" label="订单类型" align="center" width="110">
+			<pl-table-column prop="ServiceType" label="订单类型" align="center" width="105">
 				<template slot-scope="scope">
 					<span v-if="scope.row.ServiceType==1">评后返（代返）</span>
 					<span v-if="scope.row.ServiceType==2">评后返（自返）</span>
 				</template>
 			</pl-table-column>
 			<pl-table-column prop="CountryName" label="国家" align="center"></pl-table-column>
-			<pl-table-column prop="ASIN" label="ASIN" align="center" width="110"></pl-table-column>
+			<pl-table-column prop="ASIN" label="ASIN" align="center" width="100"></pl-table-column>
 			<pl-table-column prop="ProductName" label="产品名称" align="center" :show-overflow-tooltip='true'></pl-table-column>
 			<pl-table-column prop="ShopName" label="店铺" align="center" :show-overflow-tooltip='true'></pl-table-column>
 			<pl-table-column prop="ProductKeyWord" label="关键词" align="center" :show-overflow-tooltip='true'></pl-table-column>
@@ -125,7 +124,7 @@
 				</template>
 			</pl-table-column>
 			<pl-table-column prop="CustomerUserId" label="客户编码" align="center"></pl-table-column>
-			<pl-table-column prop="OrderTime" label="下单时间" align="center" width="145"></pl-table-column>
+			<pl-table-column prop="OrderTime" label="下单时间" align="center" width="135"></pl-table-column>
 			<pl-table-column prop="Remarks" label="备注" align="center" :show-overflow-tooltip='true'></pl-table-column>
 			<pl-table-column prop="OrderState" label="状态" align="center">
 				<template slot-scope="scope">
@@ -145,7 +144,6 @@
 				</template>
 			</pl-table-column>
 		</pl-table>
-
 		<!--工具条-->
 		<el-col :span="24" class="toolbar">
 			<el-pagination style="float: right;" @size-change="handleSizeChange" @current-change="handleCurrentChange"
@@ -155,79 +153,80 @@
 		</el-col>
 
 		<!-- 分配任务（任务列表） -->
-		<el-dialog v-dialogDrag :title="title" width="90%" :visible.sync="taskModal" :close-on-click-modal="false" :before-close="closeTaskModal">
-			<div class="mt-10">
-				<el-button type="primary" size="small" :disabled="disabledMore2" @click="timeModalShow(2)">分配任务</el-button>
-			</div>
-			<div class="mt20">
-				<el-table border :data="tableData2" id="exportTable2" style="width: 100%" :header-cell-style="{background:'#fafafa'}"
-				 @selection-change="handleSelectionChange2" @row-click="rowClick2" ref="table2">
-					<el-table-column type="selection" align="center" v-if="btnState" :selectable='disabledCheckBox'></el-table-column>
-					<el-table-column type="index" label="序号" align="center" width="50"></el-table-column>
-					<el-table-column prop="OrderNumbers" label="任务编号" align="center">
-						<template slot-scope="scope">
-							<span v-if="scope.row.AgainTaskState!=1">{{scope.row.OrderNumbers}}</span>
-							<span v-if="scope.row.AgainTaskState==1">{{scope.row.OrderNumbers}}
-								<div class="danger fz10">追加任务</div>
-							</span>
-						</template>
-					</el-table-column>
-					<el-table-column prop="Asin" label="产品ASIN" align="center"></el-table-column>
-					<el-table-column prop="ProductName" label="产品名称" align="center" :show-overflow-tooltip='true'></el-table-column>
-					<el-table-column prop="ProductPrice" label="产品价格" align="center"></el-table-column>
-					<el-table-column prop="OrderRemarks" label="备注" align="center" :show-overflow-tooltip='true'></el-table-column>
-					<el-table-column prop="TaskState" label="任务状态" align="center">
-						<template slot-scope="scope">
-							<span v-if="scope.row.TaskState==1">待分配</span>
-							<span v-if="scope.row.TaskState==2" class="danger">待购买</span>
-							<span v-if="scope.row.TaskState==3" class="primary">待确认出单</span>
-							<span v-if="scope.row.TaskState==4" class="warning">待评价</span>
-							<span v-if="scope.row.TaskState==5" class="primary">待确认评价</span>
-							<span v-if="scope.row.TaskState==6" class="success">已完成</span>
-							<span v-if="scope.row.TaskState==7" class="danger">已取消</span>
-							<span v-if="scope.row.TaskState==8" class="warning">异常</span>
-						</template>
-					</el-table-column>
-					<el-table-column prop="ExecutionTime" label="任务执行时间" align="center">
-						<template slot-scope="scope">
-							<span class="danger">{{scope.row.ExecutionTime}}</span>
-						</template>
-					</el-table-column>
-					<el-table-column prop="Name" label="操作员" align="center">
-						<template slot-scope="scope">
-							<span class="danger">{{scope.row.Name}}</span>
-						</template>
-					</el-table-column>
-					<el-table-column prop="Name1" label="外派员" align="center">
-						<template slot-scope="scope">
-							<span class="danger">{{scope.row.Name1}}</span>
-						</template>
-					</el-table-column>
-				</el-table>
-			</div>
-			<div class="table-foot">
-				<div></div>
-				<div>
-					<el-pagination @size-change="handleSizeChange2" @current-change="handleCurrentChange2" :current-page="pageIndex2"
-					 :page-sizes="[10, 20, 50, 100]" :page-size="10" layout="total, sizes, prev, pager, next, jumper" :total="total2">
-					</el-pagination>
-				</div>
-			</div>
+		<el-dialog v-dialogDrag :title="title" width="70%" :visible.sync="taskModal" :close-on-click-modal="false"
+		 :before-close="closeTaskModal">
+			<!--工具条-->
+			<el-col :span="24" class="toolbar">
+				<el-button type="primary" size="mini" :disabled="disabledMore2" @click="timeModalShow(2)">分配任务</el-button>
+			</el-col>
+			<el-table border :data="tableData2" id="exportTable2" style="width: 100%" :header-cell-style="{background:'#fafafa'}"
+			 @selection-change="handleSelectionChange2" @row-click="rowClick2" ref="table2">
+				<el-table-column type="selection" align="center" v-if="btnState" :selectable='disabledCheckBox'></el-table-column>
+				<el-table-column type="index" label="序号" align="center" width="50"></el-table-column>
+				<el-table-column prop="OrderNumbers" label="任务编号" align="center">
+					<template slot-scope="scope">
+						<span v-if="scope.row.AgainTaskState!=1">{{scope.row.OrderNumbers}}</span>
+						<span v-if="scope.row.AgainTaskState==1">{{scope.row.OrderNumbers}}
+							<div class="danger fz10">追加任务</div>
+						</span>
+					</template>
+				</el-table-column>
+				<el-table-column prop="Asin" label="产品ASIN" align="center"></el-table-column>
+				<el-table-column prop="ProductName" label="产品名称" align="center" :show-overflow-tooltip='true'></el-table-column>
+				<el-table-column prop="ProductPrice" label="产品价格" align="center"></el-table-column>
+				<el-table-column prop="OrderRemarks" label="备注" align="center" :show-overflow-tooltip='true'></el-table-column>
+				<el-table-column prop="TaskState" label="任务状态" align="center">
+					<template slot-scope="scope">
+						<span v-if="scope.row.TaskState==1">待分配</span>
+						<span v-if="scope.row.TaskState==2" class="danger">待购买</span>
+						<span v-if="scope.row.TaskState==3" class="primary">待确认出单</span>
+						<span v-if="scope.row.TaskState==4" class="warning">待评价</span>
+						<span v-if="scope.row.TaskState==5" class="primary">待确认评价</span>
+						<span v-if="scope.row.TaskState==6" class="success">已完成</span>
+						<span v-if="scope.row.TaskState==7" class="danger">已取消</span>
+						<span v-if="scope.row.TaskState==8" class="warning">异常</span>
+					</template>
+				</el-table-column>
+				<el-table-column prop="ExecutionTime" label="任务执行时间" align="center">
+					<template slot-scope="scope">
+						<span class="danger">{{scope.row.ExecutionTime}}</span>
+					</template>
+				</el-table-column>
+				<el-table-column prop="Name" label="操作员" align="center">
+					<template slot-scope="scope">
+						<span class="danger">{{scope.row.Name}}</span>
+					</template>
+				</el-table-column>
+				<el-table-column prop="Name1" label="外派员" align="center">
+					<template slot-scope="scope">
+						<span class="danger">{{scope.row.Name1}}</span>
+					</template>
+				</el-table-column>
+			</el-table>
+			<!--工具条-->
+			<el-col :span="24" class="toolbar">
+				<el-pagination style="float: right;" @size-change="handleSizeChange2" @current-change="handleCurrentChange2"
+				 :current-page="pageIndex2" :page-sizes="[10, 20, 50, 100]" :page-size="10" layout="total, sizes, prev, pager, next, jumper"
+				 :total="total2">
+				</el-pagination>
+			</el-col>
 			<div slot="footer" class="dialog-footer">
 				<el-button @click="closeTaskModal">关 闭</el-button>
 			</div>
 		</el-dialog>
+
 		<!-- 分配任务（任务执行时间） -->
-		<el-dialog v-dialogDrag center title="任务执行时间" width="30%" :visible.sync="timeModal" :close-on-click-modal="false" :before-close="closeTimeModal"
-		 style="top: -30vh;">
+		<el-dialog v-dialogDrag center title="任务执行时间" width="20%" :visible.sync="timeModal" :close-on-click-modal="false"
+		 :before-close="closeTimeModal" style="margin-top: -10%;">
 			<div class="textCen">
 				<el-date-picker v-model="taskTime" type="datetime" :picker-options="pickerOptions" placeholder="请选择任务执行时间" style="width: 320px;"></el-date-picker>
 			</div>
 			<div slot="footer" class="dialog-footer">
-				<el-button size="small" @click="closeTimeModal">关 闭</el-button>
-				<el-button size="small" type="primary" @click="userModalShow">确 定</el-button>
+				<el-button @click="closeTimeModal">关 闭</el-button>
+				<el-button type="primary" @click="userModalShow">确 定</el-button>
 			</div>
 		</el-dialog>
+
 		<!-- 分配任务（人员列表） -->
 		<el-dialog v-dialogDrag title="操作员列表" width="40%" :visible.sync="userModal" :close-on-click-modal="false">
 			<el-table border :data="tableData3" id="exportTable3" style="width: 100%" :header-cell-style="{background:'#fafafa'}"
@@ -241,8 +240,10 @@
 				<el-button @click="userModal=false">关 闭</el-button>
 			</div>
 		</el-dialog>
+
 		<!--服务费和汇率修改-->
-		<el-dialog v-dialogDrag :title="titleFee" width="30%" :visible.sync="editModal" :close-on-click-modal="false" :before-close="closeModal">
+		<el-dialog v-dialogDrag :title="titleFee" width="30%" :visible.sync="editModal" :close-on-click-modal="false"
+		 :before-close="closeModal">
 			<el-form :model="editForm" ref="editForm" :rules='Rules' label-width='100px' status-icon>
 				<el-form-item label="服务费" prop="fee">
 					<el-input v-model="editForm.fee"></el-input>
@@ -252,10 +253,11 @@
 				</el-form-item>
 			</el-form>
 			<div slot="footer" class="dialog-footer">
-				<el-button type="primary" @click="editSubmit">确 定</el-button>
-				<el-button @click="closeModal">取 消</el-button>
+				<el-button @click="closeModal">取消</el-button>
+				<el-button type="primary" @click="editSubmit">确定</el-button>
 			</div>
 		</el-dialog>
+
 		<!-- 订单查看 -->
 		<el-dialog v-dialogDrag width="70%" :title="title" :visible.sync="viewModal" :close-on-click-modal="false">
 			<el-form :model='view' ref='view' label-width='150px'>
@@ -529,11 +531,11 @@
 				let _this = this
 				let params = {
 					country: '',
-					pageNum: 1,
-					pagesize: 100000000
+					pageIndex: 1,
+					pageSize: 100000000
 				}
 				countryList(params).then(res => {
-					_this.countryData = res.list
+					_this.countryData = res.result.Entity
 				}).catch((e) => {})
 			},
 
@@ -544,8 +546,7 @@
 
 				// 根据角色判断订单列表按钮显示与隐藏
 				let show = ''
-				// let roleId = sessionStorage.getItem('roleId').trim()
-				let roleId = [1]
+				let roleId = sessionStorage.getItem('roleId').trim()
 				let x = roleId.indexOf(1) //总管理员
 				let y = roleId.indexOf(2) //子管理员
 				let c = roleId.indexOf(3) //财务
@@ -575,13 +576,13 @@
 					startTime: time1,
 					endTime: time2,
 					ServerType: _this.searchForm.serveType,
-					pageNum: _this.pageIndex,
-					pagesize: _this.pageSize
+					pageIndex: _this.pageIndex,
+					pageSize: _this.pageSize
 				}
 				orderList(params).then(res => {
 					_this.listLoading = false
-					_this.tableData = res.list
-					_this.total = Number(res.total)
+					_this.tableData = res.Entity
+					_this.total = Number(res.TotalCount)
 				}).catch((e) => {})
 			},
 
@@ -605,12 +606,12 @@
 					ServerType: _this.searchForm.serveType
 				}
 				orderStateNum(params).then(res => {
-					_this.all = Number(res.list[0].TotalCount) //全部
-					_this.dqr = Number(res.list[0].OrderStateInOne) //待确认
-					_this.dfp = Number(res.list[0].OrderStateInTwo) //待分配
-					_this.yfp = Number(res.list[0].OrderStateInThree) //已分配
-					_this.ywc = Number(res.list[0].OrderStateInFour) //已完成
-					_this.yqx = Number(res.list[0].OrderStateInFive) //已取消
+					_this.all = Number(res.TotalCount) //全部
+					_this.dqr = Number(res.OrderStateInOne) //待确认
+					_this.dfp = Number(res.OrderStateInTwo) //待分配
+					_this.yfp = Number(res.OrderStateInThree) //已分配
+					_this.ywc = Number(res.OrderStateInFour) //已完成
+					_this.yqx = Number(res.OrderStateInFive) //已取消
 				}).catch((e) => {})
 			},
 
@@ -765,12 +766,12 @@
 				let _this = this
 				let params = {
 					Id: _this.orderId,
-					pageNum: _this.pageIndex2,
-					pagesize: _this.pageSize2
+					pageIndex: _this.pageIndex2,
+					pageSize: _this.pageSize2
 				}
 				orderTask(params).then(res => {
-					_this.tableData2 = res.list
-					_this.total2 = Number(res.total)
+					_this.tableData2 = res.Entity
+					_this.total2 = Number(res.TotalCount)
 					_this.taskModal = true //获取数据后显示模态框
 				}).catch((e) => {})
 			},
@@ -858,20 +859,18 @@
 				let _this = this
 				let params = {
 					name: '',
-					pageNum: 1,
-					pagesize: 100000000,
+					pageIndex: 1,
+					pageSize: 100000000,
 				}
 				userList(params).then(res => {
+					let data = res.Entity
 					let arr = []
-					for (let x in res.list) {
-						let roleId = res.list[x].RoolId
-						if (roleId == null) {
-							roleId = ''
-						}
-						let state = res.list[x].State
+					for (let x in data) {
+						let roleId = data[x].RoolId ? data[x].RoolId : ''
+						let state = data[x].State
 						//如果角色包含4(操作员)并且状态为有效
 						if (roleId.indexOf(4) >= 0 && state == 1) {
-							arr.push(res.list[x])
+							arr.push(data[x])
 						}
 					}
 					_this.tableData3 = arr

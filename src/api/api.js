@@ -70,7 +70,7 @@ export const payTypeEdit = (params) => post('/api/Payment/ChangePayment', params
 export const payTypeState = (params) => post('/api/Payment/ChangeState', params) //更改支付方式
 
 export const orderList = (params) => get('/api/Order/GetCustomerOrderList', params) //订单列表
-export const orderStateNum = (params) => post('/api/Order/GetState', params) //订单不同状态下的数量
+export const orderStateNum = (params) => get('/api/Order/GetState', params) //订单不同状态下的数量
 export const orderState = (params) => post('/api/Order/ChangeOrderState', params) //订单确认/取消
 export const orderStateMore = (params) => post('/api/Order/BatchOrderChangeState', params) //订单批量确认/取消
 export const orderTask = (params) => get('/api/Order/GetTask', params) //订单拆分的任务列表

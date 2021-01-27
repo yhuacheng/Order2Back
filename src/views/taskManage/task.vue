@@ -71,21 +71,14 @@
 
 		<!--工具条-->
 		<el-col :span="24" class="toolbar">
-			<el-button type="primary" size="mini" v-if="menuBtnShow" :disabled="disabledEditFee" @click="editModalShow">
-				<i class="el-icon-edit-outline"></i> 修改【经销商】服务费和汇率</el-button>
-			<el-button type="danger" size="mini" v-if="menuBtnShow" :disabled="disabledOut" @click="userModalShow(1)">
-				<i class="el-icon-place"></i> 外派</el-button>
-			<el-button type="success" size="mini" v-if="menuBtnShow" :disabled="disabled" @click="TaskAgainShow">
-				<i class="el-icon-circle-plus-outline"></i> 追加任务</el-button>
-			<el-button type="danger" size="mini" v-if="btnShow3" :disabled="disabledEditFee" @click="userModalShow(2)">
-				<i class="el-icon-user-solid"></i> 转派</el-button>
-			<el-button type="primary" size="mini" v-if="CWbtnShow" :disabled="disabled" @click="payModalShow">
-				<i class="el-icon-coin"></i> 本佣付款</el-button>
+			<el-button type="primary" size="mini" v-if="menuBtnShow" :disabled="disabledEditFee" @click="editModalShow">修改【经销商】服务费和汇率</el-button>
+			<el-button type="danger" size="mini" v-if="menuBtnShow" :disabled="disabledOut" @click="userModalShow(1)">外派</el-button>
+			<el-button type="success" size="mini" v-if="menuBtnShow" :disabled="disabled" @click="TaskAgainShow">追加任务</el-button>
+			<el-button type="danger" size="mini" v-if="btnShow3" :disabled="disabledEditFee" @click="userModalShow(2)">转派</el-button>
+			<el-button type="primary" size="mini" v-if="CWbtnShow" :disabled="disabled" @click="payModalShow">本佣付款</el-button>
 			<el-button v-if="(btnShow && searchForm.state!=0 && searchForm.state!=6 && searchForm.state!=7) || (btnShow4 && searchForm.state==8)"
-			 type="danger" size="mini" @click="changeStateMore" :disabled="disabledMore"><i class="el-icon-circle-close"></i>
-				批量取消</el-button>
-			<el-button type="warning" size="mini" v-if="menuBtnShow||CWbtnShow" @click="exportExcel"><i class="el-icon-upload2"></i>
-				导出</el-button>
+			 type="danger" size="mini" @click="changeStateMore" :disabled="disabledMore">批量取消</el-button>
+			<el-button type="warning" size="mini" v-if="menuBtnShow||CWbtnShow" @click="exportExcel">导出</el-button>
 			<div class="tagMenu">
 				<el-badge :value="all" type="success" class="item">
 					<el-button size="mini" @click='searchStateData(0)' :class="{'active':searchForm.state==0}">全部</el-button>
@@ -253,7 +246,7 @@
 		</el-col>
 
 		<!-- 确认购买 -->
-		<el-dialog :title="title" :visible.sync="buyModal" :close-on-click-modal="false" :before-close="closeBuyModal">
+		<el-dialog v-dialogDrag :title="title" :visible.sync="buyModal" :close-on-click-modal="false" :before-close="closeBuyModal">
 			<el-form :model='taskFormView' ref='taskFormView' label-width='120px'>
 				<p class="info-title">任务信息</p>
 				<el-row>
@@ -371,7 +364,7 @@
 			</div>
 		</el-dialog>
 		<!-- 评价 -->
-		<el-dialog :title="title" :visible.sync="commentModal" :close-on-click-modal="false" :before-close="closeCommentModal">
+		<el-dialog v-dialogDrag :title="title" :visible.sync="commentModal" :close-on-click-modal="false" :before-close="closeCommentModal">
 			<el-form :model='taskFormView' ref='taskFormView' label-width='120px'>
 				<p class="info-title">任务信息</p>
 				<el-row>
@@ -427,35 +420,35 @@
 			</el-form>
 			<div slot="footer" class="dialog-footer">
 				<el-button type="danger" @click="commentSubmit(1)" style="position: absolute;left: 15px">免 评</el-button>
-				<el-button type="primary" @click="commentSubmit(0)">确 定</el-button>
 				<el-button @click="closeCommentModal">取 消</el-button>
+				<el-button type="primary" @click="commentSubmit(0)">确 定</el-button>
 			</div>
 		</el-dialog>
 		<!-- 任务查看 -->
-		<el-dialog width="70%" :title="title" :visible.sync="viewModal" :close-on-click-modal="false">
+		<el-dialog v-dialogDrag width="70%" :title="title" :visible.sync="viewModal" :close-on-click-modal="false">
 			<el-form :model='view' ref='view' label-width='150px'>
 				<p class="info-title">任务信息</p>
 				<el-row>
-					<el-col :span="12">
-						<el-form-item label='产品图：' prop="OrderProductPictures">
+					<el-col :span="24">
+						<el-form-item label='产品图：'>
 							<img style="width: 100px" class="pointer" @click="showImage2(view.OrderNumbers,view.OrderProductPictures)"
 							 v-show="view.OrderProductPictures" :src="view.OrderProductPictures" />
 						</el-form-item>
 					</el-col>
-					<el-col :span="12">
-						<el-form-item label='产品链接：' prop="OrderProductLink">
+					<el-col :span="24">
+						<el-form-item label='产品链接：'>
 							<el-link :href="view.OrderProductLink" target="_blank" type="primary" :underline="false">{{view.OrderProductLink}}</el-link>
 						</el-form-item>
 					</el-col>
 				</el-row>
 				<el-row>
 					<el-col :span="12">
-						<el-form-item label='任务编号：' prop="OrderNumbers">
+						<el-form-item label='任务编号：'>
 							<span>{{view.OrderNumbers}}</span>
 						</el-form-item>
 					</el-col>
 					<el-col :span="12">
-						<el-form-item label='任务状态：' prop="TaskState">
+						<el-form-item label='任务状态：'>
 							<span v-if="view.TaskState==1">待分配</span>
 							<span v-if="view.TaskState==2" class="warning">待购买</span>
 							<span v-if="view.TaskState==3" class="primary">待确认出单</span>
@@ -467,79 +460,79 @@
 						</el-form-item>
 					</el-col>
 					<el-col :span="12">
-						<el-form-item label='任务类型：' prop="ServiceType">
+						<el-form-item label='任务类型：'>
 							<span v-if="view.ServiceType==1">评后返（代返）</span>
 							<span v-if="view.ServiceType==2">评后返（自返）</span>
 						</el-form-item>
 					</el-col>
 					<el-col :span="12">
-						<el-form-item label='国家：' prop="CountryName">
+						<el-form-item label='国家：'>
 							<span>{{view.CountryName}}</span>
 						</el-form-item>
 					</el-col>
 					<el-col :span="24">
-						<el-form-item label='产品名称：' prop="ProductName">
+						<el-form-item label='产品名称：'>
 							<span>{{view.ProductName}}</span>
 						</el-form-item>
 					</el-col>
 					<el-col :span="12">
-						<el-form-item label='产品评分：' prop="OrderProductScore">
+						<el-form-item label='产品评分：'>
 							<span>{{view.OrderProductScore}}</span>
 						</el-form-item>
 					</el-col>
 					<el-col :span="12">
-						<el-form-item label='店铺名：' prop="OrderShopName">
+						<el-form-item label='店铺名：'>
 							<span>{{view.OrderShopName}}</span>
 						</el-form-item>
 					</el-col>
 					<el-col :span="12">
-						<el-form-item label='产品ASIN：' prop="Asin">
+						<el-form-item label='产品ASIN：'>
 							<span>{{view.Asin}}</span>
 						</el-form-item>
 					</el-col>
 					<el-col :span="12">
-						<el-form-item label='产品价格：' prop="ProductPrice">
+						<el-form-item label='产品价格：'>
 							<span>{{symbol}}</span><span>{{view.ProductPrice}}</span>
 						</el-form-item>
 					</el-col>
 					<el-col :span="12">
-						<el-form-item label='关键词类型：' prop="OrderKeyWordType">
+						<el-form-item label='关键词类型：'>
 							<span v-if="view.OrderKeyWordType==1">产品关键词</span>
 							<span v-if="view.OrderKeyWordType==2">CPC关键词</span>
 						</el-form-item>
 					</el-col>
 					<el-col :span="12">
-						<el-form-item label='关键词：' prop="KeyWord">
+						<el-form-item label='关键词：'>
 							<span>{{view.KeyWord}}</span>
 						</el-form-item>
 					</el-col>
 					<el-col :span="12">
-						<el-form-item label='订单开始时间：' prop="OrderStartTime">
+						<el-form-item label='订单开始时间：'>
 							<span>{{view.OrderStartTime}}</span>
 						</el-form-item>
 					</el-col>
 					<el-col :span="12">
-						<el-form-item label='客户编码：' prop="CustomerUserId">
+						<el-form-item label='客户编码：'>
 							<span>{{view.CustomerUserId}}</span>
 						</el-form-item>
 					</el-col>
 					<el-col :span="24">
-						<el-form-item label='订单备注：' prop="OrderRemarks">
+						<el-form-item label='订单备注：'>
 							<span>{{view.OrderRemarks}}</span>
 						</el-form-item>
 					</el-col>
 					<el-col :span="24">
-						<el-form-item label='任务备注：' prop="Remarks">
+						<el-form-item label='任务备注：'>
 							<span>{{view.Remarks}}</span>
 						</el-form-item>
 					</el-col>
 					<el-col :span="12">
-						<el-form-item label='任务执行时间：' prop="ExecutionTime">
+						<el-form-item label='任务执行时间：'>
 							<span>{{view.ExecutionTime}}</span>
 						</el-form-item>
 					</el-col>
 					<el-col :span="12">
-						<el-form-item label='操作员：' prop="Name">
+						<el-form-item label='操作员：'>
 							<span>{{view.Name}}</span>
 						</el-form-item>
 					</el-col>
@@ -547,59 +540,59 @@
 				<p class="info-title">购买信息</p>
 				<el-row>
 					<el-col :span="12">
-						<el-form-item label='购买单号：' prop="AmazonNumber">
+						<el-form-item label='购买单号：'>
 							<span>{{view.AmazonNumber}}</span>
 						</el-form-item>
 					</el-col>
 					<el-col :span="12">
-						<el-form-item label='购买时间：' prop="BuyTime">
+						<el-form-item label='购买时间：'>
 							<span>{{view.BuyTime}}</span>
 						</el-form-item>
 					</el-col>
 					<el-col :span="24">
-						<el-form-item label='购买备注：' prop="BuyRemarks">
+						<el-form-item label='购买备注：'>
 							<span>{{view.BuyRemarks}}</span>
 						</el-form-item>
 					</el-col>
 					<el-col :span="12">
-						<el-form-item label='购买价格：' prop="AmazonProductPrice">
+						<el-form-item label='购买价格：'>
 							<span v-show="view.AmazonProductPrice">{{symbol}}</span><span>{{view.AmazonProductPrice}}</span>
 						</el-form-item>
 					</el-col>
 					<div v-show="view.ServiceType==1">
 						<el-col :span="12">
-							<el-form-item label='运费：' prop="Freight">
+							<el-form-item label='运费：'>
 								<span v-show="view.Freight">{{symbol}}</span><span>{{view.Freight}}</span>
 							</el-form-item>
 						</el-col>
 						<el-col :span="12">
-							<el-form-item label='税费：' prop="Taxation">
+							<el-form-item label='税费：'>
 								<span v-show="view.Taxation">{{symbol}}</span><span>{{view.Taxation}}</span>
 							</el-form-item>
 						</el-col>
 						<el-col :span="12">
-							<el-form-item label='其他：' prop="Other">
+							<el-form-item label='其他：'>
 								<span v-show="view.Other">{{symbol}}</span><span>{{view.Other}}</span>
 							</el-form-item>
 						</el-col>
 						<el-col :span="12">
-							<el-form-item label='总额：' prop="Total">
+							<el-form-item label='总额：'>
 								<span v-show="view.Total">￥</span><span>{{view.Total}}</span>
 							</el-form-item>
 						</el-col>
 					</div>
 					<el-col :span="12">
-						<el-form-item label='汇率：' prop="OrderExchangeRate">
+						<el-form-item label='汇率：'>
 							<span>{{view.OrderExchangeRate}}</span>
 						</el-form-item>
 					</el-col>
 					<el-col :span="12">
-						<el-form-item label='服务费：' prop="OrderUnitPriceSerCharge">
+						<el-form-item label='服务费：'>
 							<span>￥</span> <span>{{view.OrderUnitPriceSerCharge}}</span>
 						</el-form-item>
 					</el-col>
 					<el-col :span="24">
-						<el-form-item label='购买截图：' prop="BuyImage">
+						<el-form-item label='购买截图：'>
 							<img style="max-width: 80%;" v-show="view.BuyImage" :src="view.BuyImage" />
 						</el-form-item>
 					</el-col>
@@ -607,17 +600,17 @@
 				<p class="info-title">评价信息</p>
 				<el-row>
 					<el-col :span="24">
-						<el-form-item label='返款账号：' prop="PayAccount">
+						<el-form-item label='返款账号：'>
 							<span>{{view.PayAccount}}</span>
 						</el-form-item>
 					</el-col>
 					<el-col :span="24">
-						<el-form-item label='评价链接：' prop="ProductLink">
+						<el-form-item label='评价链接：'>
 							<span>{{view.ProductLink}}</span>
 						</el-form-item>
 					</el-col>
 					<el-col :span="24">
-						<el-form-item label='评价截图：' prop="ProductImage">
+						<el-form-item label='评价截图：'>
 							<img style="max-width: 80%;" v-show="view.ProductImage" :src="view.ProductImage" />
 						</el-form-item>
 					</el-col>
@@ -626,12 +619,12 @@
 					<p class="info-title">交易信息</p>
 					<el-row>
 						<el-col :span="24">
-							<el-form-item label='返款时间：' prop="DealTime">
+							<el-form-item label='返款时间：'>
 								<span>{{view.DealTime}}</span>
 							</el-form-item>
 						</el-col>
 						<el-col :span="24">
-							<el-form-item label='交易截图：' prop="DealIamge">
+							<el-form-item label='交易截图：'>
 								<img style="max-width: 80%;" v-show="view.DealIamge" :src="view.DealIamge" />
 							</el-form-item>
 						</el-col>
@@ -643,7 +636,7 @@
 			</div>
 		</el-dialog>
 		<!--查看产品图大图-->
-		<el-dialog :title='title2' :visible.sync='imageModal' :close-on-click-modal='false' :before-close="closeImageModal">
+		<el-dialog v-dialogDrag :title='title2' :visible.sync='imageModal' :close-on-click-modal='false' :before-close="closeImageModal">
 			<div class="txtCenter">
 				<img :src='taskProductImgUrl' style="max-width: 80%;" />
 			</div>
@@ -652,7 +645,8 @@
 			</div>
 		</el-dialog>
 		<!--服务费和汇率修改-->
-		<el-dialog :title="titleFee" width="30%" :visible.sync="editModal" :close-on-click-modal="false" :before-close="closeModal">
+		<el-dialog v-dialogDrag :title="titleFee" width="30%" :visible.sync="editModal" :close-on-click-modal="false"
+		 :before-close="closeModal">
 			<el-form :model="editForm" ref="editForm" :rules='RulesFee' label-width='100px' status-icon>
 				<el-form-item label="服务费" prop="fee">
 					<el-input v-model="editForm.fee"></el-input>
@@ -662,12 +656,12 @@
 				</el-form-item>
 			</el-form>
 			<div slot="footer" class="dialog-footer">
-				<el-button type="primary" @click="editSubmit">确 定</el-button>
 				<el-button @click="closeModal">取 消</el-button>
+				<el-button type="primary" @click="editSubmit">确 定</el-button>
 			</div>
 		</el-dialog>
 		<!-- 外派(任务分配给外派员) -->
-		<el-dialog :title="userListTitle" width="40%" :visible.sync="userModal" :close-on-click-modal="false">
+		<el-dialog v-dialogDrag :title="userListTitle" width="40%" :visible.sync="userModal" :close-on-click-modal="false">
 			<el-table border :data="tableData2" id="exportTable2" style="width: 100%" :header-cell-style="{background:'#fafafa'}"
 			 @row-click="rowClick2" ref="table2">
 				<el-table-column type="index" label="序号" align="center" width="50"></el-table-column>
@@ -680,7 +674,8 @@
 			</div>
 		</el-dialog>
 		<!--本佣付款-->
-		<el-dialog :title="titlePay" width="30%" :visible.sync="payModal" :close-on-click-modal="false" :before-close="closePayModal">
+		<el-dialog v-dialogDrag :title="titlePay" width="30%" :visible.sync="payModal" :close-on-click-modal="false"
+		 :before-close="closePayModal">
 			<el-form :model="payForm" ref="payForm" :rules='RulesPay' label-width='60px' status-icon>
 				<el-form-item label="本金" prop="principal">
 					<el-input v-model="payForm.principal"></el-input>
@@ -690,8 +685,8 @@
 				</el-form-item>
 			</el-form>
 			<div slot="footer" class="dialog-footer">
-				<el-button type="primary" @click="paySubmit" :disabled="!payForm.principal&&!payForm.commission">确 定</el-button>
 				<el-button @click="closePayModal">取 消</el-button>
+				<el-button type="primary" @click="paySubmit" :disabled="!payForm.principal&&!payForm.commission">确 定</el-button>
 			</div>
 		</el-dialog>
 	</section>

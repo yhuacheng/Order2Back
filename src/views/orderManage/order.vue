@@ -47,17 +47,13 @@
 
 		<!--工具条-->
 		<el-col :span="24" class="toolbar">
-			<el-button v-if="menuBtnShow" type="primary" size="mini" :disabled="disabledEditFee" @click="editModalShow">
-				<i class="el-icon-edit-outline"></i> 修改【客户】服务费和汇率</el-button>
+			<el-button v-if="menuBtnShow" type="primary" size="mini" :disabled="disabledEditFee" @click="editModalShow">修改【客户】服务费和汇率</el-button>
 			<el-button v-if="menuBtnShow && searchForm.state==1" type="success" size="mini" @click="orderConfirmMore(1)"
-			 :disabled="disabledMore">
-				<i class="el-icon-circle-check"></i> 批量确认</el-button>
+			 :disabled="disabledMore" :loading="btnLoading">批量确认</el-button>
 			<el-button v-if="menuBtnShow && searchForm.state==1" type="danger" size="mini" @click="orderConfirmMore(2)"
-			 :disabled="disabledMore">
-				<i class="el-icon-circle-close"></i> 批量取消</el-button>
-			<el-button v-if="menuBtnShow && searchForm.state==2" type="danger" size="mini" @click="timeModalShow(1)" :disabled="disabledMore">
-				<i class="el-icon-s-unfold"></i> 批量分配任务</el-button>
-			<el-button type="warning" size="mini" @click="exportExcel"><i class="el-icon-upload2"></i> 导出</el-button>
+			 :disabled="disabledMore" :loading="btnLoading2">批量取消</el-button>
+			<el-button v-if="menuBtnShow && searchForm.state==2" type="danger" size="mini" @click="timeModalShow(1)" :disabled="disabledMore">批量分配任务</el-button>
+			<el-button type="warning" size="mini" @click="exportExcel">导出</el-button>
 			<div class="tagMenu">
 				<el-badge :value="all" type="success" class="item">
 					<el-button size="mini" @click='searchStateData(0)' :class="{'active':searchForm.state==0}">全部</el-button>
@@ -219,7 +215,8 @@
 		<el-dialog v-dialogDrag center title="任务执行时间" width="20%" :visible.sync="timeModal" :close-on-click-modal="false"
 		 :before-close="closeTimeModal" style="margin-top: -10%;">
 			<div class="textCen">
-				<el-date-picker v-model="taskTime" type="datetime" :picker-options="pickerOptions" placeholder="请选择任务执行时间" style="width: 320px;"></el-date-picker>
+				<el-date-picker v-model="taskTime" type="datetime" :picker-options="pickerOptions" value-format="yyyy-MM-dd HH:mm:ss"
+				 placeholder="请选择任务执行时间" style="width: 320px;"></el-date-picker>
 			</div>
 			<div slot="footer" class="dialog-footer">
 				<el-button @click="closeTimeModal">关 闭</el-button>
@@ -228,11 +225,10 @@
 		</el-dialog>
 
 		<!-- 分配任务（人员列表） -->
-		<el-dialog v-dialogDrag title="操作员列表" width="40%" :visible.sync="userModal" :close-on-click-modal="false">
+		<el-dialog v-dialogDrag title="操作员列表" :visible.sync="userModal" :close-on-click-modal="false" width="30%">
 			<el-table border :data="tableData3" id="exportTable3" style="width: 100%" :header-cell-style="{background:'#fafafa'}"
 			 @row-click="rowClick3" ref="table3">
 				<el-table-column type="index" label="序号" align="center" width="50"></el-table-column>
-				<el-table-column prop="Id" label="编码" align="center"></el-table-column>
 				<el-table-column prop="Name" label="姓名" align="center"></el-table-column>
 				<el-table-column prop="LoginName" label="账号" align="center"></el-table-column>
 			</el-table>
@@ -262,26 +258,26 @@
 		<el-dialog v-dialogDrag width="70%" :title="title" :visible.sync="viewModal" :close-on-click-modal="false">
 			<el-form :model='view' ref='view' label-width='150px'>
 				<el-row>
-					<el-col :span="12">
-						<el-form-item label='产品图：' prop="ProductPictures">
+					<el-col :span="24">
+						<el-form-item label='产品图：'>
 							<img style="width: 100px" class="pointer" @click="showImage2(view.OrderNumber,view.ProductPictures)" v-show="view.ProductPictures"
 							 :src="view.ProductPictures" />
 						</el-form-item>
 					</el-col>
-					<el-col :span="12">
-						<el-form-item label='产品链接：' prop="ProductLink">
+					<el-col :span="24">
+						<el-form-item label='产品链接：'>
 							<el-link :href="view.ProductLink" target="_blank" type="primary" :underline="false">{{view.ProductLink}}</el-link>
 						</el-form-item>
 					</el-col>
 				</el-row>
 				<el-row>
 					<el-col :span="12">
-						<el-form-item label='订单编号：' prop="OrderNumber">
+						<el-form-item label='订单编号：'>
 							<span>{{view.OrderNumber}}</span>
 						</el-form-item>
 					</el-col>
 					<el-col :span="12">
-						<el-form-item label='订单状态：' prop="OrderState">
+						<el-form-item label='订单状态：'>
 							<span v-if="view.OrderState==1">待确认</span>
 							<span v-if="view.OrderState==2" class="warning">待分配</span>
 							<span v-if="view.OrderState==3" class="primary">已分配</span>
@@ -290,109 +286,109 @@
 						</el-form-item>
 					</el-col>
 					<el-col :span="12">
-						<el-form-item label='国家：' prop="CountryName">
+						<el-form-item label='国家：'>
 							<span>{{view.CountryName}}</span>
 						</el-form-item>
 					</el-col>
 					<el-col :span="12">
-						<el-form-item label='订单类型：' prop="ServiceType">
+						<el-form-item label='订单类型：'>
 							<span v-if="view.ServiceType==1">评后返（代返）</span>
 							<span v-if="view.ServiceType==2">评后返（自返）</span>
 						</el-form-item>
 					</el-col>
 					<el-col :span="24">
-						<el-form-item label='产品名称：' prop="ProductName">
+						<el-form-item label='产品名称：'>
 							<span>{{view.ProductName}}</span>
 						</el-form-item>
 					</el-col>
 					<el-col :span="12">
-						<el-form-item label='产品评分：' prop="ProductScore">
+						<el-form-item label='产品评分：'>
 							<span>{{view.ProductScore}}</span>
 						</el-form-item>
 					</el-col>
 					<el-col :span="12">
-						<el-form-item label='店铺名：' prop="ShopName">
+						<el-form-item label='店铺名：'>
 							<span>{{view.ShopName}}</span>
 						</el-form-item>
 					</el-col>
 					<el-col :span="12">
-						<el-form-item label='产品ASIN：' prop="ASIN">
+						<el-form-item label='产品ASIN：'>
 							<span>{{view.ASIN}}</span>
 						</el-form-item>
 					</el-col>
 					<el-col :span="12">
-						<el-form-item label='产品单价：' prop="ProductPrice">
+						<el-form-item label='产品单价：'>
 							<span>{{view.ProductPrice}}</span>
 						</el-form-item>
 					</el-col>
 					<el-col :span="12">
-						<el-form-item label='关键词类型：' prop="KeyWordType">
+						<el-form-item label='关键词类型：'>
 							<span v-if="view.KeyWordType==1">产品关键词</span>
 							<span v-if="view.KeyWordType==2">CPC关键词</span>
 						</el-form-item>
 					</el-col>
 					<el-col :span="12">
-						<el-form-item label='关键词：' prop="ProductKeyWord">
+						<el-form-item label='关键词：'>
 							<span>{{view.ProductKeyWord}}</span>
 						</el-form-item>
 					</el-col>
 					<el-col :span="12">
-						<el-form-item label='留评率：' prop="ProductPosition">
+						<el-form-item label='留评率：'>
 							<span>{{view.ProductPosition}}</span>
 						</el-form-item>
 					</el-col>
 					<el-col :span="12">
-						<el-form-item label='任务开始时间：' prop="StartTime">
+						<el-form-item label='任务开始时间：'>
 							<span>{{view.StartTime}}</span>
 						</el-form-item>
 					</el-col>
 					<el-col :span="12">
-						<el-form-item label='任务结束时间：' prop="EndTime">
+						<el-form-item label='任务结束时间：'>
 							<span>{{view.EndTime}}</span>
 						</el-form-item>
 					</el-col>
 					<el-col :span="12">
-						<el-form-item label='任务数量：' prop="Number">
+						<el-form-item label='任务数量：'>
 							<span>{{view.Number}}</span>
 						</el-form-item>
 					</el-col>
 					<el-col :span="12">
-						<el-form-item label='汇率：' prop="ExchangeRate">
+						<el-form-item label='汇率：'>
 							<span>{{view.ExchangeRate}}</span>
 						</el-form-item>
 					</el-col>
 					<el-col :span="12">
-						<el-form-item label='产品总价：' prop="Totalproductprice">
+						<el-form-item label='产品总价：'>
 							<span>{{view.Totalproductprice}}</span>
 						</el-form-item>
 					</el-col>
 					<el-col :span="12">
-						<el-form-item label='增值费：' prop="AddedFee">
+						<el-form-item label='增值费：'>
 							<span>{{view.AddedFee}}</span>
 						</el-form-item>
 					</el-col>
 					<el-col :span="12">
-						<el-form-item label='服务费：' prop="UnitPriceSerCharge">
+						<el-form-item label='服务费：'>
 							<span>{{view.UnitPriceSerCharge}}</span>
 						</el-form-item>
 					</el-col>
 					<el-col :span="12">
-						<el-form-item label='合计：' prop="Total">
+						<el-form-item label='合计：'>
 							<span>{{view.Total}}</span>
 						</el-form-item>
 					</el-col>
 					<el-col :span="12">
-						<el-form-item label='订单时间：' prop="OrderTime">
+						<el-form-item label='订单时间：'>
 							<span>{{view.OrderTime}}</span>
 						</el-form-item>
 					</el-col>
 					<el-col :span="12">
-						<el-form-item label='客户编码：' prop="CustomerUserId">
+						<el-form-item label='客户编码：'>
 							<span>{{view.CustomerUserId}}</span>
 						</el-form-item>
 					</el-col>
 					<el-col :span="24">
-						<el-form-item label='订单备注：' prop="Remarks">
+						<el-form-item label='订单备注：'>
 							<span>{{view.Remarks}}</span>
 						</el-form-item>
 					</el-col>
@@ -441,6 +437,8 @@
 				disabledMore: true, //多项禁用
 				disabledEditFee: true, //修改费率禁用
 				listLoading: false,
+				btnLoading: false,
+				btnLoading2: false,
 				tableData: [],
 				checkBoxData: [], //选中数据
 				searchForm: {
@@ -660,14 +658,30 @@
 				_this.$confirm('确认 ' + txt + ' 选中的【' + num + '】条订单吗？', '信息提示', {
 					type: 'warning'
 				}).then(() => {
-					let params = {
-						Id: ids,
-						Type: val
+					if (val == 1) {
+						_this.btnLoading = true
+						let params = {
+							Id: ids,
+							Type: val
+						}
+						orderStateMore(params).then((res) => {
+							_this.btnLoading = false
+							_this.getAllData()
+							_this.getOrderStateNum()
+						}).catch(() => {})
 					}
-					orderStateMore(params).then((res) => {
-						_this.getAllData()
-						_this.getOrderStateNum()
-					})
+					if (val == 2) {
+						_this.btnLoading2 = true
+						let params = {
+							Id: ids,
+							Type: val
+						}
+						orderStateMore(params).then((res) => {
+							_this.btnLoading2 = false
+							_this.getAllData()
+							_this.getOrderStateNum()
+						}).catch(() => {})
+					}
 				}).catch(() => {})
 			},
 
@@ -902,7 +916,7 @@
 							_this.closeTimeModal()
 							_this.getAllData()
 							_this.getOrderStateNum()
-						})
+						}).catch(() => {})
 					}).catch(() => {})
 				}
 				if (_this.FPtype == '2') {
@@ -924,7 +938,7 @@
 							_this.getTaskData()
 							_this.getAllData()
 							_this.getOrderStateNum()
-						})
+						}).catch(() => {})
 					}).catch(() => {})
 				}
 			},

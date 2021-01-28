@@ -109,6 +109,7 @@
 			<pl-table-column prop="Brand" label="品牌" align="center" :show-overflow-tooltip='true'></pl-table-column>
 			<pl-table-column prop="Place" label="产品位置" align="center" :show-overflow-tooltip='true'></pl-table-column>
 			<pl-table-column prop="Number" label="任务数" align="center"></pl-table-column>
+			<pl-table-column prop="RemainNumber" label="待购买数" align="center"></pl-table-column>
 			<pl-table-column prop="ProductPrice" label="产品价格" align="center"></pl-table-column>
 			<pl-table-column prop="Totalproductprice" label="产品总额" align="center"></pl-table-column>
 			<pl-table-column prop="AddedFee" label="增值费" align="center"></pl-table-column>
@@ -1096,6 +1097,11 @@
 					{
 						title: '任务数',
 						key: 'Number',
+						type: 'text'
+					},
+					{
+						title: '待购买数',
+						key: 'RemainNumber',
 						type: 'text'
 					},
 					{

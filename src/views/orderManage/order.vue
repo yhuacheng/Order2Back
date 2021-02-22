@@ -764,7 +764,7 @@
 				_this.getTaskData()
 			},
 
-			//如果不是待分配状态则禁用该行复选框
+			//如果不是待分配状态则禁用该行复选框 
 			disabledCheckBox(row, index) {
 				let checked = ''
 				let state = row.TaskState

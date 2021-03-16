@@ -4,20 +4,23 @@
 		<el-col :span="24" class="toolbar" style="padding-bottom: 0px;">
 			<el-form :inline="true" :model="searchForm" size="mini">
 				<el-form-item label="搜索内容">
-					<el-input @keyup.native="searchToTrim" v-model="searchForm.searchWords" placeholder="任务编号/ASIN/操作员/客户编号/购买单号/PP账号"
-					 style="width: 300px;"></el-input>
+					<el-input @keyup.native="searchToTrim" v-model="searchForm.searchWords"
+						placeholder="任务号/ASIN/店铺/操作员/客户编号/购买单号/PP号" style="width: 300px;"></el-input>
 				</el-form-item>
 				<el-form-item label="填单时间">
-					<el-date-picker v-model="searchForm.time" :unlink-panels='true' type="datetimerange" range-separator="至"
-					 start-placeholder="开始日期" end-placeholder="结束日期" value-format="yyyy-MM-dd HH:mm:ss" style="width: 100%;"></el-date-picker>
+					<el-date-picker v-model="searchForm.time" :unlink-panels='true' type="datetimerange"
+						range-separator="至" start-placeholder="开始时间" end-placeholder="结束时间"
+						value-format="yyyy-MM-dd HH:mm:ss" style="width: 100%;"></el-date-picker>
 				</el-form-item>
 				<el-form-item label="上评时间">
-					<el-date-picker v-model="searchForm.timeSP" :unlink-panels='true' type="datetimerange" range-separator="至"
-					 start-placeholder="开始日期" end-placeholder="结束日期" value-format="yyyy-MM-dd HH:mm:ss" style="width: 100%;"></el-date-picker>
+					<el-date-picker v-model="searchForm.timeSP" :unlink-panels='true' type="datetimerange"
+						range-separator="至" start-placeholder="开始时间" end-placeholder="结束时间"
+						value-format="yyyy-MM-dd HH:mm:ss" style="width: 100%;"></el-date-picker>
 				</el-form-item>
 				<el-form-item label="返款时间">
-					<el-date-picker v-model="searchForm.timeFK" :unlink-panels='true' type="datetimerange" range-separator="至"
-					 start-placeholder="开始日期" end-placeholder="结束日期" value-format="yyyy-MM-dd HH:mm:ss" style="width: 100%;"></el-date-picker>
+					<el-date-picker v-model="searchForm.timeFK" :unlink-panels='true' type="datetimerange"
+						range-separator="至" start-placeholder="开始时间" end-placeholder="结束时间"
+						value-format="yyyy-MM-dd HH:mm:ss" style="width: 100%;"></el-date-picker>
 				</el-form-item>
 				<el-form-item label="订单类型">
 					<el-select v-model="searchForm.serveType" placeholder="请选择" style="width: 140px;">
@@ -29,7 +32,8 @@
 				<el-form-item label="国家">
 					<el-select v-model="searchForm.country" placeholder="请选择国家" style="width: 110px;">
 						<el-option value="0" label="全部"></el-option>
-						<el-option v-for="item in countryData" :key="item.Id" :label="item.CountryName" :value="item.Id"></el-option>
+						<el-option v-for="item in countryData" :key="item.Id" :label="item.CountryName"
+							:value="item.Id"></el-option>
 					</el-select>
 				</el-form-item>
 				<el-form-item label="内单外单">
@@ -47,14 +51,14 @@
 					</el-select>
 				</el-form-item>
 				<el-form-item label="是否重复">
-					<el-select v-model="searchForm.repeat" placeholder="请选择" style="width: 108px;">
+					<el-select v-model="searchForm.repeat" placeholder="请选择" style="width: 151px;">
 						<el-option value="0" label="全部"></el-option>
 						<el-option value="-1" label="正常"></el-option>
 						<el-option value="1" label="重复"></el-option>
 					</el-select>
 				</el-form-item>
 				<el-form-item label="本佣付款" v-if='In'>
-					<el-select v-model="searchForm.payState" placeholder="请选择" style="width: 130px;">
+					<el-select v-model="searchForm.payState" placeholder="请选择" style="width: 151px;">
 						<el-option value="0" label="全部"></el-option>
 						<el-option value="1" label="本佣均已付"></el-option>
 						<el-option value="2" label="本佣均未付"></el-option>
@@ -71,48 +75,64 @@
 
 		<!--工具条-->
 		<el-col :span="24" class="toolbar">
-			<el-button type="primary" size="mini" v-if="menuBtnShow" :disabled="disabledEditFee" @click="editModalShow">修改【经销商】服务费和汇率</el-button>
-			<el-button type="danger" size="mini" v-if="menuBtnShow" :disabled="disabledOut" @click="userModalShow(1)">外派</el-button>
-			<el-button type="success" size="mini" v-if="menuBtnShow" :disabled="disabled" @click="TaskAgainShow">追加任务</el-button>
-			<el-button type="danger" size="mini" v-if="btnShow3" :disabled="disabledEditFee" @click="userModalShow(2)">转派</el-button>
-			<el-button type="primary" size="mini" v-if="CWbtnShow" :disabled="disabled" @click="payModalShow">本佣付款</el-button>
-			<el-button v-if="(btnShow && searchForm.state!=0 && searchForm.state!=6 && searchForm.state!=7) || (btnShow4 && searchForm.state==8)"
-			 type="danger" size="mini" @click="changeStateMore" :disabled="disabledMore">批量取消</el-button>
+			<el-button type="primary" size="mini" v-if="menuBtnShow" :disabled="disabledEditFee" @click="editModalShow">
+				修改【经销商】服务费和汇率</el-button>
+			<el-button type="danger" size="mini" v-if="menuBtnShow" :disabled="disabledOut" @click="userModalShow(1)">外派
+			</el-button>
+			<el-button type="success" size="mini" v-if="menuBtnShow" :disabled="disabled" @click="TaskAgainShow">追加任务
+			</el-button>
+			<el-button type="danger" size="mini" v-if="btnShow3" :disabled="disabledEditFee" @click="userModalShow(2)">
+				转派</el-button>
+			<el-button type="primary" size="mini" v-if="CWbtnShow" :disabled="disabled" @click="payModalShow">本佣付款
+			</el-button>
+			<el-button
+				v-if="(btnShow && searchForm.state!=0 && searchForm.state!=6 && searchForm.state!=7) || (btnShow4 && searchForm.state==8)"
+				type="danger" size="mini" @click="changeStateMore" :disabled="disabledMore">批量取消</el-button>
 			<el-button type="warning" size="mini" v-if="menuBtnShow||CWbtnShow" @click="exportExcel">导出</el-button>
 			<div class="tagMenu">
 				<el-badge :value="all" type="success" class="item">
-					<el-button size="mini" @click='searchStateData(0)' :class="{'active':searchForm.state==0}">全部</el-button>
+					<el-button size="mini" @click='searchStateData(0)' :class="{'active':searchForm.state==0}">全部
+					</el-button>
 				</el-badge>
 				<el-badge :value="dfp" type="info" class="item">
-					<el-button size="mini" @click='searchStateData(1)' :class="{'active':searchForm.state==1}">待分配</el-button>
+					<el-button size="mini" @click='searchStateData(1)' :class="{'active':searchForm.state==1}">待分配
+					</el-button>
 				</el-badge>
 				<el-badge :value="dgm" type="warning" class="item">
-					<el-button size="mini" @click='searchStateData(2)' :class="{'active':searchForm.state==2}">待购买</el-button>
+					<el-button size="mini" @click='searchStateData(2)' :class="{'active':searchForm.state==2}">待购买
+					</el-button>
 				</el-badge>
 				<el-badge :value="dqrcd" type="primary" class="item">
-					<el-button size="mini" @click='searchStateData(3)' :class="{'active':searchForm.state==3}">待确认出单</el-button>
+					<el-button size="mini" @click='searchStateData(3)' :class="{'active':searchForm.state==3}">待确认出单
+					</el-button>
 				</el-badge>
 				<el-badge :value="dpj" type="warning" class="item">
-					<el-button size="mini" @click='searchStateData(4)' :class="{'active':searchForm.state==4}">待评价</el-button>
+					<el-button size="mini" @click='searchStateData(4)' :class="{'active':searchForm.state==4}">待评价
+					</el-button>
 				</el-badge>
 				<el-badge :value="dqrpj" type="primary" class="item">
-					<el-button size="mini" @click='searchStateData(5)' :class="{'active':searchForm.state==5}">待确认评价</el-button>
+					<el-button size="mini" @click='searchStateData(5)' :class="{'active':searchForm.state==5}">待确认评价
+					</el-button>
 				</el-badge>
 				<el-badge :value="ywc" type="success" class="item">
-					<el-button size="mini" @click='searchStateData(6)' :class="{'active':searchForm.state==6}">已完成</el-button>
+					<el-button size="mini" @click='searchStateData(6)' :class="{'active':searchForm.state==6}">已完成
+					</el-button>
 				</el-badge>
 				<el-badge :value="yqx" type="danger" class="item">
-					<el-button size="mini" @click='searchStateData(7)' :class="{'active':searchForm.state==7}">已取消</el-button>
+					<el-button size="mini" @click='searchStateData(7)' :class="{'active':searchForm.state==7}">已取消
+					</el-button>
 				</el-badge>
 				<el-badge :value="error" type="warning">
-					<el-button size="mini" @click='searchStateData(8)' :class="{'active':searchForm.state==8}">异常</el-button>
+					<el-button size="mini" @click='searchStateData(8)' :class="{'active':searchForm.state==8}">异常
+					</el-button>
 				</el-badge>
 			</div>
 		</el-col>
 
 		<!-- 列表 -->
-		<pl-table border :data="tableData" v-loading="listLoading" id="exportTable" style="width: 100%;" :header-cell-style="{background:'#fafafa'}"
-		 @selection-change="handleSelectionChange" @row-click="rowClick" ref="table" use-virtual max-height="900" :row-height="80">
+		<pl-table border :data="tableData" v-loading="listLoading" id="exportTable" style="width: 100%;"
+			:header-cell-style="{background:'#fafafa'}" @selection-change="handleSelectionChange" @row-click="rowClick"
+			ref="table" use-virtual height="850" :row-height="80">
 			<pl-table-column type="selection" align="center"></pl-table-column>
 			<pl-table-column type="index" label="序号" align="center" width="50"></pl-table-column>
 			<!-- 展开栏开始 -->
@@ -120,21 +140,29 @@
 				<template slot-scope="props">
 					<el-card class="box-card">
 						<table class="view-more">
-							<tr>
+							<tr v-if="In">
 								<td>服务费</td>
-								<td><span v-if='In'>{{props.row.OrderUnitPriceSerCharge}}</span><span v-if="!In">---</span></td>
+								<td>{{props.row.OrderUnitPriceSerCharge}}</td>
 								<td>汇率</td>
-								<td><span v-if='In'>{{props.row.OrderExchangeRate}}</span><span v-if="!In">---</span></td>
+								<td>{{props.row.OrderExchangeRate}}</td>
 								<td>总额</td>
-								<td><span v-if="In">{{props.row.Total}}</span><span v-if="!In">---</span></td>
+								<td>{{props.row.Total}}</td>
 								<td>改后服务费</td>
-								<td><span>{{props.row.TaskUnitPriceSerCharge}}</span></td>
+								<td>{{props.row.TaskUnitPriceSerCharge}}</td>
 								<td>改后汇率</td>
 								<td>{{props.row.TaskExchangeRate}}</td>
 								<td>改后总额</td>
 								<td>{{props.row.NewTaskTotal}}</td>
 								<td>差额</td>
-								<td><span>{{props.row.DifferenceTotal}}</span><span v-if="!In">---</span></td>
+								<td>{{props.row.DifferenceTotal}}</td>
+							</tr>
+							<tr v-if="!In">
+								<td>服务费</td>
+								<td colspan="5">{{props.row.TaskUnitPriceSerCharge}}</td>
+								<td>汇率</td>
+								<td colspan="3">{{props.row.TaskExchangeRate}}</td>
+								<td>总额</td>
+								<td colspan="3">{{props.row.NewTaskTotal}}</td>
 							</tr>
 							<tr>
 								<td>增值费</td>
@@ -157,7 +185,7 @@
 								<td colspan="5">{{props.row.OrderRemarks}}</td>
 								<td>购买备注</td>
 								<td colspan="3">{{props.row.BuyRemarks}}</td>
-								<td>任务备注</td>
+								<td>客户备注</td>
 								<td colspan="3">{{props.row.Remarks}}</td>
 							</tr>
 						</table>
@@ -165,10 +193,12 @@
 				</template>
 			</pl-table-column>
 			<!-- 展开栏结束 -->
-			<pl-table-column prop="OrderNumbers" label="任务编号" align="center" width="158">
+			<pl-table-column prop="OrderNumbers" label="任务编号" align="center" width="155">
 				<template slot-scope="scope">
 					<i class="el-icon-document-copy" @click.stop="copy(scope.$index,scope.row)"></i>
-					<el-link type="primary" :underline="false" @click.stop="viewModalShow(scope.$index,scope.row)">{{scope.row.OrderNumbers}}</el-link>
+					<el-link type="primary" :underline="false" @click.stop="viewModalShow(scope.$index,scope.row)">
+						{{scope.row.OrderNumbers}}
+					</el-link>
 					<div>
 						<span v-if="scope.row.AgainTaskState==1"><span class="danger fz10">追加</span></span>
 						<span v-if="scope.row.NoComment==1"><span class="danger fz10">免评</span></span>
@@ -179,19 +209,22 @@
 			</pl-table-column>
 			<pl-table-column prop="OrderProductPictures" label="产品图" align="center">
 				<template slot-scope="scope">
-					<img style="width: 40px;height: 40px;" v-if="scope.row.OrderProductPictures" :src="$IMG_URL+scope.row.OrderProductPictures"
-					 @click.stop="showImage(scope.$index,scope.row,1)" />
+					<img style="width: 40px;height: 40px;" v-if="scope.row.OrderProductPictures"
+						:src="$IMG_URL+scope.row.OrderProductPictures"
+						@click.stop="showImage(scope.$index,scope.row,1)" />
 				</template>
 			</pl-table-column>
-			<pl-table-column prop="ServiceType" label="任务类型" align="center" width="110">
+			<pl-table-column prop="ServiceType" label="任务类型" align="center" width="108">
 				<template slot-scope="scope">
 					<span v-if="scope.row.ServiceType==1">评后返（代返）</span>
 					<span v-if="scope.row.ServiceType==2">评后返（自返）</span>
 				</template>
 			</pl-table-column>
 			<pl-table-column prop="CountryName" label="国家" align="center"></pl-table-column>
-			<pl-table-column prop="Asin" label="ASIN" align="center" width="112"></pl-table-column>
-			<pl-table-column prop="ProductName" label="产品名称" align="center" :show-overflow-tooltip='true'></pl-table-column>
+			<pl-table-column prop="Asin" label="ASIN" align="center" width="110"></pl-table-column>
+			<pl-table-column prop="ProductName" label="产品名称" align="center" :show-overflow-tooltip='true'>
+			</pl-table-column>
+			<pl-table-column prop="ShopName" label="店铺" align="center" :show-overflow-tooltip='true'></pl-table-column>
 			<pl-table-column prop="CustomerUserId" label="客户编码" align="center"></pl-table-column>
 			<pl-table-column prop="PayPrincipal" label="付本" align="center">
 				<template slot-scope="scope">
@@ -205,12 +238,13 @@
 			</pl-table-column>
 			<pl-table-column prop="Name" label="操作员" align="center"></pl-table-column>
 			<pl-table-column prop="Name1" label="外派员" align="center" :show-overflow-tooltip='true'></pl-table-column>
-			<pl-table-column prop="AmazonNumber" label="购买单号" align="center" width="163"></pl-table-column>
-			<pl-table-column prop="AddTime" label="填单时间" align="center" width="150" :sortable="true" :sort-method="sortByAddTime"></pl-table-column>
+			<pl-table-column prop="AmazonNumber" label="购买单号" align="center" width="150"></pl-table-column>
+			<pl-table-column prop="AddTime" label="填单时间" align="center" width="132" :sortable="true"
+				:sort-method="sortByAddTime"></pl-table-column>
 			<pl-table-column prop="DealIamge" label="交易截图" align="center">
 				<template slot-scope="scope">
-					<img style="width: 40px;height: 40px;" v-if="scope.row.DealIamge" :src="GLOBAL.IMG_URL+scope.row.DealIamge"
-					 @click.stop="showImage(scope.$index,scope.row,2)" />
+					<img style="width: 40px;height: 40px;" v-if="scope.row.DealIamge"
+						:src="GLOBAL.IMG_URL+scope.row.DealIamge" @click.stop="showImage(scope.$index,scope.row,2)" />
 				</template>
 			</pl-table-column>
 			<pl-table-column prop="TaskState" label="状态" align="center" width="92">
@@ -225,14 +259,17 @@
 					<span v-if="scope.row.TaskState==8" class="warning">异常</span>
 				</template>
 			</pl-table-column>
-			<pl-table-column v-if="tableBtnShow" prop="TaskState" label="操作" align="center" width="145">
+			<pl-table-column v-if="tableBtnShow" prop="TaskState" label="操作" align="center" width="100">
 				<template slot-scope="scope">
-					<el-button size="mini" type="primary" v-if="btnShow2 && (scope.row.TaskState==2 || scope.row.TaskState==8)"
-					 @click.stop="buyModalShow(scope.$index,scope.row)">购买</el-button>
-					<el-button size="mini" type="warning" v-if="btnShow2 && (scope.row.TaskState==4 || scope.row.TaskState==5)"
-					 @click.stop="commentModalShow(scope.$index,scope.row)">评价</el-button>
-					<el-button size="mini" type="danger" v-if="(btnShow && scope.row.TaskState!=6 && scope.row.TaskState!=7) || (btnShow4 && scope.row.TaskState==8)"
-					 @click.stop="changeState(scope.$index,scope.row)">取消</el-button>
+					<el-button size="mini" type="primary"
+						v-if="btnShow2 && (scope.row.TaskState==2 || scope.row.TaskState==8)"
+						@click.stop="buyModalShow(scope.$index,scope.row)">购买</el-button>
+					<el-button size="mini" type="warning"
+						v-if="btnShow2 && (scope.row.TaskState==4 || scope.row.TaskState==5)"
+						@click.stop="commentModalShow(scope.$index,scope.row)">评价</el-button>
+					<el-button size="mini" type="danger"
+						v-if="(btnShow && scope.row.TaskState!=6 && scope.row.TaskState!=7) || (btnShow4 && scope.row.TaskState==8)"
+						@click.stop="changeState(scope.$index,scope.row)">取消</el-button>
 				</template>
 			</pl-table-column>
 		</pl-table>
@@ -240,13 +277,14 @@
 		<!--工具条-->
 		<el-col :span="24" class="toolbar">
 			<el-pagination style="float: right;" @size-change="handleSizeChange" @current-change="handleCurrentChange"
-			 :current-page="pageIndex" :page-sizes="[10, 20, 50, 100, 1000, 10000]" :page-size="10" layout="total, sizes, prev, pager, next, jumper"
-			 :total="total">
+				:current-page="pageIndex" :page-sizes="[10, 20, 50, 100, 1000, 10000]" :page-size="10"
+				layout="total, sizes, prev, pager, next, jumper" :total="total">
 			</el-pagination>
 		</el-col>
 
 		<!-- 确认购买 -->
-		<el-dialog v-dialogDrag :title="title" :visible.sync="buyModal" :close-on-click-modal="false" :before-close="closeBuyModal">
+		<el-dialog v-dialogDrag :title="title" :visible.sync="buyModal" :close-on-click-modal="false"
+			:before-close="closeBuyModal">
 			<el-form :model='taskFormView' ref='taskFormView' label-width='120px'>
 				<p class="info-title">任务信息</p>
 				<el-row>
@@ -295,8 +333,9 @@
 					<el-input v-model='buyForm.AmazonNumber'></el-input>
 				</el-form-item>
 				<el-form-item label='购买截图' prop="image">
-					<el-upload class="avatar-uploader" name="Image" action="/api/Payment/GetProductPictures" :show-file-list="false"
-					 :on-success="handleAvatarSuccessBuy" :on-error="handleError" :before-upload="beforeAvatarUpload" accept="image/jpeg,image/png,image/gif,image/bmp">
+					<el-upload class="avatar-uploader" name="Image" action="/api/Payment/GetProductPictures"
+						:show-file-list="false" :on-success="handleAvatarSuccessBuy" :on-error="handleError"
+						:before-upload="beforeAvatarUpload" accept="image/jpeg,image/png,image/gif,image/bmp">
 						<img v-if="imageUrl" :src="imageUrl" class="avatar">
 						<i v-else class="el-icon-plus avatar-uploader-icon"></i>
 					</el-upload>
@@ -364,7 +403,8 @@
 			</div>
 		</el-dialog>
 		<!-- 评价 -->
-		<el-dialog v-dialogDrag :title="title" :visible.sync="commentModal" :close-on-click-modal="false" :before-close="closeCommentModal">
+		<el-dialog v-dialogDrag :title="title" :visible.sync="commentModal" :close-on-click-modal="false"
+			:before-close="closeCommentModal">
 			<el-form :model='taskFormView' ref='taskFormView' label-width='120px'>
 				<p class="info-title">任务信息</p>
 				<el-row>
@@ -410,8 +450,9 @@
 					<el-input v-model='commentForm.Link'></el-input>
 				</el-form-item>
 				<el-form-item label='评价截图' prop="image">
-					<el-upload class="avatar-uploader" name="Image" action="/api/Payment/GetProductPictures" :show-file-list="false"
-					 :on-success="handleAvatarSuccess" :on-error="handleError" :before-upload="beforeAvatarUpload" accept="image/jpeg,image/png,image/gif,image/bmp">
+					<el-upload class="avatar-uploader" name="Image" action="/api/Payment/GetProductPictures"
+						:show-file-list="false" :on-success="handleAvatarSuccess" :on-error="handleError"
+						:before-upload="beforeAvatarUpload" accept="image/jpeg,image/png,image/gif,image/bmp">
 						<img v-if="imageUrl" :src="imageUrl" class="avatar">
 						<i v-else class="el-icon-plus avatar-uploader-icon"></i>
 					</el-upload>
@@ -431,13 +472,16 @@
 				<el-row>
 					<el-col :span="24">
 						<el-form-item label='产品图：'>
-							<img style="width: 100px" class="pointer" @click="showImage2(view.OrderNumbers,view.OrderProductPictures)"
-							 v-show="view.OrderProductPictures" :src="view.OrderProductPictures" />
+							<img style="width: 100px" class="pointer"
+								@click="showImage2(view.OrderNumbers,view.OrderProductPictures)"
+								v-show="view.OrderProductPictures" :src="view.OrderProductPictures" />
 						</el-form-item>
 					</el-col>
 					<el-col :span="24">
 						<el-form-item label='产品链接：'>
-							<el-link :href="view.OrderProductLink" target="_blank" type="primary" :underline="false">{{view.OrderProductLink}}</el-link>
+							<el-link :href="view.OrderProductLink" target="_blank" type="primary" :underline="false">
+								{{view.OrderProductLink}}
+							</el-link>
 						</el-form-item>
 					</el-col>
 				</el-row>
@@ -521,11 +565,6 @@
 							<span>{{view.OrderRemarks}}</span>
 						</el-form-item>
 					</el-col>
-					<el-col :span="24">
-						<el-form-item label='任务备注：'>
-							<span>{{view.Remarks}}</span>
-						</el-form-item>
-					</el-col>
 					<el-col :span="12">
 						<el-form-item label='任务执行时间：'>
 							<span>{{view.ExecutionTime}}</span>
@@ -534,6 +573,11 @@
 					<el-col :span="12">
 						<el-form-item label='操作员：'>
 							<span>{{view.Name}}</span>
+						</el-form-item>
+					</el-col>
+					<el-col :span="24">
+						<el-form-item label='客户备注：'>
+							<span>{{view.Remarks}}</span>
 						</el-form-item>
 					</el-col>
 				</el-row>
@@ -556,7 +600,8 @@
 					</el-col>
 					<el-col :span="12">
 						<el-form-item label='购买价格：'>
-							<span v-show="view.AmazonProductPrice">{{symbol}}</span><span>{{view.AmazonProductPrice}}</span>
+							<span
+								v-show="view.AmazonProductPrice">{{symbol}}</span><span>{{view.AmazonProductPrice}}</span>
 						</el-form-item>
 					</el-col>
 					<div v-show="view.ServiceType==1">
@@ -636,7 +681,8 @@
 			</div>
 		</el-dialog>
 		<!--查看产品图大图-->
-		<el-dialog v-dialogDrag :title='title2' :visible.sync='imageModal' :close-on-click-modal='false' :before-close="closeImageModal">
+		<el-dialog v-dialogDrag :title='title2' :visible.sync='imageModal' :close-on-click-modal='false'
+			:before-close="closeImageModal">
 			<div class="txtCenter">
 				<img :src='taskProductImgUrl' style="max-width: 80%;" />
 			</div>
@@ -646,7 +692,7 @@
 		</el-dialog>
 		<!--服务费和汇率修改-->
 		<el-dialog v-dialogDrag :title="titleFee" width="30%" :visible.sync="editModal" :close-on-click-modal="false"
-		 :before-close="closeModal">
+			:before-close="closeModal">
 			<el-form :model="editForm" ref="editForm" :rules='RulesFee' label-width='100px' status-icon>
 				<el-form-item label="服务费" prop="fee">
 					<el-input v-model="editForm.fee"></el-input>
@@ -661,9 +707,10 @@
 			</div>
 		</el-dialog>
 		<!-- 外派(任务分配给外派员) -->
-		<el-dialog v-dialogDrag :title="userListTitle" width="40%" :visible.sync="userModal" :close-on-click-modal="false">
-			<el-table border :data="tableData2" id="exportTable2" style="width: 100%" :header-cell-style="{background:'#fafafa'}"
-			 @row-click="rowClick2" ref="table2">
+		<el-dialog v-dialogDrag :title="userListTitle" width="40%" :visible.sync="userModal"
+			:close-on-click-modal="false">
+			<el-table border :data="tableData2" id="exportTable2" style="width: 100%"
+				:header-cell-style="{background:'#fafafa'}" @row-click="rowClick2" ref="table2">
 				<el-table-column type="index" label="序号" align="center" width="50"></el-table-column>
 				<el-table-column prop="Id" label="编码" align="center"></el-table-column>
 				<el-table-column prop="Name" label="姓名" align="center"></el-table-column>
@@ -675,7 +722,7 @@
 		</el-dialog>
 		<!--本佣付款-->
 		<el-dialog v-dialogDrag :title="titlePay" width="30%" :visible.sync="payModal" :close-on-click-modal="false"
-		 :before-close="closePayModal">
+			:before-close="closePayModal">
 			<el-form :model="payForm" ref="payForm" :rules='RulesPay' label-width='60px' status-icon>
 				<el-form-item label="本金" prop="principal">
 					<el-input v-model="payForm.principal"></el-input>
@@ -686,7 +733,8 @@
 			</el-form>
 			<div slot="footer" class="dialog-footer">
 				<el-button @click="closePayModal">取 消</el-button>
-				<el-button type="primary" @click="paySubmit" :disabled="!payForm.principal&&!payForm.commission">确 定</el-button>
+				<el-button type="primary" @click="paySubmit" :disabled="!payForm.principal&&!payForm.commission">确 定
+				</el-button>
 			</div>
 		</el-dialog>
 	</section>
@@ -895,8 +943,7 @@
 				userModal: false,
 				tableData2: [],
 				countryData: [], //国家数据
-				In: false, //公司内部人员
-				Out: false, //外派人员
+				In: false, //公司内部人员true 外派false
 				Ptype: '' //分派类型 1.外派处分派 2.管理员转派
 			}
 		},
@@ -909,7 +956,8 @@
 		computed: {
 			//合计
 			totalValue: function() {
-				let all = (Number(this.buyForm.AmazonProductPrice) + Number(this.buyForm.Freight) + Number(this.buyForm.Taxation) +
+				let all = (Number(this.buyForm.AmazonProductPrice) + Number(this.buyForm.Freight) + Number(this.buyForm
+						.Taxation) +
 					Number(this.buyForm.Other)) * (1 + Number(this.handFee)) + Number(this.handMoney)
 				return (all * Number(this.rate)).toFixed(2)
 			}
@@ -920,11 +968,11 @@
 				let _this = this
 				let params = {
 					country: '',
-					pageNum: 1,
-					pagesize: 100000000
+					pageIndex: 1,
+					pageSize: 100000000
 				}
 				countryList(params).then(res => {
-					_this.countryData = res.list
+					_this.countryData = res.result.Entity
 				}).catch((e) => {})
 			},
 
@@ -942,8 +990,7 @@
 
 				// 根据角色判断任务列表能看到哪些数据
 				let show = ''
-				// let roleId = sessionStorage.getItem('roleId').trim()
-				let roleId = [1]
+				let roleId = sessionStorage.getItem('roleId').trim()
 				let x = roleId.indexOf(1) //总管理员
 				let y = roleId.indexOf(2) //子管理员
 				let c = roleId.indexOf(3) //财务
@@ -994,10 +1041,9 @@
 					_this.In = true
 				}
 				if (w >= 0) {
-					_this.Out = true
+					_this.In = false
 				}
-				// let userId = sessionStorage.getItem('userId')
-				let userId = 1
+				let userId = sessionStorage.getItem('userId')
 				let time = _this.searchForm.time
 				let time1 = ''
 				let time2 = ''
@@ -1020,8 +1066,8 @@
 					timeFK2 = timeFK[1]
 				}
 				let params = {
-					id: userId,
-					key: show,
+					Id: userId,
+					Key: show,
 					keyWord: _this.searchForm.searchWords,
 					State: _this.searchForm.state,
 					countryId: _this.searchForm.country,
@@ -1036,14 +1082,14 @@
 					ServerType: _this.searchForm.serveType,
 					RepeatState: _this.searchForm.repeat,
 					PayState: _this.searchForm.payState,
-					pageNum: _this.pageIndex,
-					pagesize: _this.pageSize,
+					pageIndex: _this.pageIndex,
+					pageSize: _this.pageSize,
 					RoolId: roleId
 				}
 				taskList(params).then(res => {
 					_this.listLoading = false
-					_this.tableData = res.list
-					_this.total = Number(res.total)
+					_this.tableData = res.Entity
+					_this.total = Number(res.TotalCount)
 				}).catch((e) => {})
 			},
 
@@ -1107,15 +1153,15 @@
 					RoolId: roleId
 				}
 				taskStateNum(params).then(res => {
-					_this.all = Number(res.list[0].TotalCount) //全部
-					_this.dfp = Number(res.list[0].OrderStateInOne) //待分配
-					_this.dgm = Number(res.list[0].OrderStateInTwo) //待购买
-					_this.dqrcd = Number(res.list[0].OrderStateInThree) //待确认出单
-					_this.dpj = Number(res.list[0].OrderStateInFour) //待评价
-					_this.dqrpj = Number(res.list[0].OrderStateInFive) //待确认评价
-					_this.ywc = Number(res.list[0].OrderStateInSix) //已完成
-					_this.yqx = Number(res.list[0].OrderStateInSeven) //已取消
-					_this.error = Number(res.list[0].OrderStateInEight) //异常
+					_this.all = Number(res.TotalCount) //全部
+					_this.dfp = Number(res.OrderStateInOne) //待分配
+					_this.dgm = Number(res.OrderStateInTwo) //待购买
+					_this.dqrcd = Number(res.OrderStateInThree) //待确认出单
+					_this.dpj = Number(res.OrderStateInFour) //待评价
+					_this.dqrpj = Number(res.OrderStateInFive) //待确认评价
+					_this.ywc = Number(res.OrderStateInSix) //已完成
+					_this.yqx = Number(res.OrderStateInSeven) //已取消
+					_this.error = Number(res.OrderStateInEight) //异常
 				}).catch((e) => {})
 			},
 
@@ -1174,11 +1220,11 @@
 				let _this = this
 				let params = {
 					CurrencyName: '',
-					pageNum: 1,
-					pagesize: 100000000,
+					pageIndex: 1,
+					pageSize: 100000000,
 				}
 				rateList(params).then(res => {
-					_this.rateData = res.list
+					_this.rateData = res.Entity
 				}).catch((e) => {})
 			},
 
@@ -1186,10 +1232,10 @@
 			getRateInfo(countryId) {
 				let _this = this
 				for (let x in _this.rateData) {
-					if (Number(_this.rateData[x].cId) == Number(countryId)) {
-						_this.symbol = _this.rateData[x].RcurrencySymbol //货币符号
-						_this.handFee = _this.rateData[x].handFee //官方手续费率
-						_this.handMoney = _this.rateData[x].handMoney //官方固定费用
+					if (Number(_this.rateData[x].CountryId) == Number(countryId)) {
+						_this.symbol = _this.rateData[x].CurrencySymbol //货币符号
+						_this.handFee = _this.rateData[x].HandFee //官方手续费率
+						_this.handMoney = _this.rateData[x].HandMoney //官方固定费用
 					}
 				}
 			},
@@ -1224,15 +1270,14 @@
 							CountryId: _this.countryId
 						}
 						taskBuyCheck(params).then(res => {
-							let repeatState = res.Data
+							let repeatState = res.Repeat
 							if (repeatState == '1') {
 								_this.$confirm('系统检测到您所填写的为重复任务，是否执意要购买？', '信息提示', {
 									type: 'warning'
 								}).then(() => {
 									_this.buySubmit(repeatState)
-								})
-							}
-							if (repeatState == '0') {
+								}).catch(() => {})
+							} else {
 								_this.buySubmit(repeatState)
 							}
 						}).catch((e) => {})
@@ -1370,8 +1415,8 @@
 
 			//购买图片上传成功
 			handleAvatarSuccessBuy(res, file) {
-				if (res.Data != '') {
-					this.buyForm.Image = res.Data
+				if (res.data != '') {
+					this.buyForm.Image = res.data
 				}
 				this.imageUrl = URL.createObjectURL(file.raw);
 				this.$message.success('图片上传成功！')
@@ -1618,8 +1663,8 @@
 				let _this = this
 				let params = {
 					name: '',
-					pageNum: 1,
-					pagesize: 100000000,
+					pageIndex: 1,
+					pageSize: 100000000,
 				}
 				userList(params).then(res => {
 					let arr = [] //外派员

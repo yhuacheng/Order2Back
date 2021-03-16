@@ -4,7 +4,8 @@
 		<el-col :span="24" class="toolbar" style="padding-bottom: 0px;">
 			<el-form :inline="true" :model="searchForm" size="mini">
 				<el-form-item label="搜索内容">
-					<el-input @keyup.native="searchToTrim" v-model="searchForm.searchWords" placeholder="订单号/产品名称/ASIN/客户编码" style="width: 220px;"></el-input>
+					<el-input @keyup.native="searchToTrim" v-model="searchForm.searchWords"
+						placeholder="订单号/产品名称/ASIN/客户编码" style="width: 220px;"></el-input>
 				</el-form-item>
 				<el-form-item label="订单类型">
 					<el-select v-model="searchForm.serveType" placeholder="请选择" style="width: 150px;">
@@ -16,7 +17,8 @@
 				<el-form-item label="国家">
 					<el-select v-model="searchForm.country" placeholder="请选择国家" style="width: 100px;">
 						<el-option value="0" label="全部"></el-option>
-						<el-option v-for="item in countryData" :key="item.Id" :label="item.CountryName" :value="item.Id"></el-option>
+						<el-option v-for="item in countryData" :key="item.Id" :label="item.CountryName"
+							:value="item.Id"></el-option>
 					</el-select>
 				</el-form-item>
 				<el-form-item label="是否超时">
@@ -34,8 +36,9 @@
 					</el-select>
 				</el-form-item>
 				<el-form-item label="下单时间">
-					<el-date-picker v-model="searchForm.time" :unlink-panels='true' type="datetimerange" range-separator="至"
-					 start-placeholder="开始日期" end-placeholder="结束日期" value-format="yyyy-MM-dd HH:mm:ss"></el-date-picker>
+					<el-date-picker v-model="searchForm.time" :unlink-panels='true' type="datetimerange"
+						range-separator="至" start-placeholder="开始时间" end-placeholder="结束时间"
+						value-format="yyyy-MM-dd HH:mm:ss"></el-date-picker>
 				</el-form-item>
 				<el-form-item>
 					<el-button type="primary" @click="searchData(0)">查询</el-button>
@@ -47,43 +50,54 @@
 
 		<!--工具条-->
 		<el-col :span="24" class="toolbar">
-			<el-button v-if="menuBtnShow" type="primary" size="mini" :disabled="disabledEditFee" @click="editModalShow">修改【客户】服务费和汇率</el-button>
+			<el-button v-if="menuBtnShow" type="primary" size="mini" :disabled="disabledEditFee" @click="editModalShow">
+				修改【客户】服务费和汇率</el-button>
 			<el-button v-if="menuBtnShow && searchForm.state==1" type="success" size="mini" @click="orderConfirmMore(1)"
-			 :disabled="disabledMore" :loading="btnLoading">批量确认</el-button>
+				:disabled="disabledMore" :loading="btnLoading">批量确认</el-button>
 			<el-button v-if="menuBtnShow && searchForm.state==1" type="danger" size="mini" @click="orderConfirmMore(2)"
-			 :disabled="disabledMore" :loading="btnLoading2">批量取消</el-button>
-			<el-button v-if="menuBtnShow && searchForm.state==2" type="danger" size="mini" @click="timeModalShow(1)" :disabled="disabledMore">批量分配任务</el-button>
+				:disabled="disabledMore" :loading="btnLoading2">批量取消</el-button>
+			<el-button v-if="menuBtnShow && searchForm.state==2" type="danger" size="mini" @click="timeModalShow(1)"
+				:disabled="disabledMore">批量分配任务</el-button>
 			<el-button type="warning" size="mini" @click="exportExcel">导出</el-button>
 			<div class="tagMenu">
 				<el-badge :value="all" type="success" class="item">
-					<el-button size="mini" @click='searchStateData(0)' :class="{'active':searchForm.state==0}">全部</el-button>
+					<el-button size="mini" @click='searchStateData(0)' :class="{'active':searchForm.state==0}">全部
+					</el-button>
 				</el-badge>
 				<el-badge :value="dqr" type="info" class="item">
-					<el-button size="mini" @click='searchStateData(1)' :class="{'active':searchForm.state==1}">待确认</el-button>
+					<el-button size="mini" @click='searchStateData(1)' :class="{'active':searchForm.state==1}">待确认
+					</el-button>
 				</el-badge>
 				<el-badge :value="dfp" type="primary" class="item">
-					<el-button size="mini" @click='searchStateData(2)' :class="{'active':searchForm.state==2}">待分配</el-button>
+					<el-button size="mini" @click='searchStateData(2)' :class="{'active':searchForm.state==2}">待分配
+					</el-button>
 				</el-badge>
 				<el-badge :value="yfp" type="warning" class="item">
-					<el-button size="mini" @click='searchStateData(3)' :class="{'active':searchForm.state==3}">已分配</el-button>
+					<el-button size="mini" @click='searchStateData(3)' :class="{'active':searchForm.state==3}">已分配
+					</el-button>
 				</el-badge>
 				<el-badge :value="ywc" type="success" class="item">
-					<el-button size="mini" @click='searchStateData(4)' :class="{'active':searchForm.state==4}">已完成</el-button>
+					<el-button size="mini" @click='searchStateData(4)' :class="{'active':searchForm.state==4}">已完成
+					</el-button>
 				</el-badge>
 				<el-badge :value="yqx" type="danger">
-					<el-button size="mini" @click='searchStateData(5)' :class="{'active':searchForm.state==5}">已取消</el-button>
+					<el-button size="mini" @click='searchStateData(5)' :class="{'active':searchForm.state==5}">已取消
+					</el-button>
 				</el-badge>
 			</div>
 		</el-col>
 		<!--列表-->
-		<pl-table border :data="tableData" v-loading="listLoading" id="exportTable" style="width: 100%" :header-cell-style="{background:'#fafafa'}"
-		 @selection-change="handleSelectionChange" @row-click="rowClick" ref="table" use-virtual max-height="900" :row-height="80">
+		<pl-table border :data="tableData" v-loading="listLoading" id="exportTable" style="width: 100%"
+			:header-cell-style="{background:'#fafafa'}" @selection-change="handleSelectionChange" @row-click="rowClick"
+			ref="table" use-virtual max-height="850" :row-height="80">
 			<pl-table-column type="selection" align="center"></pl-table-column>
 			<pl-table-column type="index" label="序号" align="center" width="50"></pl-table-column>
 			<pl-table-column fixed="left" prop="OrderNumber" label="订单编号" align="center" width="135">
 				<template slot-scope="scope">
 					<i class="el-icon-document-copy" @click.stop="copy(scope.$index,scope.row)"></i>
-					<el-link type="primary" :underline="false" @click.stop="viewModalShow(scope.$index,scope.row)">{{scope.row.OrderNumber}}</el-link>
+					<el-link type="primary" :underline="false" @click.stop="viewModalShow(scope.$index,scope.row)">
+						{{scope.row.OrderNumber}}
+					</el-link>
 					<div>
 						<span v-if="scope.row.Overtime<0"><span class="danger fz10">超时</span></span>
 					</div>
@@ -91,8 +105,8 @@
 			</pl-table-column>
 			<pl-table-column prop="OrderProductPictures" label="产品图" align="center">
 				<template slot-scope="scope">
-					<img style="width: 40px;height: 40px;" v-show="scope.row.ProductPictures" :src="$IMG_URL+scope.row.ProductPictures"
-					 @click.stop="showImage(scope.$index,scope.row)" />
+					<img style="width: 40px;height: 40px;" v-show="scope.row.ProductPictures"
+						:src="$IMG_URL+scope.row.ProductPictures" @click.stop="showImage(scope.$index,scope.row)" />
 				</template>
 			</pl-table-column>
 			<pl-table-column prop="ServiceType" label="订单类型" align="center" width="105">
@@ -103,9 +117,11 @@
 			</pl-table-column>
 			<pl-table-column prop="CountryName" label="国家" align="center"></pl-table-column>
 			<pl-table-column prop="ASIN" label="ASIN" align="center" width="100"></pl-table-column>
-			<pl-table-column prop="ProductName" label="产品名称" align="center" :show-overflow-tooltip='true'></pl-table-column>
+			<pl-table-column prop="ProductName" label="产品名称" align="center" :show-overflow-tooltip='true'>
+			</pl-table-column>
 			<pl-table-column prop="ShopName" label="店铺" align="center" :show-overflow-tooltip='true'></pl-table-column>
-			<pl-table-column prop="ProductKeyWord" label="关键词" align="center" :show-overflow-tooltip='true'></pl-table-column>
+			<pl-table-column prop="ProductKeyWord" label="关键词" align="center" :show-overflow-tooltip='true'>
+			</pl-table-column>
 			<pl-table-column prop="Brand" label="品牌" align="center" :show-overflow-tooltip='true'></pl-table-column>
 			<pl-table-column prop="Place" label="产品位置" align="center" :show-overflow-tooltip='true'></pl-table-column>
 			<pl-table-column prop="Number" label="任务数" align="center"></pl-table-column>
@@ -134,9 +150,12 @@
 			</pl-table-column>
 			<pl-table-column v-if="menuBtnShow" fixed="right" prop="OrderState" label="操作" align="center" width="145">
 				<template slot-scope="scope">
-					<el-button size="mini" type="primary" v-if="scope.row.OrderState==1" @click.stop="orderConfirm(scope.$index,scope.row,1)">确认</el-button>
-					<el-button size="mini" type="danger" v-if="scope.row.OrderState==1" @click.stop="orderConfirm(scope.$index,scope.row,0)">取消</el-button>
-					<el-button size="mini" type="warning" v-if="scope.row.OrderState!=1" @click.stop="taskModalShow(scope.$index,scope.row)">分配
+					<el-button size="mini" type="primary" v-if="scope.row.OrderState==1"
+						@click.stop="orderConfirm(scope.$index,scope.row,1)">确认</el-button>
+					<el-button size="mini" type="danger" v-if="scope.row.OrderState==1"
+						@click.stop="orderConfirm(scope.$index,scope.row,0)">取消</el-button>
+					<el-button size="mini" type="warning" v-if="scope.row.OrderState!=1"
+						@click.stop="taskModalShow(scope.$index,scope.row)">分配
 						/ 查看</el-button>
 				</template>
 			</pl-table-column>
@@ -144,21 +163,24 @@
 		<!--工具条-->
 		<el-col :span="24" class="toolbar">
 			<el-pagination style="float: right;" @size-change="handleSizeChange" @current-change="handleCurrentChange"
-			 :current-page="pageIndex" :page-sizes="[10, 20, 50, 100, 1000, 10000]" :page-size="10" layout="total, sizes, prev, pager, next, jumper"
-			 :total="total">
+				:current-page="pageIndex" :page-sizes="[10, 20, 50, 100, 1000, 10000]" :page-size="10"
+				layout="total, sizes, prev, pager, next, jumper" :total="total">
 			</el-pagination>
 		</el-col>
 
 		<!-- 分配任务（任务列表） -->
 		<el-dialog v-dialogDrag :title="title" width="70%" :visible.sync="taskModal" :close-on-click-modal="false"
-		 :before-close="closeTaskModal">
+			:before-close="closeTaskModal">
 			<!--工具条-->
 			<el-col :span="24" class="toolbar">
-				<el-button type="primary" size="mini" :disabled="disabledMore2" @click="timeModalShow(2)">分配任务</el-button>
+				<el-button type="primary" size="mini" :disabled="disabledMore2" @click="timeModalShow(2)">分配任务
+				</el-button>
 			</el-col>
-			<el-table border :data="tableData2" id="exportTable2" style="width: 100%" :header-cell-style="{background:'#fafafa'}"
-			 @selection-change="handleSelectionChange2" @row-click="rowClick2" ref="table2">
-				<el-table-column type="selection" align="center" v-if="btnState" :selectable='disabledCheckBox'></el-table-column>
+			<el-table border :data="tableData2" id="exportTable2" style="width: 100%"
+				:header-cell-style="{background:'#fafafa'}" @selection-change="handleSelectionChange2"
+				@row-click="rowClick2" ref="table2">
+				<el-table-column type="selection" align="center" v-if="btnState" :selectable='disabledCheckBox'>
+				</el-table-column>
 				<el-table-column type="index" label="序号" align="center" width="50"></el-table-column>
 				<el-table-column prop="OrderNumbers" label="任务编号" align="center">
 					<template slot-scope="scope">
@@ -169,9 +191,11 @@
 					</template>
 				</el-table-column>
 				<el-table-column prop="Asin" label="产品ASIN" align="center"></el-table-column>
-				<el-table-column prop="ProductName" label="产品名称" align="center" :show-overflow-tooltip='true'></el-table-column>
+				<el-table-column prop="ProductName" label="产品名称" align="center" :show-overflow-tooltip='true'>
+				</el-table-column>
 				<el-table-column prop="ProductPrice" label="产品价格" align="center"></el-table-column>
-				<el-table-column prop="OrderRemarks" label="备注" align="center" :show-overflow-tooltip='true'></el-table-column>
+				<el-table-column prop="OrderRemarks" label="备注" align="center" :show-overflow-tooltip='true'>
+				</el-table-column>
 				<el-table-column prop="TaskState" label="任务状态" align="center">
 					<template slot-scope="scope">
 						<span v-if="scope.row.TaskState==1">待分配</span>
@@ -202,9 +226,9 @@
 			</el-table>
 			<!--工具条-->
 			<el-col :span="24" class="toolbar">
-				<el-pagination style="float: right;" @size-change="handleSizeChange2" @current-change="handleCurrentChange2"
-				 :current-page="pageIndex2" :page-sizes="[10, 20, 50, 100]" :page-size="10" layout="total, sizes, prev, pager, next, jumper"
-				 :total="total2">
+				<el-pagination style="float: right;" @size-change="handleSizeChange2"
+					@current-change="handleCurrentChange2" :current-page="pageIndex2" :page-sizes="[10, 20, 50, 100]"
+					:page-size="10" layout="total, sizes, prev, pager, next, jumper" :total="total2">
 				</el-pagination>
 			</el-col>
 			<div slot="footer" class="dialog-footer">
@@ -213,11 +237,11 @@
 		</el-dialog>
 
 		<!-- 分配任务（任务执行时间） -->
-		<el-dialog v-dialogDrag center title="任务执行时间" width="20%" :visible.sync="timeModal" :close-on-click-modal="false"
-		 :before-close="closeTimeModal" style="margin-top: -10%;">
+		<el-dialog v-dialogDrag center title="任务执行时间" width="20%" :visible.sync="timeModal"
+			:close-on-click-modal="false" :before-close="closeTimeModal" style="margin-top: -10%;">
 			<div class="textCen">
-				<el-date-picker v-model="taskTime" type="datetime" :picker-options="pickerOptions" value-format="yyyy-MM-dd HH:mm:ss"
-				 placeholder="请选择任务执行时间" style="width: 320px;"></el-date-picker>
+				<el-date-picker v-model="taskTime" type="datetime" :picker-options="pickerOptions"
+					value-format="yyyy-MM-dd HH:mm:ss" placeholder="请选择任务执行时间" style="width: 320px;"></el-date-picker>
 			</div>
 			<div slot="footer" class="dialog-footer">
 				<el-button @click="closeTimeModal">关 闭</el-button>
@@ -227,8 +251,8 @@
 
 		<!-- 分配任务（人员列表） -->
 		<el-dialog v-dialogDrag title="操作员列表" :visible.sync="userModal" :close-on-click-modal="false" width="30%">
-			<el-table border :data="tableData3" id="exportTable3" style="width: 100%" :header-cell-style="{background:'#fafafa'}"
-			 @row-click="rowClick3" ref="table3">
+			<el-table border :data="tableData3" id="exportTable3" style="width: 100%"
+				:header-cell-style="{background:'#fafafa'}" @row-click="rowClick3" ref="table3">
 				<el-table-column type="index" label="序号" align="center" width="50"></el-table-column>
 				<el-table-column prop="Name" label="姓名" align="center"></el-table-column>
 				<el-table-column prop="LoginName" label="账号" align="center"></el-table-column>
@@ -240,7 +264,7 @@
 
 		<!--服务费和汇率修改-->
 		<el-dialog v-dialogDrag :title="titleFee" width="30%" :visible.sync="editModal" :close-on-click-modal="false"
-		 :before-close="closeModal">
+			:before-close="closeModal">
 			<el-form :model="editForm" ref="editForm" :rules='Rules' label-width='100px' status-icon>
 				<el-form-item label="服务费" prop="fee">
 					<el-input v-model="editForm.fee"></el-input>
@@ -261,13 +285,16 @@
 				<el-row>
 					<el-col :span="24">
 						<el-form-item label='产品图：'>
-							<img style="width: 100px" class="pointer" @click="showImage2(view.OrderNumber,view.ProductPictures)" v-show="view.ProductPictures"
-							 :src="view.ProductPictures" />
+							<img style="width: 100px" class="pointer"
+								@click="showImage2(view.OrderNumber,view.ProductPictures)" v-show="view.ProductPictures"
+								:src="view.ProductPictures" />
 						</el-form-item>
 					</el-col>
 					<el-col :span="24">
 						<el-form-item label='产品链接：'>
-							<el-link :href="view.ProductLink" target="_blank" type="primary" :underline="false">{{view.ProductLink}}</el-link>
+							<el-link :href="view.ProductLink" target="_blank" type="primary" :underline="false">
+								{{view.ProductLink}}
+							</el-link>
 						</el-form-item>
 					</el-col>
 				</el-row>
@@ -400,7 +427,8 @@
 			</div>
 		</el-dialog>
 		<!--查看产品图大图-->
-		<el-dialog v-dialogDrag :title='title2' :visible.sync='imageModal' :close-on-click-modal='false' :before-close="closeImageModal">
+		<el-dialog v-dialogDrag :title='title2' :visible.sync='imageModal' :close-on-click-modal='false'
+			:before-close="closeImageModal">
 			<div class="txtCenter">
 				<img :src='orderProductImgUrl' style="max-width: 80%;" />
 			</div>

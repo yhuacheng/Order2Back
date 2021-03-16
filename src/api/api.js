@@ -79,7 +79,7 @@ export const orderTaskBindForOrder = (params) => post('/api/Order/BatchToBeAssig
 export const orderFeeEdit = (params) => post('/api/Order/ChangeOrderInformation', params) //订单服务费汇率修改
 
 export const taskList = (params) => get('/api/Task/GetTaskList', params) //任务列表
-export const taskStateNum = (params) => post('/api/Task/GetState', params) //任务不同状态下的数量
+export const taskStateNum = (params) => get('/api/Task/GetState', params) //任务不同状态下的数量
 export const taskBuy = (params) => post('/api/Task/ChangeBuyingTwo', params) //确认购买
 export const taskBuyCheck = (params) => post('/api/Task/GetRepeat', params) //确认购买时查询任务是否重复
 export const taskState = (params) => post('/api/Task/ChangeTaskCancel', params) //任务取消

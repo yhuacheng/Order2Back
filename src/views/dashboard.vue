@@ -4,49 +4,57 @@
 			<el-row :gutter="30" class="mt10 mb15">
 				<el-col :span="3" :xs="12">
 					<el-card shadow="hover" class="box-card">
-						<div>总客户</div>
+						<i class="el-icon-news tj-icon"></i>
+						<p>总客户</p>
 						<div class="num success">{{allCustomer}}</div>
 					</el-card>
 				</el-col>
 				<el-col :span="3" :xs="12">
 					<el-card shadow="hover" class="box-card">
-						<div>今日客户</div>
+						<i class="el-icon-user tj-icon"></i>
+						<p>今日客户</p>
 						<div class="num warning">{{todayCustomer}}</div>
 					</el-card>
 				</el-col>
 				<el-col :span="3" :xs="12">
 					<el-card shadow="hover" class="box-card">
-						<div>总订单</div>
+						<i class="el-icon-document-copy tj-icon"></i>
+						<p>总订单</p>
 						<div class="num success">{{allOrder}}</div>
 					</el-card>
 				</el-col>
 				<el-col :span="3" :xs="12">
 					<el-card shadow="hover" class="box-card">
-						<div>今日订单</div>
+						<i class="el-icon-tickets tj-icon"></i>
+						<p>今日订单</p>
 						<div class="num warning">{{todayOrder}}</div>
 					</el-card>
 				</el-col>
 				<el-col :span="3" :xs="12">
 					<el-card shadow="hover" class="box-card">
-						<div>总任务</div>
+						<i class="el-icon-date tj-icon"></i>
+						<p>总任务</p>
 						<div class="num success">{{allTask}}</div>
 					</el-card>
 				</el-col>
 				<el-col :span="3" :xs="12">
 					<el-card shadow="hover" class="box-card">
-						<div>进行中的任务</div>
+						<i class="el-icon-edit-outline tj-icon"></i>
+						<p>进行中的任务</p>
 						<div class="num primary">{{doingTask}}</div>
 					</el-card>
 				</el-col>
 				<el-col :span="3" :xs="12">
 					<el-card shadow="hover" class="box-card">
-						<div>7天未分配订单</div>
+						<i class="el-icon-folder-delete tj-icon"></i>
+						<p>7天未分配订单</p>
 						<div class="num danger">{{taskNoAllot}}</div>
 					</el-card>
 				</el-col>
 				<el-col :span="3" :xs="12">
 					<el-card shadow="hover" class="box-card">
-						<div>预留位置</div>
+						<i class="el-icon-warning-outline tj-icon"></i>
+						<p>预留位置</p>
 						<div class="num info">***</div>
 					</el-card>
 				</el-col>
@@ -160,8 +168,8 @@
 			customerCountShow() {
 				let _this = this
 				customerCount().then(res => {
-					_this.allCustomer = Number(res.list[0].heji)
-					_this.todayCustomer = Number(res.list[0].meiri)
+					_this.allCustomer = Number(res.heji)
+					_this.todayCustomer = Number(res.meiri)
 				}).catch((e) => {})
 			},
 
@@ -169,8 +177,8 @@
 			orderCountShow() {
 				let _this = this
 				orderCount().then(res => {
-					_this.allOrder = Number(res.list[0].heji)
-					_this.todayOrder = Number(res.list[0].meiri)
+					_this.allOrder = Number(res.heji)
+					_this.todayOrder = Number(res.meiri)
 				}).catch((e) => {})
 			},
 
@@ -178,8 +186,8 @@
 			taskCountShow() {
 				let _this = this
 				taskCount().then(res => {
-					_this.allTask = Number(res.list[0].heji)
-					_this.doingTask = Number(res.list[0].meiri)
+					_this.allTask = Number(res.heji)
+					_this.doingTask = Number(res.meiri)
 				}).catch((e) => {})
 			},
 
@@ -187,7 +195,7 @@
 			taskNoAllotShow() {
 				let _this = this
 				taskNoAllot().then(res => {
-					_this.taskNoAllot = Number(res.list[0].heji)
+					_this.taskNoAllot = Number(res.heji)
 				}).catch((e) => {})
 			},
 

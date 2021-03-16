@@ -39,9 +39,9 @@ export default new Router({
 			component: () => import('./views/home.vue'),
 			name: '系统首页',
 			children: [{
-				path: '/Dashboard',
+				path: '/dashboard',
 				component: () => import('./views/dashboard.vue'),
-				name: '控制面板',
+				name: '统计面板',
 			}]
 		},
 		{

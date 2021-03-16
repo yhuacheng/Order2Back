@@ -170,7 +170,7 @@
 					code: {
 						required: true,
 						message: '请选择推荐码',
-						trigger: 'blur'
+						trigger: 'change'
 					},
 					state: {
 						required: true,

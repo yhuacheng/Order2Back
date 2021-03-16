@@ -398,8 +398,8 @@
 				</el-form-item>
 			</el-form>
 			<div slot="footer" class="dialog-footer">
-				<el-button type="primary" @click="buyCheckRepeat">确 定</el-button>
 				<el-button @click="closeBuyModal">取 消</el-button>
+				<el-button type="primary" @click="buyCheckRepeat">确 定</el-button>
 			</div>
 		</el-dialog>
 		<!-- 评价 -->
@@ -656,7 +656,7 @@
 					</el-col>
 					<el-col :span="24">
 						<el-form-item label='评价截图：'>
-							<img style="max-width: 80%;" v-show="view.ProductImage" :src="view.ProductImage" />
+							<img style="max-width: 50%;" v-show="view.ProductImage" :src="view.ProductImage" />
 						</el-form-item>
 					</el-col>
 				</el-row>
@@ -670,7 +670,7 @@
 						</el-col>
 						<el-col :span="24">
 							<el-form-item label='交易截图：'>
-								<img style="max-width: 80%;" v-show="view.DealIamge" :src="view.DealIamge" />
+								<img style="max-width: 50%;" v-show="view.DealIamge" :src="view.DealIamge" />
 							</el-form-item>
 						</el-col>
 					</el-row>

@@ -85,7 +85,6 @@ export const taskBuyCheck = (params) => post('/api/Task/GetRepeat', params) //�
 export const taskState = (params) => post('/api/Task/ChangeTaskCancel', params) //任务取消
 export const taskStateMore = (params) => post('/api/Task/BatchChangeTaskState', params) //批量任务取消
 export const taskComment = (params) => post('/api/Task/ChangeTaskFour', params) //任务评价
-export const taskView = (params) => get('/api/Task/TaskDetails', params) //任务详情
 export const taskFeeEdit = (params) => post('/api/Task/ChangeTaskServicechargeAndExchangeRate', params) //任务服务费汇率修改
 export const taskBindOut = (params) => post('/api/Task/TaskAgainBaskUser', params) //任务外派
 export const taskAgain = (params) => post('/api/Task/AgainTask', params) //任务追加

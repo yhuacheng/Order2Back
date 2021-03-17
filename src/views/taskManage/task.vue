@@ -5,60 +5,67 @@
 			<el-form :inline="true" :model="searchForm" size="mini">
 				<el-form-item label="搜索内容">
 					<el-input @keyup.native="searchToTrim" v-model="searchForm.searchWords"
-						placeholder="任务号/ASIN/店铺/操作员/客户编号/购买单号/PP号" style="width: 300px;"></el-input>
+						placeholder="任务编号/ASIN/店铺/操作员/客户编号/购买单号/PP账号" style="width: 350px;"></el-input>
 				</el-form-item>
 				<el-form-item label="填单时间">
 					<el-date-picker v-model="searchForm.time" :unlink-panels='true' type="datetimerange"
 						range-separator="至" start-placeholder="开始时间" end-placeholder="结束时间"
-						value-format="yyyy-MM-dd HH:mm:ss" style="width: 100%;"></el-date-picker>
+						value-format="yyyy-MM-dd HH:mm:ss" style="width: 350px;"></el-date-picker>
 				</el-form-item>
 				<el-form-item label="上评时间">
 					<el-date-picker v-model="searchForm.timeSP" :unlink-panels='true' type="datetimerange"
 						range-separator="至" start-placeholder="开始时间" end-placeholder="结束时间"
-						value-format="yyyy-MM-dd HH:mm:ss" style="width: 100%;"></el-date-picker>
+						value-format="yyyy-MM-dd HH:mm:ss" style="width: 350px;"></el-date-picker>
 				</el-form-item>
 				<el-form-item label="返款时间">
 					<el-date-picker v-model="searchForm.timeFK" :unlink-panels='true' type="datetimerange"
 						range-separator="至" start-placeholder="开始时间" end-placeholder="结束时间"
-						value-format="yyyy-MM-dd HH:mm:ss" style="width: 100%;"></el-date-picker>
+						value-format="yyyy-MM-dd HH:mm:ss" style="width: 350px;"></el-date-picker>
 				</el-form-item>
 				<el-form-item label="订单类型">
-					<el-select v-model="searchForm.serveType" placeholder="请选择" style="width: 140px;">
+					<el-select v-model="searchForm.serveType" placeholder="请选择" style="width: 150px;">
 						<el-option value="0" label="全部"></el-option>
 						<el-option value="1" label="评后返（代返）"></el-option>
 						<el-option value="2" label="评后返（自返）"></el-option>
 					</el-select>
 				</el-form-item>
 				<el-form-item label="国家">
-					<el-select v-model="searchForm.country" placeholder="请选择国家" style="width: 110px;">
+					<el-select v-model="searchForm.country" placeholder="请选择国家" style="width: 150px;">
 						<el-option value="0" label="全部"></el-option>
 						<el-option v-for="item in countryData" :key="item.Id" :label="item.CountryName"
 							:value="item.Id"></el-option>
 					</el-select>
 				</el-form-item>
 				<el-form-item label="内单外单">
-					<el-select v-model="searchForm.types" placeholder="请选择" style="width: 151px;">
+					<el-select v-model="searchForm.types" placeholder="请选择" style="width: 136px;">
 						<el-option value="0" label="全部"></el-option>
 						<el-option value="1" label="内单"></el-option>
 						<el-option value="2" label="外单"></el-option>
 					</el-select>
 				</el-form-item>
 				<el-form-item label="是否超时">
-					<el-select v-model="searchForm.type" placeholder="请选择" style="width: 151px;">
+					<el-select v-model="searchForm.type" placeholder="请选择" style="width: 136px;">
 						<el-option value="0" label="全部"></el-option>
 						<el-option value="1" label="正常"></el-option>
 						<el-option value="-1" label="超时"></el-option>
 					</el-select>
 				</el-form-item>
+				<el-form-item label="是否追加">
+					<el-select v-model="searchForm.again" placeholder="请选择" style="width: 136px;">
+						<el-option value="0" label="全部"></el-option>
+						<el-option value="-1" label="正常"></el-option>
+						<el-option value="1" label="追加"></el-option>
+					</el-select>
+				</el-form-item>
 				<el-form-item label="是否重复">
-					<el-select v-model="searchForm.repeat" placeholder="请选择" style="width: 151px;">
+					<el-select v-model="searchForm.repeat" placeholder="请选择" style="width: 136px;">
 						<el-option value="0" label="全部"></el-option>
 						<el-option value="-1" label="正常"></el-option>
 						<el-option value="1" label="重复"></el-option>
 					</el-select>
 				</el-form-item>
 				<el-form-item label="本佣付款" v-if='In'>
-					<el-select v-model="searchForm.payState" placeholder="请选择" style="width: 151px;">
+					<el-select v-model="searchForm.payState" placeholder="请选择" style="width: 136px;">
 						<el-option value="0" label="全部"></el-option>
 						<el-option value="1" label="本佣均已付"></el-option>
 						<el-option value="2" label="本佣均未付"></el-option>
@@ -193,7 +200,7 @@
 				</template>
 			</pl-table-column>
 			<!-- 展开栏结束 -->
-			<pl-table-column prop="OrderNumbers" label="任务编号" align="center" width="155">
+			<pl-table-column prop="OrderNumbers" sortable label="任务编号" align="center" width="155">
 				<template slot-scope="scope">
 					<i class="el-icon-document-copy" @click.stop="copy(scope.$index,scope.row)"></i>
 					<el-link type="primary" :underline="false" @click.stop="viewModalShow(scope.$index,scope.row)">
@@ -224,7 +231,8 @@
 			<pl-table-column prop="Asin" label="ASIN" align="center" width="110"></pl-table-column>
 			<pl-table-column prop="ProductName" label="产品名称" align="center" :show-overflow-tooltip='true'>
 			</pl-table-column>
-			<pl-table-column prop="ShopName" label="店铺" align="center" :show-overflow-tooltip='true'></pl-table-column>
+			<pl-table-column prop="OrderShopName" label="店铺" align="center" :show-overflow-tooltip='true'>
+			</pl-table-column>
 			<pl-table-column prop="CustomerUserId" label="客户编码" align="center"></pl-table-column>
 			<pl-table-column prop="PayPrincipal" label="付本" align="center">
 				<template slot-scope="scope">
@@ -460,7 +468,11 @@
 				</el-form-item>
 			</el-form>
 			<div slot="footer" class="dialog-footer">
-				<el-button type="danger" @click="commentSubmit(1)" style="position: absolute;left: 15px">免 评</el-button>
+				<!-- <el-button type="danger" @click="commentSubmit(1)" style="position: absolute;left: 15px">免 评</el-button> -->
+				<span v-for="(item,i) in serviceOtherData" :key="i" style="float: left;">
+					<el-button type="danger" @click="commentSubmit(item.Id)" class="mr15">{{item.ServiceName}}
+					</el-button>
+				</span>
 				<el-button @click="closeCommentModal">取 消</el-button>
 				<el-button type="primary" @click="commentSubmit(0)">确 定</el-button>
 			</div>
@@ -707,12 +719,11 @@
 			</div>
 		</el-dialog>
 		<!-- 外派(任务分配给外派员) -->
-		<el-dialog v-dialogDrag :title="userListTitle" width="40%" :visible.sync="userModal"
+		<el-dialog v-dialogDrag :title="userListTitle" width="30%" :visible.sync="userModal"
 			:close-on-click-modal="false">
 			<el-table border :data="tableData2" id="exportTable2" style="width: 100%"
 				:header-cell-style="{background:'#fafafa'}" @row-click="rowClick2" ref="table2">
 				<el-table-column type="index" label="序号" align="center" width="50"></el-table-column>
-				<el-table-column prop="Id" label="编码" align="center"></el-table-column>
 				<el-table-column prop="Name" label="姓名" align="center"></el-table-column>
 				<el-table-column prop="LoginName" label="账号" align="center"></el-table-column>
 			</el-table>
@@ -752,14 +763,14 @@
 		taskState,
 		taskStateMore,
 		taskComment,
-		taskView,
 		taskFeeEdit,
 		userList,
 		orderTaskBind,
 		taskBindOut,
 		taskAgain,
 		countryList,
-		payBYmoney
+		payBYmoney,
+		serviceOtherList
 	} from '@/api/api';
 	export default {
 		name: 'task',
@@ -790,7 +801,8 @@
 					timeFK: [],
 					serveType: '0',
 					repeat: '0',
-					payState: '0'
+					payState: '0',
+					again: '0'
 				},
 				all: 0, //全部
 				dfp: 0, //待分配
@@ -944,7 +956,8 @@
 				tableData2: [],
 				countryData: [], //国家数据
 				In: false, //公司内部人员true 外派false
-				Ptype: '' //分派类型 1.外派处分派 2.管理员转派
+				Ptype: '', //分派类型 1.外派处分派 2.管理员转派
+				serviceOtherData: [] //特殊服务费数据
 			}
 		},
 		created() {
@@ -952,6 +965,7 @@
 			this.getTaskStateNum()
 			this.getRateData()
 			this.getCountryData()
+			this.getServiceOtherData()
 		},
 		computed: {
 			//合计
@@ -963,6 +977,20 @@
 			}
 		},
 		methods: {
+			//获取特殊服务费数据
+			getServiceOtherData() {
+				let _this = this
+				_this.listLoading = true
+				let params = {
+					keyWord: '',
+					pageIndex: 1,
+					pageSize: 100000000
+				}
+				serviceOtherList(params).then(res => {
+					_this.serviceOtherData = res.Entity
+				}).catch((e) => {})
+			},
+
 			//获取国家数据
 			getCountryData() {
 				let _this = this
@@ -1082,6 +1110,7 @@
 					ServerType: _this.searchForm.serveType,
 					RepeatState: _this.searchForm.repeat,
 					PayState: _this.searchForm.payState,
+					AgainTaskState: _this.searchForm.again,
 					pageIndex: _this.pageIndex,
 					pageSize: _this.pageSize,
 					RoolId: roleId
@@ -1386,7 +1415,7 @@
 				_this.$refs.commentForm.validate((valid) => {
 					if (valid) {
 						// 如果是需要评论的单,评价链接和评论图片必须二选一填写;如果是免评单不要填写评价链接,评论图片可填可不填.(1为免评)
-						if (val != 1) {
+						if (val == 0) {
 							if (!link && !image) {
 								this.$message.error('评价链接和评价截图必须至少填写一项！')
 							} else {
@@ -1398,7 +1427,7 @@
 							}
 						} else {
 							if (link) {
-								this.$message.error('免评单请不要填写评价链接！')
+								this.$message.error('非正常评价请不要填写评价链接！')
 							} else {
 								taskComment(params).then(res => {
 									_this.closeCommentModal()
@@ -1425,7 +1454,7 @@
 			//评论图片上传成功
 			handleAvatarSuccess(res, file) {
 				if (res.Data != '') {
-					this.commentForm.Image = res.Data
+					this.commentForm.Image = res.data
 				}
 				this.imageUrl = URL.createObjectURL(file.raw);
 				this.$message.success('图片上传成功！')
@@ -1461,34 +1490,16 @@
 				_this.imageUrl = ''
 			},
 
-			//任务详情弹窗
+			//任务详情
 			viewModalShow(index, row) {
 				let _this = this
 				_this.title = '任务【' + row.OrderNumbers + '】详情'
 				_this.taskId = row.Id
-				_this.taskView()
-			},
-
-			//任务详情
-			taskView() {
-				let _this = this
-				let params = {
-					Id: _this.taskId
-				}
-				taskView(params).then(res => {
-					_this.view = Object.assign({}, res.list[0])
-					let img = res.list[0].OrderProductPictures
-					if (img) {
-						_this.view.OrderProductPictures = this.$IMG_URL + img
-					}
-					let img2 = res.list[0].DealIamge
-					if (img2) {
-						_this.view.DealIamge = this.$IMG_URL + img2
-					}
-					let countryId = res.list[0].CountryId
-					_this.viewModal = true //获取到数据后显示模态框
-					_this.getRateInfo(countryId)
-				}).catch((e) => {})
+				_this.getRateInfo(row.CountryId)
+				_this.view = Object.assign({}, row)
+				_this.view.OrderProductPictures = this.$IMG_URL + row.OrderProductPictures
+				_this.view.DealIamge = this.$IMG_URL + row.DealIamge
+				_this.viewModal = true
 			},
 
 			//查看产品图大图（列表点击图片查看）
@@ -1591,6 +1602,7 @@
 				_this.searchForm.serveType = '0'
 				_this.searchForm.repeat = '0'
 				_this.searchForm.payState = '0'
+				_this.searchForm.again = '0'
 				_this.pageIndex = 1
 				_this.getAllData()
 				_this.getTaskStateNum()
@@ -1667,20 +1679,21 @@
 					pageSize: 100000000,
 				}
 				userList(params).then(res => {
+					let data = res.Entity
 					let arr = [] //外派员
 					let arr2 = [] //操作员
-					for (let x in res.list) {
-						let roleId = res.list[x].RoolId
+					for (let x in data) {
+						let roleId = data[x].RoolId
 						if (roleId == null) {
 							roleId = ''
 						}
-						let state = res.list[x].State
+						let state = data[x].State
 						//如果角色包含5(外派员)并且状态为有效
 						if (roleId.indexOf(5) >= 0 && state == 1) {
-							arr.push(res.list[x])
+							arr.push(data[x])
 						}
 						if (roleId.indexOf(4) >= 0 && state == 1) {
-							arr2.push(res.list[x])
+							arr2.push(data[x])
 						}
 					}
 					if (_this.Ptype == '1') {

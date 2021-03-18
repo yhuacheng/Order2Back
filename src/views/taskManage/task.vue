@@ -466,7 +466,7 @@
 						:limit="3">
 						<i class="el-icon-plus"></i>
 					</el-upload>
-					<el-dialog title="评价截图大图预览" :visible.sync="dialogImg" :modal-append-to-body="false"
+					<el-dialog v-dialogDrag title="评价截图大图预览" :visible.sync="dialogImg" :modal-append-to-body="false"
 						:append-to-body="true">
 						<div class="txt-c"><img max-width="100%" :src="imageUrl"></div>
 					</el-dialog>

@@ -207,10 +207,10 @@
 						{{scope.row.OrderNumbers}}
 					</el-link>
 					<div>
-						<span v-if="scope.row.AgainTaskState==1"><span class="danger fz10">追加</span></span>
-						<span v-if="scope.row.NoComment==1"><span class="danger fz10">免评</span></span>
-						<span v-if="scope.row.Overtime<0"><span class="danger fz10">超时</span></span>
-						<span v-if="scope.row.Repeat==1"><span class="danger fz10">重复</span></span>
+						<span v-if="scope.row.AgainTaskState==1"><span class="danger fz10"> 追加 </span></span>
+						<span v-if="scope.row.NoComment==1"><span class="danger fz10"> 免评 </span></span>
+						<span v-if="scope.row.Overtime<0"><span class="danger fz10"> 超时 </span></span>
+						<span v-if="scope.row.Repeat==1"><span class="danger fz10"> 重复 </span></span>
 					</div>
 				</template>
 			</pl-table-column>
@@ -252,7 +252,7 @@
 			<pl-table-column prop="DealIamge" label="交易截图" align="center">
 				<template slot-scope="scope">
 					<img style="width: 40px;height: 40px;" v-if="scope.row.DealIamge"
-						:src="GLOBAL.IMG_URL+scope.row.DealIamge" @click.stop="showImage(scope.$index,scope.row,2)" />
+						:src="$IMG_URL+scope.row.DealIamge" @click.stop="showImage(scope.$index,scope.row,2)" />
 				</template>
 			</pl-table-column>
 			<pl-table-column prop="TaskState" label="状态" align="center" width="92">
@@ -332,7 +332,7 @@
 			<el-form :model='buyForm' ref='buyForm' :rules='Rules' label-width='120px' status-icon>
 				<p class="info-title">购买信息</p>
 				<el-form-item label='返款账号' prop="PayAccount">
-					<el-input @keyup.native="toTrim(1)" v-model='buyForm.PayAccount'></el-input>
+					<el-input @keyup.native="toTrim(1)" @blur="checkBlack(1)" v-model='buyForm.PayAccount'></el-input>
 				</el-form-item>
 				<el-form-item label='购买时间' prop="BuyingTime">
 					<el-date-picker v-model="buyForm.BuyingTime" type="datetime" style="width: 100%"></el-date-picker>
@@ -452,18 +452,24 @@
 			<el-form :model='commentForm' ref='commentForm' label-width='120px' status-icon>
 				<p class="info-title">评价信息</p>
 				<el-form-item label='返款账号' prop="PPaccount">
-					<el-input @keyup.native="toTrim(2)" v-model='commentForm.PPaccount'></el-input>
+					<el-input @keyup.native="toTrim(2)" @blur="checkBlack(2)" v-model='commentForm.PPaccount'>
+					</el-input>
 				</el-form-item>
 				<el-form-item label='评价链接' prop="Link">
 					<el-input v-model='commentForm.Link'></el-input>
 				</el-form-item>
 				<el-form-item label='评价截图' prop="image">
 					<el-upload class="avatar-uploader" name="Image" action="/api/Payment/GetProductPictures"
-						:show-file-list="false" :on-success="handleAvatarSuccess" :on-error="handleError"
-						:before-upload="beforeAvatarUpload" accept="image/jpeg,image/png,image/gif,image/bmp">
-						<img v-if="imageUrl" :src="imageUrl" class="avatar">
-						<i v-else class="el-icon-plus avatar-uploader-icon"></i>
+						list-type="picture-card" :on-success="handleAvatarSuccess" :on-error="handleError"
+						:before-upload="beforeAvatarUpload" accept="image/jpeg,image/png,image/gif,image/bmp"
+						:on-preview="handlePictureCardPreview" :on-remove="handleRemove" :file-list="fileListArr"
+						:limit="3">
+						<i class="el-icon-plus"></i>
 					</el-upload>
+					<el-dialog title="评价截图大图预览" :visible.sync="dialogImg" :modal-append-to-body="false"
+						:append-to-body="true">
+						<div class="txt-c"><img max-width="100%" :src="imageUrl"></div>
+					</el-dialog>
 					<el-input v-show="false" v-model='commentForm.Image'></el-input>
 				</el-form-item>
 			</el-form>
@@ -770,7 +776,8 @@
 		taskAgain,
 		countryList,
 		payBYmoney,
-		serviceOtherList
+		serviceOtherList,
+		blackCheck
 	} from '@/api/api';
 	export default {
 		name: 'task',
@@ -893,6 +900,8 @@
 				},
 				commentModal: false,
 				imageUrl: '',
+				dialogImg: false,
+				fileListArr: [],
 				commentForm: {
 					Link: '',
 					Image: '',
@@ -1269,6 +1278,32 @@
 				}
 			},
 
+			// PP号黑名单检测(1为购买时检测；2为评价时检测)
+			checkBlack(val) {
+				let _this = this
+				let pp = ''
+				if (val == 1) {
+					pp = _this.buyForm.PayAccount
+				}
+				if (val == 2) {
+					pp = _this.commentForm.PPaccount
+				}
+				let params = {
+					PPNumber: pp
+				}
+				// blackCheck(params).then(res => {
+				let data = 1
+				if (data == 1) {
+					this.$confirm('PP号【' + pp + '】是黑名单PP号', '特别警告', {
+						confirmButtonText: '我知道了',
+						type: 'error',
+						showCancelButton: false,
+						closeOnClickModal: false
+					}).then(() => {}).catch(() => {})
+				}
+				// }).catch((e) => {})
+			},
+
 			// 购买弹窗
 			buyModalShow(index, row) {
 				let _this = this
@@ -1350,7 +1385,8 @@
 					}
 				}
 				//核算总金额(总额+增值服+服务费)
-				params.Total = (Number(_this.totalValue) + Number(_this.addFee) + Number(_this.serviceFei)).toFixed(2)
+				params.Total = (Number(_this.totalValue) + Number(_this.addFee) + Number(_this.serviceFei))
+					.toFixed(2)
 				taskBuy(params).then(res => {
 					_this.closeBuyModal()
 					_this.getAllData()
@@ -1392,7 +1428,18 @@
 				_this.taskId = row.Id
 				_this.commentForm.Link = row.ProductLink
 				_this.commentForm.Image = row.ProductImage
-				_this.imageUrl = row.ProductImage
+				//评价图片转换为 url:'xxx' 格式才能回显
+				let img = row.ProductImage
+				if (img) {
+					let imgArr = img.split(',')
+					let formatImgArr = []
+					for (let x in imgArr) {
+						let obj = new Object()
+						obj.url = imgArr[x]
+						formatImgArr.push(obj)
+					}
+					_this.fileListArr = formatImgArr //赋值给图片上传控件回显数据
+				}
 				_this.commentForm.PPaccount = row.PayAccount
 				_this.getRateInfo(row.CountryId)
 			},
@@ -1444,7 +1491,7 @@
 
 			//购买图片上传成功
 			handleAvatarSuccessBuy(res, file) {
-				if (res.data != '') {
+				if (res.data) {
 					this.buyForm.Image = res.data
 				}
 				this.imageUrl = URL.createObjectURL(file.raw);
@@ -1452,11 +1499,16 @@
 			},
 
 			//评论图片上传成功
-			handleAvatarSuccess(res, file) {
-				if (res.Data != '') {
-					this.commentForm.Image = res.data
+			handleAvatarSuccess(res, file, fileList) {
+				if (res.data) {
+					file.url = res.data
+					let imgUrlStr = ''
+					for (let x in fileList) {
+						imgUrlStr += ',' + fileList[x].url
+					}
+					imgUrlStr = imgUrlStr.substring(1)
+					this.commentForm.Image = imgUrlStr
 				}
-				this.imageUrl = URL.createObjectURL(file.raw);
 				this.$message.success('图片上传成功！')
 			},
 
@@ -1477,6 +1529,19 @@
 				return (isJPG || isPNG || isGIF || isBMP) && isLt5M;
 			},
 
+			handleRemove(file, fileList) {
+				let imgUrlStr = ''
+				for (let x in fileList) {
+					imgUrlStr += ',' + fileList[x].url
+				}
+				imgUrlStr = imgUrlStr.substring(1)
+				this.commentForm.Image = imgUrlStr
+			},
+			handlePictureCardPreview(file) {
+				this.imageUrl = file.url
+				this.dialogImg = true
+			},
+
 			// 关闭评价弹窗
 			closeCommentModal() {
 				let _this = this
@@ -1488,6 +1553,7 @@
 					PPaccount: ''
 				}
 				_this.imageUrl = ''
+				_this.fileList = []
 			},
 
 			//任务详情
@@ -2059,68 +2125,3 @@
 		}
 	}
 </script>
-
-<style>
-	/* 上传组件相关样式 */
-	.avatar-uploader .el-upload {
-		border: 1px dashed #d9d9d9;
-		border-radius: 6px;
-		cursor: pointer;
-		position: relative;
-		overflow: hidden;
-	}
-
-	.avatar-uploader .el-upload:hover {
-		border-color: #409EFF;
-	}
-
-	.avatar-uploader-icon {
-		font-size: 28px;
-		color: #8c939d;
-		width: 178px;
-		height: 178px;
-		line-height: 178px !important;
-		text-align: center;
-	}
-
-	.avatar {
-		width: 178px;
-		height: 178px;
-		display: block;
-	}
-
-	/* 展开table样式 */
-	#exportTable .el-table__expanded-cell,
-	#exportTable .el-table__expanded-cell:hover {
-		background-color: #F0F9EB !important;
-	}
-
-	.demo-table-expand {
-		font-size: 0;
-	}
-
-	.demo-table-expand label {
-		width: 100px;
-		color: #99a9bf;
-	}
-
-	.demo-table-expand .el-form-item {
-		margin-right: 0 !important;
-		margin-bottom: 0 !important;
-		width: 16.666%;
-		border: 1px dashed #BBBBBB;
-		margin-left: -1px;
-		margin-top: -1px;
-	}
-
-	/* 扩大展开箭头的点击范围 */
-	.el-table__expand-icon {
-		width: 55px !important;
-		height: 55px !important;
-		left: -15px !important;
-	}
-
-	.plTableBox .el-table__expand-icon>.el-icon {
-		top: 42% !important;
-	}
-</style>

@@ -580,6 +580,46 @@ body {
 	display: none;
 }
 
+/* 去除图上传组件的图片回显动画 */
+	.el-upload-list__item {
+		transition: none !important;
+	}
+
+	/* 展开table样式 */
+	#exportTable .el-table__expanded-cell,
+	#exportTable .el-table__expanded-cell:hover {
+		background-color: #F0F9EB !important;
+	}
+
+	.demo-table-expand {
+		font-size: 0;
+	}
+
+	.demo-table-expand label {
+		width: 100px;
+		color: #99a9bf;
+	}
+
+	.demo-table-expand .el-form-item {
+		margin-right: 0 !important;
+		margin-bottom: 0 !important;
+		width: 16.666%;
+		border: 1px dashed #BBBBBB;
+		margin-left: -1px;
+		margin-top: -1px;
+	}
+
+	/* 扩大展开箭头的点击范围 */
+	.el-table__expand-icon {
+		width: 55px !important;
+		height: 55px !important;
+		left: -15px !important;
+	}
+
+	.plTableBox .el-table__expand-icon>.el-icon {
+		top: 42% !important;
+	}
+
 /* 富文本编辑器相关样式 */
 .ql-toolbar.ql-snow {
 		padding: auto;

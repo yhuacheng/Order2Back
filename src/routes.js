@@ -145,6 +145,11 @@ export default new Router({
 					name: '支付方式'
 				},
 				{
+					path: '/black',
+					component: () => import('./views/systemManage/black.vue'),
+					name: '黑名单'
+				},
+				{
 					path: '/notice',
 					component: () => import('./views/systemManage/notice.vue'),
 					name: '网站公告'

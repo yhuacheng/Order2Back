@@ -18,7 +18,7 @@
 		<el-table border :data="tableData" v-loading="listLoading" id="exportTable" style="width: 100%"
 			:header-cell-style="{background:'#fafafa'}" ref="table">
 			<el-table-column type="index" label="序号" align="center" width="50"></el-table-column>
-			<el-table-column prop="Number" label="黑名单PP账号" align="center"></el-table-column>
+			<el-table-column prop="Account" label="黑名单PP账号" align="center"></el-table-column>
 			<el-table-column label="操作" align="center" width="200">
 				<template v-slot="scope">
 					<el-button size="mini" type="danger" @click.stop="delData(scope.$index, scope.row)">删除</el-button>
@@ -87,25 +87,15 @@
 				let _this = this
 				_this.listLoading = true
 				let params = {
-					number: _this.searchForm.searchWords,
+					keyWord: _this.searchForm.searchWords,
 					pageIndex: _this.pageIndex,
 					pageSize: _this.pageSize
 				}
-
-				_this.listLoading = false
-				_this.tableData = [{
-					"ID": 1,
-					"Number": 456465465465
-				}, {
-					"ID": 2,
-					"Number": 13246546548
-				}]
-
-				// blackList(params).then(res => {
-				// 	_this.listLoading = false
-				// 	_this.tableData = res.Entity
-				// 	_this.total = Number(res.TotalCount)
-				// }).catch((e) => {})
+				blackList(params).then(res => {
+					_this.listLoading = false
+					_this.tableData = res.Entity
+					_this.total = Number(res.TotalCount)
+				}).catch((e) => {})
 			},
 
 			//新增黑名单弹窗
@@ -127,7 +117,7 @@
 			addSubmit(val) {
 				let _this = this
 				let params = {
-					Number: val,
+					Account: val,
 				}
 				blackAdd(params).then((res) => {
 					_this.getAllData()
@@ -137,12 +127,12 @@
 			// 删除黑名单
 			delData(index, row) {
 				let _this = this
-				var ids = row.Id
-				_this.$confirm('确认删除黑名单【' + row.Name + '】吗？', '信息提示', {
+				var ids = row.Account
+				_this.$confirm('确认删除黑名单【' + row.Account + '】吗？', '信息提示', {
 					type: 'warning'
 				}).then(() => {
 					let params = {
-						Id: ids
+						Account: ids
 					}
 					blackDelete(params).then((res) => {
 						_this.getAllData()

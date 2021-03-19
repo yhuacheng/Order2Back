@@ -105,8 +105,9 @@
 			</pl-table-column>
 			<pl-table-column prop="OrderProductPictures" label="产品图" align="center">
 				<template slot-scope="scope">
-					<img style="width: 40px;height: 40px;" v-show="scope.row.ProductPictures"
-						:src="$IMG_URL+scope.row.ProductPictures" @click.stop="showImage(scope.$index,scope.row)" />
+					<el-image style="width: 40px;height: 40px;" v-if="scope.row.ProductPictures"
+						:src="$IMG_URL+scope.row.ProductPictures" @click.stop="showImage(scope.$index,scope.row)">
+					</el-image>
 				</template>
 			</pl-table-column>
 			<pl-table-column prop="ServiceType" label="订单类型" align="center" width="105">
@@ -285,9 +286,9 @@
 				<el-row>
 					<el-col :span="24">
 						<el-form-item label='产品图：'>
-							<img style="width: 100px" class="pointer"
-								@click="showImage2(view.OrderNumber,view.ProductPictures)" v-show="view.ProductPictures"
-								:src="view.ProductPictures" />
+							<el-image style="width: 80px" class="pointer" v-if="view.ProductPictures"
+								:src="view.ProductPictures" :preview-src-list="(view.ProductPictures || '').split(',')">
+							</el-image>
 						</el-form-item>
 					</el-col>
 					<el-col :span="24">
@@ -430,7 +431,7 @@
 		<el-dialog v-dialogDrag :title='title2' :visible.sync='imageModal' :close-on-click-modal='false'
 			:before-close="closeImageModal">
 			<div class="txtCenter">
-				<img :src='orderProductImgUrl' style="max-width: 80%;" />
+				<el-image :src='orderProductImgUrl' style="max-width: 90%;"></el-image>
 			</div>
 			<div slot="footer" class="dialog-footer">
 				<el-button @click="closeImageModal">关 闭</el-button>
@@ -1027,14 +1028,6 @@
 				_this.imageModal = true
 				_this.title2 = '订单【' + row.OrderNumber + '】产品图'
 				_this.orderProductImgUrl = this.$IMG_URL + row.ProductPictures
-			},
-
-			//查看产品图大图（详情页点击图片查看）
-			showImage2(OrderNumber, imageUrl) {
-				let _this = this
-				_this.imageModal = true
-				_this.title2 = '订单【' + OrderNumber + '】产品图'
-				_this.orderProductImgUrl = imageUrl
 			},
 
 			closeImageModal() {

@@ -93,6 +93,10 @@ $color-aside: #324157; //左侧菜单背景色
 	text-align: center;
 }
 
+.txtCenter{
+	text-align: center;
+}
+
 .txt-r{
 	text-align: right;
 }
@@ -107,6 +111,14 @@ $color-aside: #324157; //左侧菜单背景色
 
 .w100{
 	width: 100%;
+}
+
+.pointer{
+	cursor: pointer;
+}
+
+.el-image-viewer__wrapper{
+	outline: none;
 }
 
 .disabled-font-color .el-input.is-disabled .el-input__inner {

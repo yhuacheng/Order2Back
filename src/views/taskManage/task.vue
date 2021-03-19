@@ -216,9 +216,10 @@
 			</pl-table-column>
 			<pl-table-column prop="OrderProductPictures" label="产品图" align="center">
 				<template slot-scope="scope">
-					<img style="width: 40px;height: 40px;" v-if="scope.row.OrderProductPictures"
+					<el-image style="width: 40px;height: 40px;" v-if="scope.row.OrderProductPictures"
 						:src="$IMG_URL+scope.row.OrderProductPictures"
-						@click.stop="showImage(scope.$index,scope.row,1)" />
+						@click.stop="showImage(scope.$index,scope.row,1)">
+					</el-image>
 				</template>
 			</pl-table-column>
 			<pl-table-column prop="ServiceType" label="任务类型" align="center" width="108">
@@ -251,8 +252,9 @@
 				:sort-method="sortByAddTime"></pl-table-column>
 			<pl-table-column prop="DealIamge" label="交易截图" align="center">
 				<template slot-scope="scope">
-					<img style="width: 40px;height: 40px;" v-if="scope.row.DealIamge"
-						:src="$IMG_URL+scope.row.DealIamge" @click.stop="showImage(scope.$index,scope.row,2)" />
+					<el-image style="width: 40px;height: 40px;" v-if="scope.row.DealIamge"
+						:src="$IMG_URL+scope.row.DealIamge" @click.stop="showImage(scope.$index,scope.row,2)">
+					</el-image>
 				</template>
 			</pl-table-column>
 			<pl-table-column prop="TaskState" label="状态" align="center" width="92">
@@ -468,7 +470,9 @@
 					</el-upload>
 					<el-dialog v-dialogDrag title="评价截图大图预览" :visible.sync="dialogImg" :modal-append-to-body="false"
 						:append-to-body="true">
-						<div class="txt-c"><img max-width="100%" :src="imageUrl"></div>
+						<div class="txt-c">
+							<el-image max-width="90%" :src="imageUrl"></el-image>
+						</div>
 					</el-dialog>
 					<el-input v-show="false" v-model='commentForm.Image'></el-input>
 				</el-form-item>
@@ -490,9 +494,9 @@
 				<el-row>
 					<el-col :span="24">
 						<el-form-item label='产品图：'>
-							<img style="width: 100px" class="pointer"
-								@click="showImage2(view.OrderNumbers,view.OrderProductPictures)"
-								v-show="view.OrderProductPictures" :src="view.OrderProductPictures" />
+							<el-image style="width: 80px" class="pointer" v-if="view.OrderProductPictures"
+								:src="view.OrderProductPictures"
+								:preview-src-list="(view.OrderProductPictures || '').split(',')"></el-image>
 						</el-form-item>
 					</el-col>
 					<el-col :span="24">
@@ -656,7 +660,8 @@
 					</el-col>
 					<el-col :span="24">
 						<el-form-item label='购买截图：'>
-							<img style="max-width: 80%;" v-show="view.BuyImage" :src="view.BuyImage" />
+							<el-image style="width: 80px" class="pointer" v-if="view.BuyImage" :src="view.BuyImage"
+								:preview-src-list="(view.BuyImage || '').split(',')"></el-image>
 						</el-form-item>
 					</el-col>
 				</el-row>
@@ -674,7 +679,11 @@
 					</el-col>
 					<el-col :span="24">
 						<el-form-item label='评价截图：'>
-							<img style="max-width: 50%;" v-show="view.ProductImage" :src="view.ProductImage" />
+							<span v-for="(item,i) in (view.ProductImage || '').split(',')" :key="i" class="mr15">
+								<el-image style="width: 80px" class="pointer" v-if="view.ProductImage" :src="item"
+									:preview-src-list="(view.ProductImage || '').split(',')">
+								</el-image>
+							</span>
 						</el-form-item>
 					</el-col>
 				</el-row>
@@ -688,7 +697,9 @@
 						</el-col>
 						<el-col :span="24">
 							<el-form-item label='交易截图：'>
-								<img style="max-width: 50%;" v-show="view.DealIamge" :src="view.DealIamge" />
+								<el-image style="width: 80px" class="pointer" v-if="view.DealIamge"
+									:src="view.DealIamge" :preview-src-list="(view.DealIamge || '').split(',')">
+								</el-image>
 							</el-form-item>
 						</el-col>
 					</el-row>
@@ -702,7 +713,7 @@
 		<el-dialog v-dialogDrag :title='title2' :visible.sync='imageModal' :close-on-click-modal='false'
 			:before-close="closeImageModal">
 			<div class="txtCenter">
-				<img :src='taskProductImgUrl' style="max-width: 80%;" />
+				<el-image :src='taskProductImgUrl' style="max-width: 90%;"></el-image>
 			</div>
 			<div slot="footer" class="dialog-footer">
 				<el-button @click="closeImageModal">关 闭</el-button>
@@ -1583,15 +1594,6 @@
 					}
 				}
 			},
-
-			//查看产品图大图（详情页点击图片查看）
-			showImage2(OrderNumbers, imageUrl) {
-				let _this = this
-				_this.imageModal = true
-				_this.title2 = '任务【' + OrderNumbers + '】产品图'
-				_this.taskProductImgUrl = imageUrl
-			},
-
 			closeImageModal() {
 				let _this = this
 				_this.imageModal = false

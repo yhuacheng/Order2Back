@@ -76,7 +76,7 @@
 					<div slot="header" class="clearfix">
 						<span>任务统计</span>
 					</div>
-					<ve-pie :data="chartData2" :settings="{roseType: 'radius'}"></ve-pie>
+					<ve-pie :data="chartData2"></ve-pie>
 				</el-card>
 			</el-col>
 

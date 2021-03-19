@@ -99,8 +99,8 @@ export const taskProgress = (params) => get('/api/Login/GetHomeUserTask', params
 export const phoneCode = (params) => post('/api/CustomerAppointment/ChangePhoneCode', params) //获取短信验证码
 export const phoneCodeCheck = (params) => post('/api/CustomerAppointment/YzChangePhoneCode', params) //验证短信验证码
 
-export const blackList = (params) => get('/api/BackUser/GetBackUser', params) //PP黑名单列表
-export const blackAdd = (params) => post('/api/BackUser/Adduser', params) //黑名单新增
-export const blackDelete = (params) => post('/api/BackUser/Deleteuser', params) //黑名单删除
+export const blackList = (params) => get('/api/Blacklist/GetBlacklist', params) //PP黑名单列表
+export const blackAdd = (params) => post('/api/Blacklist/AddBlacklist', params) //黑名单新增
+export const blackDelete = (params) => post('/api/Blacklist/ChangeState', params) //黑名单删除
 
-export const blackCheck = (params) => post('/api/BackUser/Deleteuser', params) //黑名单检测
+export const blackCheck = (params) => post('/api/Blacklist/ChangeState', params) //黑名单检测

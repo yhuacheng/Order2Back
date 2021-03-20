@@ -26,7 +26,7 @@
 						<span class="username">{{sysUserName}}</span>
 					</span>
 					<el-dropdown-menu slot="dropdown">
-						<el-dropdown-item icon="el-icon-circle-close" @click.native="logout">退出登录</el-dropdown-item>
+						<el-dropdown-item @click.native="logout">退出登录</el-dropdown-item>
 					</el-dropdown-menu>
 				</el-dropdown>
 			</el-col>
@@ -41,10 +41,13 @@
 						<!-- 非单节点菜单 -->
 						<el-submenu :index="index+''" :key="item.NavigationName" v-if="!item.leaf">
 							<template slot="title"><i :class="item.Icon"></i>{{item.NavigationName}}</template>
-							<el-menu-item v-for="child in routeChildren(item)" :index="child.Path" :key="child.Path">{{child.NavigationName}}</el-menu-item>
+							<el-menu-item v-for="child in routeChildren(item)" :index="child.Path" :key="child.Path">
+								{{child.NavigationName}}
+							</el-menu-item>
 						</el-submenu>
 						<!-- 单节点菜单 -->
-						<el-menu-item v-if="item.leaf&&item.childs.length>0" :index="item.childs[0].Path" :key="item.NavigationName">
+						<el-menu-item v-if="item.leaf&&item.childs.length>0" :index="item.childs[0].Path"
+							:key="item.NavigationName">
 							<i :class="item.Icon"></i>{{item.childs[0].NavigationName}}
 						</el-menu-item>
 					</template>
@@ -54,19 +57,23 @@
 					<li v-for="(item,index) in routes" :key="item.NavigationName" class="el-submenu item">
 						<!--非单节点菜单-->
 						<div v-if="!item.leaf">
-							<div class="el-submenu__title" style="padding-left: 18px;" @mouseover="showMenu(index,true)" @mouseout="showMenu(index,false)"><i
-								 :class="item.Icon"></i></div>
-							<ul class="el-menu submenu" :class="'submenu-hook-'+index" @mouseover="showMenu(index,true)" @mouseout="showMenu(index,false)">
-								<li v-for="child in item.childs" :key="child.Path" class="el-menu-item" :class="$route.path===child.Path?'is-active':''"
-								 @click="$router.push(child.Path)">{{child.NavigationName}}
+							<div class="el-submenu__title" style="padding-left: 18px;" @mouseover="showMenu(index,true)"
+								@mouseout="showMenu(index,false)"><i :class="item.Icon"></i></div>
+							<ul class="el-menu submenu" :class="'submenu-hook-'+index" @mouseover="showMenu(index,true)"
+								@mouseout="showMenu(index,false)">
+								<li v-for="child in item.childs" :key="child.Path" class="el-menu-item"
+									:class="$route.path===child.Path?'is-active':''" @click="$router.push(child.Path)">
+									{{child.NavigationName}}
 								</li>
 							</ul>
 						</div>
 						<!-- 单节点菜单 -->
 						<div v-else>
 					<li class="el-submenu">
-						<div class="el-submenu__title el-menu-item" style="height: 56px;line-height: 56px;padding: 0 20px;" :class="$route.path===item.childs[0].Path?'is-active':''"
-						 @click="$router.push(item.childs[0].Path)">
+						<div class="el-submenu__title el-menu-item"
+							style="height: 56px;line-height: 56px;padding: 0 20px;"
+							:class="$route.path===item.childs[0].Path?'is-active':''"
+							@click="$router.push(item.childs[0].Path)">
 							<i :class="item.iconCls"></i>
 						</div>
 					</li>
@@ -79,8 +86,8 @@
 				<!-- 顶部tabs -->
 				<div class="top-tabs">
 					<el-tabs type="card" v-model="activeTab" @tab-remove="removeTab" @tab-click="tabClick">
-						<el-tab-pane v-for="item in tabsItem" :key="item.name" :label="item.title" :name="item.name" :closable="item.closable"
-						 :ref="item.ref">
+						<el-tab-pane v-for="item in tabsItem" :key="item.name" :label="item.title" :name="item.name"
+							:closable="item.closable" :ref="item.ref">
 						</el-tab-pane>
 					</el-tabs>
 				</div>
@@ -222,7 +229,7 @@
 			// 退出登录
 			logout: function() {
 				var _this = this
-				this.$confirm('确认退出吗?', '提示', {
+				this.$confirm('确定退出系统吗?', '信息提示', {
 					type: 'warning'
 				}).then(() => {
 					sessionStorage.clear()
@@ -235,19 +242,25 @@
 				this.collapsed = !this.collapsed
 			},
 			showMenu(i, status) {
-				this.$refs.menuCollapsed.getElementsByClassName('submenu-hook-' + i)[0].style.display = status ? 'block' : 'none'
+				this.$refs.menuCollapsed.getElementsByClassName('submenu-hook-' + i)[0].style.display = status ? 'block' :
+					'none'
 			},
 
 
 			//获取年月日时分秒星期
 			timeFormate(timeStamp) {
 				let year = new Date(timeStamp).getFullYear()
-				let month = new Date(timeStamp).getMonth() + 1 < 10 ? "0" + (new Date(timeStamp).getMonth() + 1) : new Date(
-					timeStamp).getMonth() + 1
-				let date = new Date(timeStamp).getDate() < 10 ? "0" + new Date(timeStamp).getDate() : new Date(timeStamp).getDate()
-				let hh = new Date(timeStamp).getHours() < 10 ? "0" + new Date(timeStamp).getHours() : new Date(timeStamp).getHours()
-				let mm = new Date(timeStamp).getMinutes() < 10 ? "0" + new Date(timeStamp).getMinutes() : new Date(timeStamp).getMinutes()
-				let ss = new Date(timeStamp).getSeconds() < 10 ? "0" + new Date(timeStamp).getSeconds() : new Date(timeStamp).getSeconds()
+				let month = new Date(timeStamp).getMonth() + 1 < 10 ? "0" + (new Date(timeStamp).getMonth() + 1) :
+					new Date(
+						timeStamp).getMonth() + 1
+				let date = new Date(timeStamp).getDate() < 10 ? "0" + new Date(timeStamp).getDate() : new Date(timeStamp)
+					.getDate()
+				let hh = new Date(timeStamp).getHours() < 10 ? "0" + new Date(timeStamp).getHours() : new Date(timeStamp)
+					.getHours()
+				let mm = new Date(timeStamp).getMinutes() < 10 ? "0" + new Date(timeStamp).getMinutes() : new Date(
+					timeStamp).getMinutes()
+				let ss = new Date(timeStamp).getSeconds() < 10 ? "0" + new Date(timeStamp).getSeconds() : new Date(
+					timeStamp).getSeconds()
 				let week = new Date(timeStamp).getDay()
 				let weeks = ["日", "一", "二", "三", "四", "五", "六"]
 				this.nowDate = year + "年" + month + "月" + date + "日"

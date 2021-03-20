@@ -1300,19 +1300,19 @@
 					pp = _this.commentForm.PPaccount
 				}
 				let params = {
-					PPNumber: pp
+					Account: pp.trim()
 				}
-				// blackCheck(params).then(res => {
-				let data = 1
-				if (data == 1) {
-					this.$confirm('PP号【' + pp + '】是黑名单PP号', '特别警告', {
-						confirmButtonText: '我知道了',
-						type: 'error',
-						showCancelButton: false,
-						closeOnClickModal: false
-					}).then(() => {}).catch(() => {})
-				}
-				// }).catch((e) => {})
+				blackCheck(params).then(res => {
+					let state = res.State
+					if (state == 1) {
+						this.$confirm('PP号【' + pp + '】是黑名单PP号', '信息警告', {
+							confirmButtonText: '我知道了',
+							type: 'error',
+							showCancelButton: false,
+							closeOnClickModal: false
+						}).then(() => {}).catch(() => {})
+					}
+				}).catch((e) => {})
 			},
 
 			// 购买弹窗

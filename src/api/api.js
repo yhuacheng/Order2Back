@@ -103,4 +103,4 @@ export const blackList = (params) => get('/api/Blacklist/GetBlacklist', params) 
 export const blackAdd = (params) => post('/api/Blacklist/AddBlacklist', params) //黑名单新增
 export const blackDelete = (params) => post('/api/Blacklist/ChangeState', params) //黑名单删除
 
-export const blackCheck = (params) => post('/api/Blacklist/ChangeState', params) //黑名单检测
+export const blackCheck = (params) => get('/api/Blacklist/GetBlacklistModel', params) //黑名单检测

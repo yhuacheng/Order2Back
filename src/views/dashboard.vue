@@ -111,7 +111,8 @@
 		taskProgress,
 		taskNoAllot,
 		orderStateNum,
-		taskStateNum
+		taskStateNum,
+		commentCount
 	} from '@/api/api';
 	export default {
 		name: 'dashboard',
@@ -160,6 +161,7 @@
 			this.taskNoAllotShow()
 			this.orderNumChart()
 			this.taskNumChart()
+			this.commentNumChart()
 			this.taskProgressChart()
 		},
 
@@ -253,7 +255,8 @@
 					endDealTime: '',
 					ServerType: 0,
 					RepeatState: 0,
-					PayState: 0
+					PayState: 0,
+					againTaskState: 0
 				}
 				taskStateNum(params).then(res => {
 					let data = res
@@ -284,6 +287,23 @@
 						'num': res.OrderStateInEight
 					})
 					_this.chartData2.rows = arry
+				}).catch((e) => {})
+			},
+
+			//留评率统计图
+			commentNumChart() {
+				let _this = this
+				let params = {}
+				commentCount(params).then(res => {
+					let data = res
+					let arry = []
+					for (let x in data) {
+						arry.push({
+							'state': data[x].type,
+							'num': data[x].num
+						})
+					}
+					_this.chartData3.rows = arry
 				}).catch((e) => {})
 			},
 

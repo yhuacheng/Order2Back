@@ -95,6 +95,7 @@ export const orderCount = (params) => get('/api/Login/GetHomeOrder', params) //�
 export const taskCount = (params) => get('/api/Login/GetHomeTask', params) //首页统计(任务)
 export const taskNoAllot = (params) => get('/api/Login/GetHomeTaskTobeAllocated', params) //首页统计(7天未分配任务)
 export const taskProgress = (params) => get('/api/Login/GetHomeUserTask', params) //首页统计(任务进度统计图)
+export const commentCount = (params) => get('/api/Login/GetHomeTaskType', params) //首页统计(留评率统计图)
 
 export const phoneCode = (params) => post('/api/CustomerAppointment/ChangePhoneCode', params) //获取短信验证码
 export const phoneCodeCheck = (params) => post('/api/CustomerAppointment/YzChangePhoneCode', params) //验证短信验证码

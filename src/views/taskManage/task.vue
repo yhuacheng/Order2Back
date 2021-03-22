@@ -53,7 +53,6 @@
 				<el-form-item label="是否追加">
 					<el-select v-model="searchForm.again" placeholder="请选择" style="width: 136px;">
 						<el-option value="0" label="全部"></el-option>
-						<el-option value="-1" label="正常"></el-option>
 						<el-option value="1" label="追加"></el-option>
 					</el-select>
 				</el-form-item>
@@ -83,7 +82,7 @@
 		<!--工具条-->
 		<el-col :span="24" class="toolbar">
 			<el-button type="primary" size="mini" v-if="menuBtnShow" :disabled="disabledEditFee" @click="editModalShow">
-				修改【经销商】服务费和汇率</el-button>
+				修改【服务商】服务费和汇率</el-button>
 			<el-button type="danger" size="mini" v-if="menuBtnShow" :disabled="disabledOut" @click="userModalShow(1)">外派
 			</el-button>
 			<el-button type="success" size="mini" v-if="menuBtnShow" :disabled="disabled" @click="TaskAgainShow">追加任务
@@ -334,7 +333,8 @@
 			<el-form :model='buyForm' ref='buyForm' :rules='Rules' label-width='120px' status-icon>
 				<p class="info-title">购买信息</p>
 				<el-form-item label='返款账号' prop="PayAccount">
-					<el-input @keyup.native="toTrim(1)" @blur="checkBlack(1)" v-model='buyForm.PayAccount'></el-input>
+					<el-input @keyup.native="toTrim(1)" @blur="checkBlack(1)" v-model='buyForm.PayAccount'
+						ref="PayAccount"></el-input>
 				</el-form-item>
 				<el-form-item label='购买时间' prop="BuyingTime">
 					<el-date-picker v-model="buyForm.BuyingTime" type="datetime" style="width: 100%"></el-date-picker>
@@ -454,7 +454,8 @@
 			<el-form :model='commentForm' ref='commentForm' label-width='120px' status-icon>
 				<p class="info-title">评价信息</p>
 				<el-form-item label='返款账号' prop="PPaccount">
-					<el-input @keyup.native="toTrim(2)" @blur="checkBlack(2)" v-model='commentForm.PPaccount'>
+					<el-input @keyup.native="toTrim(2)" @blur="checkBlack(2)" v-model='commentForm.PPaccount'
+						ref="PPaccount">
 					</el-input>
 				</el-form-item>
 				<el-form-item label='评价链接' prop="Link">
@@ -1130,7 +1131,7 @@
 					ServerType: _this.searchForm.serveType,
 					RepeatState: _this.searchForm.repeat,
 					PayState: _this.searchForm.payState,
-					AgainTaskState: _this.searchForm.again,
+					againTaskState: _this.searchForm.again,
 					pageIndex: _this.pageIndex,
 					pageSize: _this.pageSize,
 					RoolId: roleId
@@ -1199,6 +1200,7 @@
 					ServerType: _this.searchForm.serveType,
 					RepeatState: _this.searchForm.repeat,
 					PayState: _this.searchForm.payState,
+					againTaskState: _this.searchForm.again,
 					RoolId: roleId
 				}
 				taskStateNum(params).then(res => {
@@ -1306,11 +1308,20 @@
 					let state = res.State
 					if (state == 1) {
 						this.$confirm('PP号【' + pp + '】是黑名单PP号', '信息警告', {
-							confirmButtonText: '我知道了',
+							confirmButtonText: '我不管，我就要填它',
+							cancelButtonText: '重写填写',
 							type: 'error',
-							showCancelButton: false,
 							closeOnClickModal: false
-						}).then(() => {}).catch(() => {})
+						}).then(() => {}).catch(() => {
+							if (val == 1) {
+								_this.buyForm.PayAccount = ''
+								this.$refs.PayAccount.focus()
+							}
+							if (val == 2) {
+								_this.commentForm.PPaccount = ''
+								this.$refs.PPaccount.focus()
+							}
+						})
 					}
 				}).catch((e) => {})
 			},
@@ -1485,17 +1496,56 @@
 							}
 						} else {
 							if (link) {
-								this.$message.error('非正常评价请不要填写评价链接！')
+								this.$message.error('免评单请不要填写评价链接！')
 							} else {
-								taskComment(params).then(res => {
-									_this.closeCommentModal()
-									_this.getAllData()
-									_this.getTaskStateNum()
-								}).catch((e) => {})
+								this.noComment(val)
 							}
 						}
 					}
 				})
+			},
+
+			//免评情况
+			noComment(val) {
+				let _this = this
+				let name = ''
+				let money = ''
+				let data = _this.serviceOtherData
+				for (let x in data) {
+					if (data[x].Id == val) {
+						name = data[x].ServiceName
+						money = data[x].ServiceMoney
+					}
+				}
+				_this.$prompt('若确定该单为免评单，请确认该单【' + name + '】的金额', '信息提示', {
+					confirmButtonText: '确定',
+					cancelButtonText: '取消',
+					inputPattern: /^[0-9]+([.]{1}[0-9]+){0,1}$/,
+					inputErrorMessage: '金额格式不正确',
+					inputValue: money
+				}).then(({
+					value
+				}) => {
+					let _this = this
+					let userId = sessionStorage.getItem('userId')
+					let link = _this.commentForm.Link
+					let image = _this.commentForm.Image
+					let PPaccount = _this.commentForm.PPaccount
+					let params = {
+						Id: _this.taskId,
+						BackUserId: userId,
+						Link: link,
+						Image: image,
+						PayAccount: PPaccount,
+						NoComment: val,
+						Money: value
+					}
+					taskComment(params).then(res => {
+						_this.closeCommentModal()
+						_this.getAllData()
+						_this.getTaskStateNum()
+					}).catch((e) => {})
+				}).catch(() => {})
 			},
 
 			// 图片上传

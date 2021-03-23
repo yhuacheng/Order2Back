@@ -207,7 +207,9 @@
 					</el-link>
 					<div>
 						<span v-if="scope.row.AgainTaskState==1"><span class="danger fz10"> 追加 </span></span>
-						<span v-if="scope.row.NoComment==1"><span class="danger fz10"> 免评 </span></span>
+						<span v-if="scope.row.NoComment">
+							<span class="danger fz10"> {{scope.row.ServiceName}}</span>
+						</span>
 						<span v-if="scope.row.Overtime<0"><span class="danger fz10"> 超时 </span></span>
 						<span v-if="scope.row.Repeat==1"><span class="danger fz10"> 重复 </span></span>
 					</div>

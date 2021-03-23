@@ -3,8 +3,8 @@
 		<!--工具条-->
 		<el-col :span="24" class="toolbar" style="padding-bottom: 0px;">
 			<el-form :inline="true" :model="searchForm" size="mini">
-				<el-form-item label="客户名称">
-					<el-input v-model="searchForm.searchWords" placeholder="请输入客户名称"></el-input>
+				<el-form-item label="客户编码">
+					<el-input v-model="searchForm.searchWords" placeholder="请输入客户编码"></el-input>
 				</el-form-item>
 				<el-form-item label="提现状态">
 					<el-select v-model="searchForm.state" placeholder="请选择状态">
@@ -16,16 +16,19 @@
 				<el-form-item>
 					<el-button @click="searchData">查询</el-button>
 					<el-button @click="resetSearch">重置</el-button>
-					<el-button type="success" v-if="btnShow" :disabled="disabled" @click="changeState(2)">提现成功</el-button>
-					<el-button type="danger" v-if="btnShow" :disabled="disabled" @click="changeState(3)">提现失败</el-button>
+					<el-button type="success" v-if="btnShow" :disabled="disabled" @click="changeState(2)">提现成功
+					</el-button>
+					<el-button type="danger" v-if="btnShow" :disabled="disabled" @click="changeState(3)">提现失败
+					</el-button>
 					<el-button type="warning" @click="exportExcel">导出</el-button>
 				</el-form-item>
 			</el-form>
 		</el-col>
 
 		<!-- 列表 -->
-		<el-table border :data="tableData" v-loading="listLoading" id="exportTable" style="width: 100%" :header-cell-style="{background:'#fafafa'}"
-		 @selection-change="handleSelectionChange" @row-click="rowClick" ref="table">
+		<el-table border :data="tableData" v-loading="listLoading" id="exportTable" style="width: 100%"
+			:header-cell-style="{background:'#fafafa'}" @selection-change="handleSelectionChange" @row-click="rowClick"
+			ref="table">
 			<el-table-column type="selection" align="center"></el-table-column>
 			<el-table-column type="index" label="序号" align="center" width="50"></el-table-column>
 			<el-table-column prop="RemoveMoenyNumber" label="提现记录号" align="center" width="140"></el-table-column>
@@ -52,8 +55,8 @@
 
 		<el-col :span="24" class="toolbar">
 			<el-pagination style="float: right;" @size-change="handleSizeChange" @current-change="handleCurrentChange"
-			 :current-page="pageIndex" :page-sizes="[10, 20, 50, 100]" :page-size="10" layout="total, sizes, prev, pager, next, jumper"
-			 :total="total">
+				:current-page="pageIndex" :page-sizes="[10, 20, 50, 100]" :page-size="10"
+				layout="total, sizes, prev, pager, next, jumper" :total="total">
 			</el-pagination>
 		</el-col>
 

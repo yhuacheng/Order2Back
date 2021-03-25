@@ -19,9 +19,11 @@ Vue.use(ElementUI, {
 import VePie from 'v-charts/lib/pie.common'
 import VeRing from 'v-charts/lib/ring.common'
 import VeBar from 'v-charts/lib/bar.common'
+import VeLine from 'v-charts/lib/line.common'
 Vue.component(VePie.name, VePie)
 Vue.component(VeRing.name, VeRing)
 Vue.component(VeBar.name, VeBar)
+Vue.component(VeLine.name, VeLine)
 
 Vue.prototype.$IMG_URL = 'http://203.195.212.239:90/' //统一设置页面上图片URL路径入口（前台图片）
 

@@ -61,43 +61,76 @@
 			</el-row>
 		</el-card>
 
-		<el-row :gutter="30" class="mt40">
+		<el-row :gutter="30" class="mt30">
 			<el-col :span="6">
 				<el-card>
 					<div slot="header" class="clearfix">
-						<span>订单统计</span>
+						<span>总订单统计</span>
 					</div>
-					<ve-pie :data="chartData1"></ve-pie>
+					<ve-pie :data="chartData1" height="360px"></ve-pie>
 				</el-card>
 			</el-col>
-
-			<el-col :span="6">
+			<el-col :span="12">
 				<el-card>
 					<div slot="header" class="clearfix">
-						<span>任务统计</span>
+						<span>
+							<el-button class="pd0" type="text" @click="changeOrderYear(-1)">
+								<i class="el-icon-arrow-left"></i> 前一年
+							</el-button>
+							<span> （{{year1}}） </span>
+							<el-button class="pd0" type="text" @click="changeOrderYear(1)">
+								后一年 <i class="el-icon-arrow-right"></i>
+							</el-button>
+							<span>年度月订单统计</span>
+						</span>
 					</div>
-					<ve-pie :data="chartData2"></ve-pie>
+					<ve-line :data="chartData5" :settings="chartSettings5" height="360px"></ve-line>
 				</el-card>
 			</el-col>
-
 			<el-col :span="6">
 				<el-card>
 					<div slot="header" class="clearfix">
 						<span>留评统计</span>
 					</div>
-					<ve-ring :data="chartData3" :settings="{radius: [60, 100]}"></ve-ring>
+					<ve-ring :data="chartData3" :settings="{radius: [60, 100]}" height="360px"></ve-ring>
 				</el-card>
 			</el-col>
+		</el-row>
 
+		<el-row :gutter="30" class="mt30 mb30">
+			<el-col :span="6">
+				<el-card>
+					<div slot="header" class="clearfix">
+						<span>总任务统计</span>
+					</div>
+					<ve-pie :data="chartData2" height="360px"></ve-pie>
+				</el-card>
+			</el-col>
+			<el-col :span="12">
+				<el-card>
+					<div slot="header" class="clearfix">
+						<span>
+							<el-button class="pd0" type="text" @click="changeTaskYear(-1)">
+								<i class="el-icon-arrow-left"></i> 前一年
+							</el-button>
+							<span> （{{year2}}） </span>
+							<el-button class="pd0" type="text" @click="changeTaskYear(1)">
+								后一年 <i class="el-icon-arrow-right"></i>
+							</el-button>
+							<span>年度月填单统计</span>
+						</span>
+					</div>
+					<ve-line :data="chartData6" :settings="chartSettings6" height="360px"></ve-line>
+				</el-card>
+			</el-col>
 			<el-col :span="6">
 				<el-card>
 					<div slot="header" class="clearfix">
 						<span>任务进度统计</span>
 					</div>
-					<ve-bar :data="chartData4" :settings="chartSettings4"></ve-bar>
+					<ve-bar :data="chartData4" :settings="chartSettings4" height="360px"></ve-bar>
 				</el-card>
 			</el-col>
-
 		</el-row>
 
 	</section>
@@ -112,7 +145,9 @@
 		taskNoAllot,
 		orderStateNum,
 		taskStateNum,
-		commentCount
+		commentCount,
+		orderList,
+		taskList
 	} from '@/api/api';
 	export default {
 		name: 'dashboard',
@@ -139,7 +174,7 @@
 				},
 				chartSettings4: {
 					stack: {
-						'xxx': ['heji', 'meiri', 'bili']
+						'统计': ['heji', 'meiri', 'bili']
 					},
 					labelMap: {
 						'heji': '已完成',
@@ -150,6 +185,32 @@
 				chartData4: {
 					columns: ['userName', 'heji', 'meiri', 'bili'],
 					rows: []
+				},
+				year1: new Date().getFullYear(),
+				year2: new Date().getFullYear(),
+				chartData5: {
+					columns: ['time', 'num'],
+					rows: []
+				},
+				chartSettings5: {
+					stack: {
+						'xxx': ['num']
+					},
+					labelMap: {
+						'num': '订单数'
+					}
+				},
+				chartData6: {
+					columns: ['time', 'num'],
+					rows: []
+				},
+				chartSettings6: {
+					stack: {
+						'xxx': ['num']
+					},
+					labelMap: {
+						'num': '上评数'
+					}
 				}
 			}
 		},
@@ -163,6 +224,8 @@
 			this.taskNumChart()
 			this.commentNumChart()
 			this.taskProgressChart()
+			this.orderCountYear()
+			this.taskCountYear()
 		},
 
 		methods: {
@@ -322,6 +385,166 @@
 					})
 					_this.chartData4.rows = data
 				}).catch((e) => {})
+			},
+
+			//年度订单数据
+			orderCountYear() {
+				let params = {
+					keyWord: '',
+					state: 0,
+					countryId: 0,
+					type: 0,
+					Diff: 0,
+					startTime: this.year1 + '-1-1',
+					endTime: this.year1 + '-12-31',
+					ServerType: 0,
+					pageIndex: 1,
+					pageSize: 100000000
+				}
+				orderList(params).then(res => {
+					let v = res.Entity
+					let data = []
+					for (let x in v) {
+						let vArr = v[x].OrderTime.split('/')
+						data.push(vArr[0] + '-' + vArr[1])
+					}
+					this.orderChartShow(data)
+				}).catch((e) => {})
+			},
+
+			//订单年度统计切换年度
+			changeOrderYear(val) {
+				let year = this.year1
+				let newYear = Number(year) + Number(val)
+				this.year1 = newYear
+				this.orderCountYear()
+			},
+
+			//年度任务数据
+			taskCountYear() {
+				let params = {
+					Id: 1,
+					Key: 'Michale_009',
+					keyWord: '',
+					State: 0,
+					countryId: 0,
+					type: 0,
+					Diff: 0,
+					startTime: this.year2 + '-1-1',
+					endTime: this.year2 + '-12-31',
+					startEvaluateTime: '',
+					endEvaluateTime: '',
+					startDealTime: '',
+					endDealTime: '',
+					ServerType: 0,
+					RepeatState: 0,
+					PayState: 0,
+					againTaskState: 0,
+					pageIndex: 1,
+					pageSize: 100000000,
+					RoolId: 1,
+				}
+				taskList(params).then(res => {
+					let v = res.Entity
+					let data = []
+					for (let x in v) {
+						let vArr = v[x].AddTime.split('/')
+						data.push(vArr[0] + '-' + vArr[1])
+					}
+					this.taskChartShow(data)
+				}).catch((e) => {})
+			},
+
+			//填单年度统计切换年度
+			changeTaskYear(val) {
+				let year = this.year2
+				let newYear = Number(year) + Number(val)
+				this.year2 = newYear
+				this.taskCountYear()
+			},
+
+			//年度订单走势图展示
+			orderChartShow(data) {
+				let obj = {}
+				for (let i = 0; i < data.length; i++) {
+					let item = data[i]
+					obj[item] = (obj[item] + 1) || 1
+				}
+				let dataNew = []
+				for (let i in obj) {
+					dataNew.push({
+						time: i,
+						num: obj[i]
+					})
+				}
+				let year = this.year1
+				let xData = []
+				for (let i = 1; i <= 12; i++) {
+					let v = year + '-' + i
+					xData.push({
+						time: v,
+						num: 0
+					})
+				}
+				let list = Array.from(new Set(xData.concat(dataNew)))
+				let arr = [list[0]]
+				for (let i = 1; i < list.length; i++) {
+					let item = list[i]
+					let repeat = false
+					for (let j = 0; j < arr.length; j++) {
+						if (item.time == arr[j].time) {
+							arr[j].num = item.num
+							repeat = true
+							break
+						}
+					}
+					if (!repeat) {
+						arr.push(item)
+					}
+				}
+				this.chartData5.rows = arr
+			},
+
+			//年度填单数走势图展示
+			taskChartShow(data) {
+				let obj = {}
+				for (let i = 0; i < data.length; i++) {
+					let item = data[i]
+					obj[item] = (obj[item] + 1) || 1
+				}
+				let dataNew = []
+				for (let i in obj) {
+					dataNew.push({
+						time: i,
+						num: obj[i]
+					})
+				}
+				let year = this.year2
+				let xData = []
+				for (let i = 1; i <= 12; i++) {
+					let v = year + '-' + i
+					xData.push({
+						time: v,
+						num: 0
+					})
+				}
+				let list = Array.from(new Set(xData.concat(dataNew)))
+				let arr = [list[0]]
+				for (let i = 1; i < list.length; i++) {
+					let item = list[i]
+					let repeat = false
+					for (let j = 0; j < arr.length; j++) {
+						if (item.time == arr[j].time) {
+							arr[j].num = item.num
+							repeat = true
+							break
+						}
+					}
+					if (!repeat) {
+						arr.push(item)
+					}
+				}
+				this.chartData6.rows = arr
 			}
 
 		}

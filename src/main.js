@@ -42,6 +42,7 @@ router.beforeEach((to, from, next) => {
 		if (pathArr) {
 			pathArray = pathArr.split(',')
 		}
+		pathArray.push('/')
 		pathArray.push('/login')
 		pathArray.push('/welcome')
 

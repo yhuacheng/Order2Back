@@ -4,8 +4,9 @@
 		<el-col :span="24" class="toolbar" style="padding-bottom: 0px;">
 			<el-form :inline="true" :model="searchForm" size="mini">
 				<el-form-item label="搜索内容">
-					<el-input @keyup.native="searchToTrim" v-model="searchForm.searchWords"
-						placeholder="订单号/产品名称/ASIN/客户编码" style="width: 220px;"></el-input>
+					<el-input @keyup.native="searchToTrim" @keyup.enter.native="searchData"
+						v-model="searchForm.searchWords" placeholder="订单号/产品名称/ASIN/客户编码" style="width: 220px;">
+					</el-input>
 				</el-form-item>
 				<el-form-item label="订单类型">
 					<el-select v-model="searchForm.serveType" placeholder="请选择" style="width: 150px;">
@@ -126,7 +127,11 @@
 			<pl-table-column prop="Brand" label="品牌" align="center" :show-overflow-tooltip='true'></pl-table-column>
 			<pl-table-column prop="Place" label="产品位置" align="center" :show-overflow-tooltip='true'></pl-table-column>
 			<pl-table-column prop="Number" label="任务数" align="center"></pl-table-column>
-			<pl-table-column prop="RemainNumber" label="待购买数" align="center"></pl-table-column>
+			<pl-table-column prop="noBuy" label="待购买数" align="center">
+				<template slot-scope="scope">
+					<span class="danger">{{scope.row.noBuy}}</span>
+				</template>
+			</pl-table-column>
 			<pl-table-column prop="ProductPrice" label="产品价格" align="center"></pl-table-column>
 			<pl-table-column prop="Totalproductprice" label="产品总额" align="center"></pl-table-column>
 			<pl-table-column prop="AddedFee" label="增值费" align="center"></pl-table-column>

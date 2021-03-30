@@ -4,8 +4,9 @@
 		<el-col :span="24" class="toolbar" style="padding-bottom: 0px;">
 			<el-form :inline="true" :model="searchForm" size="mini">
 				<el-form-item label="搜索内容">
-					<el-input @keyup.native="searchToTrim" v-model="searchForm.searchWords"
-						placeholder="任务编号/ASIN/店铺/操作员/客户编号/购买单号/PP账号" style="width: 350px;"></el-input>
+					<el-input @keyup.native="searchToTrim" @keyup.enter.native="searchData"
+						v-model="searchForm.searchWords" placeholder="任务编号/ASIN/店铺/操作员/客户编号/购买单号/PP账号"
+						style="width: 350px;"></el-input>
 				</el-form-item>
 				<el-form-item label="填单时间">
 					<el-date-picker v-model="searchForm.time" :unlink-panels='true' type="datetimerange"
@@ -481,7 +482,6 @@
 				</el-form-item>
 			</el-form>
 			<div slot="footer" class="dialog-footer">
-				<!-- <el-button type="danger" @click="commentSubmit(1)" style="position: absolute;left: 15px">免 评</el-button> -->
 				<span v-for="(item,i) in serviceOtherData" :key="i" style="float: left;">
 					<el-button type="danger" @click="commentSubmit(item.Id)" class="mr15">{{item.ServiceName}}
 					</el-button>
@@ -1519,9 +1519,10 @@
 						money = data[x].ServiceMoney
 					}
 				}
-				_this.$prompt('若确定该单为免评单，请确认该单【' + name + '】的金额', '信息提示', {
+				_this.$prompt('若确定该单为【' + name + '】单，请确认该' + name + '单的金额', '信息提示', {
 					confirmButtonText: '确定',
 					cancelButtonText: '取消',
+					closeOnClickModal: false,
 					inputPattern: /^[0-9]+([.]{1}[0-9]+){0,1}$/,
 					inputErrorMessage: '金额格式不正确',
 					inputValue: money

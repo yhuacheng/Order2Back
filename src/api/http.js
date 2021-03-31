@@ -17,7 +17,7 @@ axios.interceptors.request.use(
 	config => {
 		// 如果有token则在请求时携带token
 		if (sessionStorage.getItem('token')) {
-			config.headers.common["token"] = sessionStorage.getItem('token');
+			config.headers.common["auth"] = sessionStorage.getItem('token');
 		}
 		return config;
 	},

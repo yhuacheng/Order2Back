@@ -4,10 +4,12 @@
 			<div class="logo"><img src="../assets/image/logo.png" /></div>
 			<h3 class="title">下单系统 后台管理</h3>
 			<el-form-item prop="account">
-				<el-input type="text" v-model="loginForm.account" auto-complete="off" prefix-icon="el-icon-user" placeholder="账号"></el-input>
+				<el-input type="text" v-model="loginForm.account" auto-complete="off" prefix-icon="el-icon-user"
+					placeholder="账号"></el-input>
 			</el-form-item>
 			<el-form-item prop="password">
-				<el-input type="password" v-model="loginForm.password" auto-complete="off" prefix-icon="el-icon-lock" placeholder="密码"></el-input>
+				<el-input type="password" v-model="loginForm.password" auto-complete="off" prefix-icon="el-icon-lock"
+					placeholder="密码"></el-input>
 			</el-form-item>
 			<el-form-item>
 				<el-button class="login-btn" type="primary" @click="loginIn" :loading="btnLoading">登录</el-button>
@@ -75,6 +77,7 @@
 							sessionStorage.setItem('userId', res.Id)
 							sessionStorage.setItem('userName', res.Name)
 							sessionStorage.setItem('userPhone', res.Phone)
+							sessionStorage.setItem('token', res.Token)
 							_this.btnLoading = false
 							this.$router.push('/welcome')
 						}).catch((e) => {

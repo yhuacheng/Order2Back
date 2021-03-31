@@ -133,7 +133,7 @@
 				</template>
 			</pl-table-column>
 			<pl-table-column prop="ProductPrice" label="产品价格" align="center"></pl-table-column>
-			<pl-table-column prop="Totalproductprice" label="产品总额" align="center"></pl-table-column>
+			<pl-table-column prop="TotalProductPrice" label="产品总额" align="center"></pl-table-column>
 			<pl-table-column prop="AddedFee" label="增值费" align="center"></pl-table-column>
 			<pl-table-column prop="UnitPriceSerCharge" label="服务费" align="center"></pl-table-column>
 			<pl-table-column prop="ExchangeRate" label="汇率" align="center"></pl-table-column>
@@ -393,7 +393,7 @@
 					</el-col>
 					<el-col :span="12">
 						<el-form-item label='产品总价：'>
-							<span>{{view.Totalproductprice}}</span>
+							<span>{{view.TotalProductPrice}}</span>
 						</el-form-item>
 					</el-col>
 					<el-col :span="12">
@@ -1127,7 +1127,7 @@
 					},
 					{
 						title: '待购买数',
-						key: 'RemainNumber',
+						key: 'noBuy',
 						type: 'text'
 					},
 					{
@@ -1137,7 +1137,7 @@
 					},
 					{
 						title: '产品总额',
-						key: 'Totalproductprice',
+						key: 'TotalProductPrice',
 						type: 'text'
 					},
 					{
@@ -1217,7 +1217,13 @@
 					}
 					data[t].ExpOrderState = TxtOrderState
 				}
-				const excelName = '订单数据.xls'
+				let date = new Date()
+				let year = date.getFullYear()
+				let month = date.getMonth() < 9 ? "0" + (date.getMonth() + 1) : date.getMonth() + 1
+				let day = date.getDate() <= 9 ? "0" + date.getDate() : date.getDate()
+				let time = year + '-' + month + '-' + day
+
+				const excelName = '订单数据' + '_' + time + '.xls'
 				table2excel(column, data, excelName)
 			}
 		}

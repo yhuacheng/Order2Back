@@ -5,7 +5,7 @@
 			<el-form :inline="true" :model="searchForm" size="mini">
 				<el-form-item label="搜索内容">
 					<el-input @keyup.native="searchToTrim" @keyup.enter.native="searchData"
-						v-model="searchForm.searchWords" placeholder="任务编号/ASIN/店铺/操作员/客户编号/购买单号/PP账号"
+						v-model="searchForm.searchWords" placeholder="任务编号/ASIN/店铺/操作员/外派员/客户编号/购买单号/PP号"
 						style="width: 350px;"></el-input>
 				</el-form-item>
 				<el-form-item label="填单时间">
@@ -74,7 +74,7 @@
 					</el-select>
 				</el-form-item>
 				<el-form-item>
-					<el-button type="primary" @click="searchData(0)">查询</el-button>
+					<el-button type="primary" @click="searchData(0)" style="margin-left: 80px;">查询</el-button>
 					<el-button @click="resetSearch">重置</el-button>
 				</el-form-item>
 			</el-form>
@@ -189,11 +189,9 @@
 							</tr>
 							<tr>
 								<td>订单备注</td>
-								<td colspan="5">{{props.row.OrderRemarks}}</td>
-								<td>购买备注</td>
-								<td colspan="3">{{props.row.BuyRemarks}}</td>
+								<td colspan="7">{{props.row.OrderRemarks}}</td>
 								<td>客户备注</td>
-								<td colspan="3">{{props.row.Remarks}}</td>
+								<td colspan="5">{{props.row.Remarks}}</td>
 							</tr>
 						</table>
 					</el-card>
@@ -248,7 +246,13 @@
 				</template>
 			</pl-table-column>
 			<pl-table-column prop="Name" label="操作员" align="center"></pl-table-column>
-			<pl-table-column prop="Name1" label="外派员" align="center" :show-overflow-tooltip='true'></pl-table-column>
+			<pl-table-column prop="Name1" label="外派员" align="center" :show-overflow-tooltip='true'>
+				<template slot-scope="scope">
+					<span>{{scope.row.Name1}}</span>
+					<span v-if="scope.row.Name1 && scope.row.BuyRemarks"> / </span>
+					<span>{{scope.row.BuyRemarks}}</span>
+				</template>
+			</pl-table-column>
 			<pl-table-column prop="AmazonNumber" label="购买单号" align="center" width="150"></pl-table-column>
 			<pl-table-column prop="AddTime" label="填单时间" align="center" width="132" :sortable="true"
 				:sort-method="sortByAddTime"></pl-table-column>
@@ -355,7 +359,7 @@
 					<el-input v-show="false" v-model='buyForm.Image'></el-input>
 				</el-form-item>
 				<el-form-item label='购买备注' prop="Remarks">
-					<el-input type="textarea" v-model="buyForm.BuyRemarks" rows="5"></el-input>
+					<el-input v-model="buyForm.BuyRemarks"></el-input>
 				</el-form-item>
 				<el-form-item label='购买价格' prop="AmazonProductPrice">
 					<el-input v-model='buyForm.AmazonProductPrice'>
@@ -2062,7 +2066,7 @@
 					},
 					{
 						title: '外派员',
-						key: 'Name1',
+						key: 'ExpName1',
 						type: 'text'
 					},
 					{
@@ -2081,12 +2085,7 @@
 						type: 'text'
 					},
 					{
-						title: '购买备注',
-						key: 'BuyRemarks',
-						type: 'text'
-					},
-					{
-						title: '任务备注',
+						title: '客户备注',
 						key: 'Remarks',
 						type: 'text'
 					},
@@ -2147,6 +2146,18 @@
 					}
 					data[t].ExpServiceType = TxtServiceType
 
+					let TxtName1 = ''
+					if (data[t].Name1) {
+						TxtName1 = data[t].Name1
+					}
+					if (data[t].BuyRemarks) {
+						TxtName1 = data[t].BuyRemarks
+					}
+					if (data[t].Name1 && data[t].BuyRemarks) {
+						TxtName1 = data[t].Name1 + ' / ' + data[t].BuyRemarks
+					}
+					data[t].ExpName1 = TxtName1
+
 					let TxtTaskState = ''
 					if (data[t].TaskState == 1) {
 						TxtTaskState = '待分配'
@@ -2174,7 +2185,13 @@
 					}
 					data[t].ExpTaskState = TxtTaskState
 				}
-				const excelName = '任务管理.xls'
+				let date = new Date()
+				let year = date.getFullYear()
+				let month = date.getMonth() < 9 ? "0" + (date.getMonth() + 1) : date.getMonth() + 1
+				let day = date.getDate() <= 9 ? "0" + date.getDate() : date.getDate()
+				let time = year + '-' + month + '-' + day
+
+				const excelName = '任务数据' + '_' + time + '.xls'
 				table2excel(column, data, excelName)
 			}
 		}

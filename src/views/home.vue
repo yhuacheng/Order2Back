@@ -55,29 +55,15 @@
 				<!-- 导航菜单-折叠状态 -->
 				<ul class="el-menu collapsed" v-show="collapsed" ref="menuCollapsed">
 					<li v-for="(item,index) in routes" :key="item.NavigationName" class="el-submenu item">
-						<!--非单节点菜单-->
-						<div v-if="!item.leaf">
-							<div class="el-submenu__title" style="padding-left: 18px;" @mouseover="showMenu(index,true)"
-								@mouseout="showMenu(index,false)"><i :class="item.Icon"></i></div>
-							<ul class="el-menu submenu" :class="'submenu-hook-'+index" @mouseover="showMenu(index,true)"
-								@mouseout="showMenu(index,false)">
-								<li v-for="child in item.childs" :key="child.Path" class="el-menu-item"
-									:class="$route.path===child.Path?'is-active':''" @click="$router.push(child.Path)">
-									{{child.NavigationName}}
-								</li>
-							</ul>
-						</div>
-						<!-- 单节点菜单 -->
-						<div v-else>
-					<li class="el-submenu">
-						<div class="el-submenu__title el-menu-item"
-							style="height: 56px;line-height: 56px;padding: 0 20px;"
-							:class="$route.path===item.childs[0].Path?'is-active':''"
-							@click="$router.push(item.childs[0].Path)">
-							<i :class="item.iconCls"></i>
-						</div>
-					</li>
-					</div>
+						<div class="el-submenu__title" style="padding-left: 18px;" @mouseover="showMenu(index,true)"
+							@mouseout="showMenu(index,false)"><i :class="item.Icon"></i></div>
+						<ul class="el-menu submenu" :class="'submenu-hook-'+index" @mouseover="showMenu(index,true)"
+							@mouseout="showMenu(index,false)">
+							<li v-for="child in item.childs" :key="child.Path" class="el-menu-item"
+								:class="$route.path===child.Path?'is-active':''" @click="$router.push(child.Path)">
+								{{child.NavigationName}}
+							</li>
+						</ul>
 					</li>
 				</ul>
 			</aside>

@@ -351,8 +351,9 @@
 				</el-form-item>
 				<el-form-item label='购买截图' prop="image">
 					<el-upload class="avatar-uploader" name="Image" action="/api/Payment/GetProductPictures"
-						:show-file-list="false" :on-success="handleAvatarSuccessBuy" :on-error="handleError"
-						:before-upload="beforeAvatarUpload" accept="image/jpeg,image/png,image/gif,image/bmp">
+						:headers="headers" :show-file-list="false" :on-success="handleAvatarSuccessBuy"
+						:on-error="handleError" :before-upload="beforeAvatarUpload"
+						accept="image/jpeg,image/png,image/gif,image/bmp">
 						<img v-if="imageUrl" :src="imageUrl" class="avatar">
 						<i v-else class="el-icon-plus avatar-uploader-icon"></i>
 					</el-upload>
@@ -470,10 +471,10 @@
 				</el-form-item>
 				<el-form-item label='评价截图' prop="image">
 					<el-upload class="avatar-uploader" name="Image" action="/api/Payment/GetProductPictures"
-						list-type="picture-card" :on-success="handleAvatarSuccess" :on-error="handleError"
-						:before-upload="beforeAvatarUpload" accept="image/jpeg,image/png,image/gif,image/bmp"
-						:on-preview="handlePictureCardPreview" :on-remove="handleRemove" :file-list="fileListArr"
-						:limit="3">
+						:headers="headers" list-type="picture-card" :on-success="handleAvatarSuccess"
+						:on-error="handleError" :before-upload="beforeAvatarUpload"
+						accept="image/jpeg,image/png,image/gif,image/bmp" :on-preview="handlePictureCardPreview"
+						:on-remove="handleRemove" :file-list="fileListArr" :limit="3">
 						<i class="el-icon-plus"></i>
 					</el-upload>
 					<el-dialog v-dialogDrag title="评价截图大图预览" :visible.sync="dialogImg" :modal-append-to-body="false"
@@ -815,6 +816,9 @@
 				menuBtnShow: false, //是否显示列表上方菜单按钮
 				tableBtnShow: false, //是否显示列表中的操作按钮
 				CWbtnShow: false, //财务按钮
+				headers: {
+					auth: sessionStorage.getItem('token')
+				},
 				searchForm: {
 					searchWords: '',
 					state: 0,

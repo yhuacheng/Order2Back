@@ -41,7 +41,7 @@
 				<el-link style="margin-bottom: 20px;" type="primary" :underline="false" href="/template/黑名单导入模板.xlsx">
 					<el-button size="mini" type="primary">下载黑名单导入的Excel模板</el-button>
 				</el-link>
-				<el-upload ref="upload" :limit="1" drag action="/api/Blacklist/ImportExcel" multiple
+				<el-upload ref="upload" :limit="1" drag action="/api/Blacklist/ImportExcel" :headers="headers" multiple
 					:on-success="handleAvatarSuccess" :on-error="handleError" :before-upload="beforeAvatarUpload"
 					accept="application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet">
 					<i class="el-icon-upload"></i>
@@ -73,6 +73,9 @@
 				tableData: [],
 				listLoading: false,
 				btnLoading: false,
+				headers: {
+					auth: sessionStorage.getItem('token')
+				},
 				searchForm: {
 					searchWords: ''
 				}

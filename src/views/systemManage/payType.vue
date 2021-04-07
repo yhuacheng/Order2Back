@@ -8,8 +8,9 @@
 			<el-button type="danger" size="mini" :disabled="disabled" @click="changeState(0)">无效</el-button>
 		</el-col>
 
-		<el-table border :data="tableData" v-loading="listLoading" id="exportTable" style="width: 100%" :header-cell-style="{background:'#fafafa'}"
-		 @selection-change="handleSelectionChange" @row-click="rowClick" ref="table">
+		<el-table border :data="tableData" v-loading="listLoading" id="exportTable" style="width: 100%"
+			:header-cell-style="{background:'#fafafa'}" @selection-change="handleSelectionChange" @row-click="rowClick"
+			ref="table">
 			<el-table-column type="selection" align="center"></el-table-column>
 			<el-table-column type="index" label="序号" align="center" width="50"></el-table-column>
 			<el-table-column prop="AccountNumber" label="收款账号" align="center"></el-table-column>
@@ -17,7 +18,8 @@
 			<el-table-column prop="PaymentState" label="支付方式" align="center" :formatter="toText"></el-table-column>
 			<el-table-column prop="Image" label="收款二维码" align="center">
 				<template slot-scope="scope">
-					<img style="width: 40px;height: 40px;" v-show="scope.row.Image" :src="scope.row.Image" @click="showImage(scope.$index,scope.row)" />
+					<img style="width: 40px;height: 40px;" v-show="scope.row.Image" :src="scope.row.Image"
+						@click="showImage(scope.$index,scope.row)" />
 				</template>
 			</el-table-column>
 			<el-table-column prop="Remarks" label="备注" align="center"></el-table-column>
@@ -30,8 +32,8 @@
 		</el-table>
 
 		<!--新增/修改-->
-		<el-dialog v-dialogDrag :title='title' :visible.sync='editModal' :close-on-click-modal='false' :before-close="closeModal"
-		 width="30%">
+		<el-dialog v-dialogDrag :title='title' :visible.sync='editModal' :close-on-click-modal='false'
+			:before-close="closeModal" width="30%">
 			<el-form :model='editForm' ref='editForm' :rules='Rules' label-width='90px' status-icon>
 				<el-form-item label='收款账号' prop='AccountNumber'>
 					<el-input v-model='editForm.AccountNumber'></el-input>
@@ -47,8 +49,10 @@
 					</el-select>
 				</el-form-item>
 				<el-form-item label='收款二维码' prop='Image'>
-					<el-upload class="avatar-uploader" name="Image" action="/api/Payment/GetProductPictures" :show-file-list="false"
-					 :on-success="handleAvatarSuccess" :on-error="handleError" :before-upload="beforeAvatarUpload" accept="image/jpeg,image/png,image/gif,image/bmp">
+					<el-upload class="avatar-uploader" name="Image" action="/api/Payment/GetProductPictures"
+						:headers="headers" :show-file-list="false" :on-success="handleAvatarSuccess"
+						:on-error="handleError" :before-upload="beforeAvatarUpload"
+						accept="image/jpeg,image/png,image/gif,image/bmp">
 						<img v-if="imageUrl" :src="imageUrl" class="avatar">
 						<i v-else class="el-icon-plus avatar-uploader-icon"></i>
 					</el-upload>
@@ -61,12 +65,14 @@
 			<div slot="footer" class="dialog-footer">
 				<el-button @click="closeModal">取消</el-button>
 				<el-button type="primary" v-if="doType==='add'" @click="addSubmit" :loading="btnLoading">提交</el-button>
-				<el-button type="primary" v-if="doType==='edit'" @click="editSubmit" :loading="btnLoading">提交</el-button>
+				<el-button type="primary" v-if="doType==='edit'" @click="editSubmit" :loading="btnLoading">提交
+				</el-button>
 			</div>
 		</el-dialog>
 
 		<!--查看收款二维码大图-->
-		<el-dialog :title='title' :visible.sync='imageModal' :close-on-click-modal='false' :before-close="closeImageModal">
+		<el-dialog :title='title' :visible.sync='imageModal' :close-on-click-modal='false'
+			:before-close="closeImageModal">
 			<div class="txtCenter">
 				<img :src='imageUrl' style="max-width: 50%;" />
 			</div>
@@ -105,6 +111,9 @@
 				checkBoxData: [], //选中数据
 				searchForm: {
 					searchWords: ''
+				},
+				headers: {
+					auth: sessionStorage.getItem('token')
 				},
 				editForm: {
 					AccountNumber: '',

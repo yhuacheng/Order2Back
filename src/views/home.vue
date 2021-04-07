@@ -14,7 +14,7 @@
 				</span>
 				<span class="ml10">F11 可全屏</span>
 			</el-col>
-			<el-col :span="16" class="userinfo">
+			<el-col :span="8" class="userinfo">
 				<span style="margin-right: 30px;">
 					<span class="ml10">{{nowDate}}</span>
 					<span class="ml10">{{nowTime}}</span>

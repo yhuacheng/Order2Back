@@ -135,6 +135,7 @@ $color-aside: #324157; //左侧菜单背景色
 
 .el-image-viewer__wrapper{
 	outline: none;
+	z-index: 3000 !important;
 }
 
 .disabled-font-color .el-input.is-disabled .el-input__inner {

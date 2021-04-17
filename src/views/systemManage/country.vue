@@ -2,7 +2,7 @@
 	<section>
 		<!--工具条-->
 		<el-col :span="24" class="toolbar" style="padding-bottom: 0px;">
-			<el-form :inline="true" :model="searchForm" size="mini">
+			<el-form :inline="true" :model="searchForm" size="small">
 				<el-form-item label="国家">
 					<el-input v-model="searchForm.searchWords" placeholder="请输入国家名称"></el-input>
 				</el-form-item>

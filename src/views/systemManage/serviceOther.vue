@@ -2,8 +2,8 @@
 	<section>
 		<!--工具条-->
 		<el-col :span="24" class="toolbar" style="padding-bottom: 0px;">
-			<el-form :inline="true" :model="searchForm" size="mini">
-				<el-form-item label="国家">
+			<el-form :inline="true" :model="searchForm" size="small">
+				<el-form-item label="搜索">
 					<el-input v-model="searchForm.searchWords" placeholder="请输入服务名称"></el-input>
 				</el-form-item>
 				<el-form-item>
@@ -15,8 +15,8 @@
 		</el-col>
 
 		<!--列表-->
-		<el-table border :data="tableData" v-loading="listLoading" style="width: 100%" :header-cell-style="{background:'#fafafa'}"
-		 id="tableData" ref='table'>
+		<el-table border :data="tableData" v-loading="listLoading" style="width: 100%"
+			:header-cell-style="{background:'#fafafa'}" id="tableData" ref='table'>
 			<el-table-column type="index" label="#" align="center"></el-table-column>
 			<el-table-column prop="ServiceName" label="服务名称" align="center"></el-table-column>
 			<el-table-column prop="ServiceMoney" label="服务价格" align="center"></el-table-column>
@@ -30,14 +30,14 @@
 		<!--工具条-->
 		<el-col :span="24" class="toolbar">
 			<el-pagination style="float: right;" @size-change="handleSizeChange" @current-change="handleCurrentChange"
-			 :current-page="pageIndex" :page-sizes="[10, 20, 50, 100]" :page-size="10" layout="total, sizes, prev, pager, next, jumper"
-			 :total="total">
+				:current-page="pageIndex" :page-sizes="[10, 20, 50, 100]" :page-size="10"
+				layout="total, sizes, prev, pager, next, jumper" :total="total">
 			</el-pagination>
 		</el-col>
 
 		<!--编辑界面-->
-		<el-dialog v-dialogDrag :title="title" :visible.sync="editModal" :close-on-click-modal="false" :before-close="closeModal"
-		 width="30%">
+		<el-dialog v-dialogDrag :title="title" :visible.sync="editModal" :close-on-click-modal="false"
+			:before-close="closeModal" width="30%">
 			<el-form :model='editForm' ref='editForm' :rules='rules' label-width='90px' status-icon>
 				<el-form-item label='服务名称' prop='name'>
 					<el-input v-model='editForm.name'></el-input>
@@ -49,7 +49,8 @@
 			<div slot="footer" class="dialog-footer">
 				<el-button @click="closeModal">取消</el-button>
 				<el-button type="primary" v-if="doType==='add'" @click="addSubmit" :loading="btnLoading">提交</el-button>
-				<el-button type="primary" v-if="doType==='edit'" @click="editSubmit" :loading="btnLoading">提交</el-button>
+				<el-button type="primary" v-if="doType==='edit'" @click="editSubmit" :loading="btnLoading">提交
+				</el-button>
 			</div>
 		</el-dialog>
 	</section>

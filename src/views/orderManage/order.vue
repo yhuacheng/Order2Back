@@ -2,7 +2,7 @@
 	<section>
 		<!--工具条-->
 		<el-col :span="24" class="toolbar" style="padding-bottom: 0px;">
-			<el-form :inline="true" :model="searchForm" size="mini">
+			<el-form :inline="true" :model="searchForm" size="small">
 				<el-form-item label="搜索内容">
 					<el-input @keyup.native="searchToTrim" @keyup.enter.native="searchData"
 						v-model="searchForm.searchWords" placeholder="订单号/产品名称/ASIN/客户编码" style="width: 220px;">
@@ -45,7 +45,6 @@
 					<el-button type="primary" @click="searchData(0)">查询</el-button>
 					<el-button @click="resetSearch">重置</el-button>
 				</el-form-item>
-				</el-row>
 			</el-form>
 		</el-col>
 
@@ -56,7 +55,7 @@
 			<el-button v-if="menuBtnShow && searchForm.state==1" type="success" size="mini" @click="orderConfirmMore(1)"
 				:disabled="disabledMore" :loading="btnLoading">批量确认</el-button>
 			<el-button v-if="menuBtnShow && searchForm.state==1" type="danger" size="mini" @click="orderConfirmMore(2)"
-				:disabled="disabledMore" :loading="btnLoading2">批量取消</el-button>
+				:disabled="disabledMore" :loading="btnLoading">批量取消</el-button>
 			<el-button v-if="menuBtnShow && searchForm.state==2" type="danger" size="mini" @click="timeModalShow(1)"
 				:disabled="disabledMore">批量分配任务</el-button>
 			<el-button type="warning" size="mini" @click="exportExcel">导出</el-button>
@@ -93,7 +92,7 @@
 			ref="table" use-virtual max-height="850" :row-height="80">
 			<pl-table-column type="selection" align="center"></pl-table-column>
 			<pl-table-column type="index" label="序号" align="center" width="50"></pl-table-column>
-			<pl-table-column fixed="left" prop="OrderNumber" label="订单编号" align="center" width="135">
+			<pl-table-column fixed="left" prop="OrderNumber" label="订单编号" align="center" width="140">
 				<template slot-scope="scope">
 					<i class="el-icon-document-copy" @click.stop="copy(scope.$index,scope.row)"></i>
 					<el-link type="primary" :underline="false" @click.stop="viewModalShow(scope.$index,scope.row)">
@@ -113,12 +112,12 @@
 			</pl-table-column>
 			<pl-table-column prop="ServiceType" label="订单类型" align="center" width="105">
 				<template slot-scope="scope">
-					<span v-if="scope.row.ServiceType==1">评后返（代返）</span>
-					<span v-if="scope.row.ServiceType==2">评后返（自返）</span>
+					<span v-if="scope.row.ServiceType==1">评后返(代返)</span>
+					<span v-if="scope.row.ServiceType==2">评后返(自返)</span>
 				</template>
 			</pl-table-column>
 			<pl-table-column prop="CountryName" label="国家" align="center"></pl-table-column>
-			<pl-table-column prop="ASIN" label="ASIN" align="center" width="100"></pl-table-column>
+			<pl-table-column prop="ASIN" label="ASIN" align="center" width="120"></pl-table-column>
 			<pl-table-column prop="ProductName" label="产品名称" align="center" :show-overflow-tooltip='true'>
 			</pl-table-column>
 			<pl-table-column prop="ShopName" label="店铺" align="center" :show-overflow-tooltip='true'></pl-table-column>
@@ -154,11 +153,11 @@
 					<span v-if="scope.row.OrderState==5" class="danger">已取消</span>
 				</template>
 			</pl-table-column>
-			<pl-table-column v-if="menuBtnShow" fixed="right" prop="OrderState" label="操作" align="center" width="145">
+			<pl-table-column v-if="menuBtnShow" fixed="right" prop="OrderState" label="操作" align="center" width="150">
 				<template slot-scope="scope">
-					<el-button size="mini" type="primary" v-if="scope.row.OrderState==1"
+					<el-button :loading="btnLoading" size="mini" type="primary" v-if="scope.row.OrderState==1"
 						@click.stop="orderConfirm(scope.$index,scope.row,1)">确认</el-button>
-					<el-button size="mini" type="danger" v-if="scope.row.OrderState==1"
+					<el-button :loading="btnLoading" size="mini" type="danger" v-if="scope.row.OrderState==1"
 						@click.stop="orderConfirm(scope.$index,scope.row,0)">取消</el-button>
 					<el-button size="mini" type="warning" v-if="scope.row.OrderState!=1"
 						@click.stop="taskModalShow(scope.$index,scope.row)">分配
@@ -188,7 +187,7 @@
 				<el-table-column type="selection" align="center" v-if="btnState" :selectable='disabledCheckBox'>
 				</el-table-column>
 				<el-table-column type="index" label="序号" align="center" width="50"></el-table-column>
-				<el-table-column prop="OrderNumbers" label="任务编号" align="center">
+				<el-table-column prop="OrderNumbers" label="任务编号" align="center" width="150px">
 					<template slot-scope="scope">
 						<span v-if="scope.row.AgainTaskState!=1">{{scope.row.OrderNumbers}}</span>
 						<span v-if="scope.row.AgainTaskState==1">{{scope.row.OrderNumbers}}
@@ -214,7 +213,7 @@
 						<span v-if="scope.row.TaskState==8" class="warning">异常</span>
 					</template>
 				</el-table-column>
-				<el-table-column prop="ExecutionTime" label="任务执行时间" align="center">
+				<el-table-column prop="ExecutionTime" label="任务执行时间" align="center" width="155px">
 					<template slot-scope="scope">
 						<span class="danger">{{scope.row.ExecutionTime}}</span>
 					</template>
@@ -473,7 +472,6 @@
 				disabledEditFee: true, //修改费率禁用
 				listLoading: false,
 				btnLoading: false,
-				btnLoading2: false,
 				tableData: [],
 				checkBoxData: [], //选中数据
 				searchForm: {
@@ -667,11 +665,13 @@
 			//订单确认/取消
 			orderConfirm(index, row, val) {
 				let _this = this
+				_this.btnLoading = true
 				let params = {
 					Id: row.Id,
 					State: val
 				}
 				orderState(params).then((res) => {
+					_this.btnLoading = false
 					_this.getAllData()
 					_this.getOrderStateNum()
 				}).catch(() => {})
@@ -683,40 +683,26 @@
 				let _this = this
 				let txt = ''
 				if (val == 1) {
-					txt = '接单'
+					txt = '批量确认'
 				}
 				if (val == 2) {
-					txt = '取消'
+					txt = '批量取消'
 				}
 				let ids = _this.checkBoxData.map(item => item.Id) //选中的数据
 				let num = _this.checkBoxData.length //选中的数量
-				_this.$confirm('确认 ' + txt + ' 选中的【' + num + '】条订单吗？', '信息提示', {
+				_this.$confirm('确定 ' + txt + ' 选中的【' + num + '】条订单吗？', '信息提示', {
 					type: 'warning'
 				}).then(() => {
-					if (val == 1) {
+					_this.btnLoading = true
+					let params = {
+						Id: ids,
+						Type: val
+					}
+					orderStateMore(params).then((res) => {
 						_this.btnLoading = true
-						let params = {
-							Id: ids,
-							Type: val
-						}
-						orderStateMore(params).then((res) => {
-							_this.btnLoading = false
-							_this.getAllData()
-							_this.getOrderStateNum()
-						}).catch(() => {})
-					}
-					if (val == 2) {
-						_this.btnLoading2 = true
-						let params = {
-							Id: ids,
-							Type: val
-						}
-						orderStateMore(params).then((res) => {
-							_this.btnLoading2 = false
-							_this.getAllData()
-							_this.getOrderStateNum()
-						}).catch(() => {})
-					}
+						_this.getAllData()
+						_this.getOrderStateNum()
+					}).catch(() => {})
 				}).catch(() => {})
 			},
 

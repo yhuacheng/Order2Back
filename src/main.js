@@ -12,7 +12,7 @@ import 'pl-table/themes/plTableStyle.css'
 Vue.use(plTable)
 
 Vue.use(ElementUI, {
-	size: 'small'
+	size: 'medium'
 })
 
 //图表组件

@@ -1,11 +1,11 @@
 <template>
 	<section>
 		<!--工具条-->
-		<el-col :span="24" class="toolbar" style="padding-bottom: 0px;">
-			<el-form :inline="true" :model="searchForm" size="mini">
+		<el-col :span="24" class="toolbar" style="padding-bottom: 0px;position: relative;">
+			<el-form :inline="true" :model="searchForm" size="small">
 				<el-form-item label="搜索内容">
 					<el-input @keyup.native="searchToTrim" @keyup.enter.native="searchData"
-						v-model="searchForm.searchWords" placeholder="任务编号/ASIN/店铺/操作员/外派员/客户编号/购买单号/PP号"
+						v-model="searchForm.searchWords" placeholder="任务号/Asin/店铺/操作员/外派员/客户号/购买单号/PP号"
 						style="width: 350px;"></el-input>
 				</el-form-item>
 				<el-form-item label="填单时间">
@@ -64,7 +64,15 @@
 						<el-option value="1" label="重复"></el-option>
 					</el-select>
 				</el-form-item>
-				<el-form-item label="本佣付款" v-if='In'>
+				<el-form-item label="评价类型">
+					<el-select v-model="searchForm.commentType" placeholder="请选择" style="width: 136px;">
+						<el-option value="-1" label="全部"></el-option>
+						<el-option value="0" label="正常"></el-option>
+						<el-option v-for="item in serviceOtherData" :key="item.Id" :label="item.ServiceName"
+							:value="item.Id"></el-option>
+					</el-select>
+				</el-form-item>
+				<el-form-item label="本佣付款" v-if="In">
 					<el-select v-model="searchForm.payState" placeholder="请选择" style="width: 136px;">
 						<el-option value="0" label="全部"></el-option>
 						<el-option value="1" label="本佣均已付"></el-option>
@@ -73,10 +81,14 @@
 						<el-option value="4" label="付佣未付本"></el-option>
 					</el-select>
 				</el-form-item>
-				<el-form-item>
-					<el-button type="primary" @click="searchData(0)" style="margin-left: 80px;">查询</el-button>
-					<el-button @click="resetSearch">重置</el-button>
-				</el-form-item>
+				<div class="txt-c" style="width: 100px;position: absolute;right: 0;top: 10px;">
+					<el-form-item>
+						<el-button type="primary" @click="searchData(0)">查询</el-button>
+					</el-form-item>
+					<el-form-item>
+						<el-button @click="resetSearch">重置</el-button>
+					</el-form-item>
+				</div>
 			</el-form>
 		</el-col>
 
@@ -139,7 +151,7 @@
 		<!-- 列表 -->
 		<pl-table border :data="tableData" v-loading="listLoading" id="exportTable" style="width: 100%;"
 			:header-cell-style="{background:'#fafafa'}" @selection-change="handleSelectionChange" @row-click="rowClick"
-			ref="table" use-virtual height="850" :row-height="80">
+			ref="table" use-virtual height="854" :row-height="80">
 			<pl-table-column type="selection" align="center"></pl-table-column>
 			<pl-table-column type="index" label="序号" align="center" width="50"></pl-table-column>
 			<!-- 展开栏开始 -->
@@ -222,14 +234,14 @@
 					</el-image>
 				</template>
 			</pl-table-column>
-			<pl-table-column prop="ServiceType" label="任务类型" align="center" width="108">
+			<pl-table-column prop="ServiceType" label="任务类型" align="center" width="105">
 				<template slot-scope="scope">
-					<span v-if="scope.row.ServiceType==1">评后返（代返）</span>
-					<span v-if="scope.row.ServiceType==2">评后返（自返）</span>
+					<span v-if="scope.row.ServiceType==1">评后返(代返)</span>
+					<span v-if="scope.row.ServiceType==2">评后返(自返)</span>
 				</template>
 			</pl-table-column>
 			<pl-table-column prop="CountryName" label="国家" align="center"></pl-table-column>
-			<pl-table-column prop="Asin" label="ASIN" align="center" width="110"></pl-table-column>
+			<pl-table-column prop="Asin" label="ASIN" align="center" width="120"></pl-table-column>
 			<pl-table-column prop="ProductName" label="产品名称" align="center" :show-overflow-tooltip='true'>
 			</pl-table-column>
 			<pl-table-column prop="OrderShopName" label="店铺" align="center" :show-overflow-tooltip='true'>
@@ -831,7 +843,8 @@
 					serveType: '0',
 					repeat: '0',
 					payState: '0',
-					again: '0'
+					again: '0',
+					commentType: '-1'
 				},
 				all: 0, //全部
 				dfp: 0, //待分配
@@ -1142,6 +1155,7 @@
 					RepeatState: _this.searchForm.repeat,
 					PayState: _this.searchForm.payState,
 					againTaskState: _this.searchForm.again,
+					NoComment: _this.searchForm.commentType,
 					pageIndex: _this.pageIndex,
 					pageSize: _this.pageSize,
 					RoolId: roleId
@@ -1211,6 +1225,7 @@
 					RepeatState: _this.searchForm.repeat,
 					PayState: _this.searchForm.payState,
 					againTaskState: _this.searchForm.again,
+					NoComment: _this.searchForm.commentType,
 					RoolId: roleId
 				}
 				taskStateNum(params).then(res => {
@@ -1732,6 +1747,7 @@
 				_this.searchForm.repeat = '0'
 				_this.searchForm.payState = '0'
 				_this.searchForm.again = '0'
+				_this.searchForm.commentType = '-1'
 				_this.pageIndex = 1
 				_this.getAllData()
 				_this.getTaskStateNum()
@@ -2096,6 +2112,11 @@
 					{
 						title: 'PP账号',
 						key: 'PayAccount',
+						type: 'text'
+					},
+					{
+						title: '评价链接',
+						Key: 'ProductLink',
 						type: 'text'
 					},
 					{

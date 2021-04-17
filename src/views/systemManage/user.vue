@@ -2,7 +2,7 @@
 	<section>
 		<!--工具条-->
 		<el-col :span="24" class="toolbar" style="padding-bottom: 0px;">
-			<el-form :inline="true" :model="searchForm" size="mini">
+			<el-form :inline="true" :model="searchForm" size="small">
 				<el-form-item label="用户姓名">
 					<el-input v-model="searchForm.searchWords" placeholder="请输入姓名"></el-input>
 				</el-form-item>
@@ -16,8 +16,8 @@
 		</el-col>
 
 		<!--列表-->
-		<el-table border :data="tableData" id="exportTable" v-loading="listLoading" style="width: 100%" :header-cell-style="{background:'#fafafa'}"
-		 ref="table">
+		<el-table border :data="tableData" id="exportTable" v-loading="listLoading" style="width: 100%"
+			:header-cell-style="{background:'#fafafa'}" ref="table">
 			<el-table-column type="index" label="序号" align="center" width="50"></el-table-column>
 			<el-table-column prop="Name" label="姓名" align="center"></el-table-column>
 			<el-table-column prop="LoginName" label="账号" align="center"></el-table-column>
@@ -33,9 +33,11 @@
 			</el-table-column>
 			<el-table-column label="操作" align="center" width="250">
 				<template v-slot="scope">
-					<el-button size="mini" type="primary" @click.stop="handleEdit(scope.$index, scope.row)">编辑</el-button>
+					<el-button size="mini" type="primary" @click.stop="handleEdit(scope.$index, scope.row)">编辑
+					</el-button>
 					<el-button size="mini" type="danger" @click.stop="delData(scope.$index, scope.row)">删除</el-button>
-					<el-button size="mini" type="warning" @click.stop="handleBind(scope.$index, scope.row)">绑定角色</el-button>
+					<el-button size="mini" type="warning" @click.stop="handleBind(scope.$index, scope.row)">绑定角色
+					</el-button>
 				</template>
 			</el-table-column>
 		</el-table>
@@ -43,14 +45,14 @@
 		<!--工具条-->
 		<el-col :span="24" class="toolbar">
 			<el-pagination style="float: right;" @size-change="handleSizeChange" @current-change="handleCurrentChange"
-			 :current-page="pageIndex" :page-sizes="[10, 20, 50, 100]" :page-size="10" layout="total, sizes, prev, pager, next, jumper"
-			 :total="total">
+				:current-page="pageIndex" :page-sizes="[10, 20, 50, 100]" :page-size="10"
+				layout="total, sizes, prev, pager, next, jumper" :total="total">
 			</el-pagination>
 		</el-col>
 
 		<!--编辑界面-->
-		<el-dialog v-dialogDrag :title="title" :visible.sync="editModal" :close-on-click-modal="false" :before-close="closeModal"
-		 width="30%">
+		<el-dialog v-dialogDrag :title="title" :visible.sync="editModal" :close-on-click-modal="false"
+			:before-close="closeModal" width="30%">
 			<el-form :model="editForm" ref="editForm" :rules='Rules' label-width='70px' status-icon>
 				<el-form-item label="姓名" prop="name">
 					<el-input v-model="editForm.name"></el-input>
@@ -62,8 +64,10 @@
 					<el-input v-model="editForm.password"></el-input>
 				</el-form-item>
 				<el-form-item label="推荐码" prop="code">
-					<el-select style="width: 100%;" v-model="editForm.code" filterable placeholder="请选择推荐码" :disabled="doType=='edit'">
-						<el-option v-for="item in codeData" :key="item.Id" :label="item.RecommentNumber" :value="item.Id">
+					<el-select style="width: 100%;" v-model="editForm.code" filterable placeholder="请选择推荐码"
+						:disabled="doType=='edit'">
+						<el-option v-for="item in codeData" :key="item.Id" :label="item.RecommentNumber"
+							:value="item.Id">
 						</el-option>
 					</el-select>
 				</el-form-item>
@@ -86,7 +90,8 @@
 			<div slot="footer" class="dialog-footer">
 				<el-button @click="closeModal">取消</el-button>
 				<el-button type="primary" v-if="doType==='add'" @click="addSubmit" :loading="btnLoading">提交</el-button>
-				<el-button type="primary" v-if="doType==='edit'" @click="editSubmit" :loading="btnLoading">提交</el-button>
+				<el-button type="primary" v-if="doType==='edit'" @click="editSubmit" :loading="btnLoading">提交
+				</el-button>
 			</div>
 		</el-dialog>
 
@@ -94,7 +99,8 @@
 		<el-drawer :title="title" :visible.sync="drawer" :before-close="closeDrawer" custom-class='drawer-Box'>
 			<div class="drawer-content">
 				<el-checkbox-group v-model="role">
-					<el-checkbox style="display:block;padding: 15px" v-for="item in roleData" :label="item.Id" :key="item.Id">{{item.RoleName}}</el-checkbox>
+					<el-checkbox style="display:block;padding: 15px" v-for="item in roleData" :label="item.Id"
+						:key="item.Id">{{item.RoleName}}</el-checkbox>
 				</el-checkbox-group>
 				<div class="drawer-footer">
 					<el-button @click="closeDrawer">取 消</el-button>

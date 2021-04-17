@@ -319,7 +319,8 @@
 					ServerType: 0,
 					RepeatState: 0,
 					PayState: 0,
-					againTaskState: 0
+					againTaskState: 0,
+					NoComment: -1
 				}
 				taskStateNum(params).then(res => {
 					let data = res
@@ -440,6 +441,7 @@
 					RepeatState: 0,
 					PayState: 0,
 					againTaskState: 0,
+					NoComment: -1,
 					pageIndex: 1,
 					pageSize: 100000000,
 					RoolId: 1,

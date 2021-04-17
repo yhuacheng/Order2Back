@@ -2,7 +2,7 @@
 	<section>
 		<!--工具条-->
 		<el-col :span="24" class="toolbar" style="padding-bottom: 0px;">
-			<el-form :inline="true" :model="searchForm" size="mini">
+			<el-form :inline="true" :model="searchForm" size="small">
 				<el-form-item>
 					<el-button type="warning" @click="exportExcel">导出</el-button>
 				</el-form-item>

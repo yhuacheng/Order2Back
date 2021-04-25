@@ -9,8 +9,8 @@
 			</el-form>
 		</el-col>
 
-		<pl-table border :data="tableData" v-loading="listLoading" id="exportTable" style="width: 100%" :header-cell-style="{background:'#fafafa'}"
-		 ref="table" use-virtual max-height="750" :row-height="40">
+		<pl-table border :data="tableData" v-loading="listLoading" id="exportTable" style="width: 100%"
+			:header-cell-style="{background:'#fafafa'}" ref="table" use-virtual max-height="750" :row-height="45">
 			<pl-table-column type="index" label="序号" align="center" width="50"></pl-table-column>
 			<pl-table-column prop="BusinessNumber" label="流水号" align="center"></pl-table-column>
 			<pl-table-column prop="CustomerId" label="客户编号" align="center"></pl-table-column>
@@ -29,7 +29,8 @@
 				</template>
 			</pl-table-column>
 			<pl-table-column prop="TransactionTime" label="交易时间" align="center"></pl-table-column>
-			<pl-table-column prop="Remarks" label="备注" align="center" :show-overflow-tooltip='true' width="400"></pl-table-column>
+			<pl-table-column prop="Remarks" label="备注" align="center" :show-overflow-tooltip='true' width="400">
+			</pl-table-column>
 		</pl-table>
 	</section>
 </template>
@@ -153,7 +154,7 @@
 					}
 					data[t].ExpType = TxtType
 				}
-				const excelName = '客户交易记录.xls'
+				const excelName = '客户交易日志.xls'
 				table2excel(column, data, excelName)
 			}
 		}

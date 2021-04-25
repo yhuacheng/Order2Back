@@ -153,7 +153,7 @@
 					<span v-if="scope.row.OrderState==5" class="danger">已取消</span>
 				</template>
 			</pl-table-column>
-			<pl-table-column v-if="menuBtnShow" fixed="right" prop="OrderState" label="操作" align="center" width="150">
+			<pl-table-column v-if="menuBtnShow" fixed="right" prop="OrderState" label="操作" align="center" width="178">
 				<template slot-scope="scope">
 					<el-button :loading="btnLoading" size="mini" type="primary" v-if="scope.row.OrderState==1"
 						@click.stop="orderConfirm(scope.$index,scope.row,1)">确认</el-button>
@@ -187,7 +187,7 @@
 				<el-table-column type="selection" align="center" v-if="btnState" :selectable='disabledCheckBox'>
 				</el-table-column>
 				<el-table-column type="index" label="序号" align="center" width="50"></el-table-column>
-				<el-table-column prop="OrderNumbers" label="任务编号" align="center" width="150px">
+				<el-table-column prop="OrderNumbers" label="任务编号" align="center" width="155px">
 					<template slot-scope="scope">
 						<span v-if="scope.row.AgainTaskState!=1">{{scope.row.OrderNumbers}}</span>
 						<span v-if="scope.row.AgainTaskState==1">{{scope.row.OrderNumbers}}
@@ -233,7 +233,7 @@
 			<el-col :span="24" class="toolbar">
 				<el-pagination style="float: right;" @size-change="handleSizeChange2"
 					@current-change="handleCurrentChange2" :current-page="pageIndex2" :page-sizes="[10, 20, 50, 100]"
-					:page-size="10" layout="total, sizes, prev, pager, next, jumper" :total="total2">
+					:page-size="pageSize2" layout="total, sizes, prev, pager, next, jumper" :total="total2">
 				</el-pagination>
 			</el-col>
 			<div slot="footer" class="dialog-footer">
@@ -699,7 +699,7 @@
 						Type: val
 					}
 					orderStateMore(params).then((res) => {
-						_this.btnLoading = true
+						_this.btnLoading = false
 						_this.getAllData()
 						_this.getOrderStateNum()
 					}).catch(() => {})

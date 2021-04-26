@@ -226,7 +226,7 @@
 					</div>
 				</template>
 			</pl-table-column>
-			<pl-table-column prop="OrderProductPictures" label="产品图" align="center">
+			<pl-table-column prop="OrderProductPictures" label="产品图" align="center" width="70px">
 				<template slot-scope="scope">
 					<el-image style="width: 40px;height: 40px;" v-if="scope.row.OrderProductPictures"
 						:src="$IMG_URL+scope.row.OrderProductPictures"
@@ -266,7 +266,7 @@
 				</template>
 			</pl-table-column>
 			<pl-table-column prop="AmazonNumber" label="购买单号" align="center" width="140"></pl-table-column>
-			<pl-table-column prop="AddTime" label="填单时间" align="center" width="140" :sortable="true"
+			<pl-table-column prop="AddTime" label="填单时间" align="center" width="145" :sortable="true"
 				:sort-method="sortByAddTime"></pl-table-column>
 			<pl-table-column prop="DealIamge" label="交易截图" align="center">
 				<template slot-scope="scope">

@@ -103,7 +103,7 @@
 					</div>
 				</template>
 			</pl-table-column>
-			<pl-table-column prop="OrderProductPictures" label="产品图" align="center">
+			<pl-table-column prop="OrderProductPictures" label="产品图" align="center" width="70px">
 				<template slot-scope="scope">
 					<el-image style="width: 40px;height: 40px;" v-if="scope.row.ProductPictures"
 						:src="$IMG_URL+scope.row.ProductPictures" @click.stop="showImage(scope.$index,scope.row)">
@@ -142,7 +142,7 @@
 				</template>
 			</pl-table-column>
 			<pl-table-column prop="CustomerUserId" label="客户编码" align="center"></pl-table-column>
-			<pl-table-column prop="OrderTime" label="下单时间" align="center" width="135"></pl-table-column>
+			<pl-table-column prop="OrderTime" label="下单时间" align="center" width="145"></pl-table-column>
 			<pl-table-column prop="Remarks" label="备注" align="center" :show-overflow-tooltip='true'></pl-table-column>
 			<pl-table-column prop="OrderState" label="状态" align="center">
 				<template slot-scope="scope">
@@ -159,9 +159,8 @@
 						@click.stop="orderConfirm(scope.$index,scope.row,1)">确认</el-button>
 					<el-button :loading="btnLoading" size="mini" type="danger" v-if="scope.row.OrderState==1"
 						@click.stop="orderConfirm(scope.$index,scope.row,0)">取消</el-button>
-					<el-button size="mini" type="warning" v-if="scope.row.OrderState!=1"
-						@click.stop="taskModalShow(scope.$index,scope.row)">分配
-						/ 查看</el-button>
+					<el-button size="mini" type="warning" v-if="scope.row.OrderState!=1 && scope.row.OrderState!=5"
+						@click.stop="taskModalShow(scope.$index,scope.row)">分 配 / 查 看 任务</el-button>
 				</template>
 			</pl-table-column>
 		</pl-table>

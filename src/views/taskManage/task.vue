@@ -210,7 +210,7 @@
 				</template>
 			</pl-table-column>
 			<!-- 展开栏结束 -->
-			<pl-table-column prop="OrderNumbers" sortable label="任务编号" align="center" width="155">
+			<pl-table-column prop="OrderNumbers" sortable label="任务编号" align="center" width="160">
 				<template slot-scope="scope">
 					<i class="el-icon-document-copy" @click.stop="copy(scope.$index,scope.row)"></i>
 					<el-link type="primary" :underline="false" @click.stop="viewModalShow(scope.$index,scope.row)">
@@ -265,8 +265,8 @@
 					<span>{{scope.row.BuyRemarks}}</span>
 				</template>
 			</pl-table-column>
-			<pl-table-column prop="AmazonNumber" label="购买单号" align="center" width="150"></pl-table-column>
-			<pl-table-column prop="AddTime" label="填单时间" align="center" width="132" :sortable="true"
+			<pl-table-column prop="AmazonNumber" label="购买单号" align="center" width="140"></pl-table-column>
+			<pl-table-column prop="AddTime" label="填单时间" align="center" width="140" :sortable="true"
 				:sort-method="sortByAddTime"></pl-table-column>
 			<pl-table-column prop="DealIamge" label="交易截图" align="center">
 				<template slot-scope="scope">
@@ -429,7 +429,7 @@
 			</el-form>
 			<div slot="footer" class="dialog-footer">
 				<el-button @click="closeBuyModal">取 消</el-button>
-				<el-button type="primary" @click="buyCheckRepeat">确 定</el-button>
+				<el-button type="primary" :loading="btnLoading" @click="buyCheckRepeat">确 定</el-button>
 			</div>
 		</el-dialog>
 		<!-- 评价 -->
@@ -823,6 +823,7 @@
 				disabledEditFee: true, //修改费率禁用
 				disabledOut: true, //外派禁用
 				listLoading: false,
+				btnLoading: false,
 				tableData: [],
 				checkBoxData: [], //选中数据
 				menuBtnShow: false, //是否显示列表上方菜单按钮
@@ -1399,6 +1400,7 @@
 			// 购买
 			buySubmit(repeatState) {
 				let _this = this
+				_this.btnLoading = true
 				let userId = sessionStorage.getItem('userId')
 				let ServiceType = _this.taskFormView.ServiceType
 				let params = {}
@@ -1435,10 +1437,13 @@
 				params.Total = (Number(_this.totalValue) + Number(_this.addFee) + Number(_this.serviceFei))
 					.toFixed(2)
 				taskBuy(params).then(res => {
+					_this.btnLoading = false
 					_this.closeBuyModal()
 					_this.getAllData()
 					_this.getTaskStateNum()
-				}).catch((e) => {})
+				}).catch((e) => {
+					_this.btnLoading = false
+				})
 			},
 
 			// 关闭购买弹窗

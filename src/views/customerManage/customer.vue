@@ -9,19 +9,24 @@
 				<el-form-item>
 					<el-button @click="searchData">查询</el-button>
 					<el-button @click="resetSearch">重置</el-button>
-					<el-button v-if="btnShow1" type="success" :disabled="disabled" @click="changeState(1)">有效</el-button>
+					<el-button v-if="btnShow1" type="success" :disabled="disabled" @click="changeState(1)">有效
+					</el-button>
 					<el-button v-if="btnShow1" type="danger" :disabled="disabled" @click="changeState(0)">无效</el-button>
-					<el-button v-if="btnShow3" type="primary" :disabled="disabled" @click="userModalShow">重新分配所属用户</el-button>
-					<el-button v-if="btnShow2" type="success" :disabled="disabled" @click="rechargeModalShow">充值</el-button>
-					<el-button v-if="btnShow2" type="danger" :disabled="disabled" @click="deductionModalShow">扣款</el-button>
+					<el-button v-if="btnShow3" type="primary" :disabled="disabled" @click="userModalShow">重新分配所属用户
+					</el-button>
+					<el-button v-if="btnShow2" type="success" :disabled="disabled" @click="rechargeModalShow">充值
+					</el-button>
+					<el-button v-if="btnShow2" type="danger" :disabled="disabled" @click="deductionModalShow">扣款
+					</el-button>
 					<el-button type="warning" @click="exportExcel">导出</el-button>
 				</el-form-item>
 			</el-form>
 		</el-col>
 
 		<!-- 列表 -->
-		<el-table border :data="tableData" v-loading="listLoading" id="exportTable" style="width: 100%" :header-cell-style="{background:'#fafafa'}"
-		 @selection-change="handleSelectionChange" @row-click="rowClick" ref="table">
+		<el-table border :data="tableData" v-loading="listLoading" id="exportTable" style="width: 100%"
+			:header-cell-style="{background:'#fafafa'}" @selection-change="handleSelectionChange" @row-click="rowClick"
+			ref="table">
 			<el-table-column type="selection" align="center"></el-table-column>
 			<el-table-column type="index" label="序号" align="center" width="50"></el-table-column>
 			<el-table-column prop="Id" label="客户编码" align="center"></el-table-column>
@@ -32,7 +37,9 @@
 			<el-table-column prop="BackName" label="所属用户" align="center"></el-table-column>
 			<el-table-column prop="AccountBalance" label="余额" align="center" width="130">
 				<template slot-scope="scope">
-					<el-tag style="width: 100px;" type="danger" @click.stop='balanceModalShow(scope.$index,scope.row)'>{{Number(scope.row.AccountBalance)}}</el-tag>
+					<el-tag style="width: 100px;" type="danger" @click.stop='balanceModalShow(scope.$index,scope.row)'>
+						{{Number(scope.row.AccountBalance)}}
+					</el-tag>
 				</template>
 			</el-table-column>
 			<el-table-column prop="LoginIp" label="最后登录IP" align="center"></el-table-column>
@@ -48,14 +55,14 @@
 		<!--工具条-->
 		<el-col :span="24" class="toolbar">
 			<el-pagination style="float: right;" @size-change="handleSizeChange" @current-change="handleCurrentChange"
-			 :current-page="pageIndex" :page-sizes="[10, 20, 50, 100]" :page-size="10" layout="total, sizes, prev, pager, next, jumper"
-			 :total="total">
+				:current-page="pageIndex" :page-sizes="[10, 20, 50, 100]" :page-size="10"
+				layout="total, sizes, prev, pager, next, jumper" :total="total">
 			</el-pagination>
 		</el-col>
 
 		<!--充值/扣款-->
 		<el-dialog :title="title" :visible.sync="editModal" :close-on-click-modal="false" :before-close="closeEditModal"
-		 width="30%">
+			width="30%">
 			<el-form :model="editForm" ref="editForm" :rules='Rules' label-width='100px' status-icon>
 				<el-form-item label="编码：" prop="code">
 					<span>{{editForm.code}}</span>
@@ -69,20 +76,25 @@
 				<el-form-item :label="labelText" prop="money">
 					<el-input v-model="editForm.money"></el-input>
 				</el-form-item>
+				<el-form-item label="备注：">
+					<el-input v-model="editForm.remark"></el-input>
+				</el-form-item>
 			</el-form>
 			<div slot="footer" class="dialog-footer">
 				<el-button @click="closeEditModal">取 消</el-button>
-				<el-button type="primary" @click="editSubmit(1)" v-show="doType=='add'" :loading="btnLoading">提 交</el-button>
-				<el-button type="primary" @click="editSubmit(0)" v-show="doType=='edit'" :loading="btnLoading">提 交</el-button>
+				<el-button type="primary" @click="editSubmit(1)" v-show="doType=='add'" :loading="btnLoading">提 交
+				</el-button>
+				<el-button type="primary" @click="editSubmit(0)" v-show="doType=='edit'" :loading="btnLoading">提 交
+				</el-button>
 			</div>
 		</el-dialog>
 
 		<!-- 余额信息 -->
 		<el-dialog v-dialogDrag :title="title" width="80%" :visible.sync="balanceModal" :close-on-click-modal="false"
-		 :before-close="closeBalanceModal">
+			:before-close="closeBalanceModal">
 			<!--工具条-->
 			<el-col :span="24" class="toolbar" style="padding-bottom: 0;">
-				<el-form :inline="true" :model="searchForm2" size="mini">
+				<el-form :inline="true" :model="searchForm2" size="small">
 					<el-form-item label="收支类型">
 						<el-select v-model="searchForm2.state" placeholder="请选择类型">
 							<el-option :value="0" label="全部"></el-option>
@@ -101,10 +113,10 @@
 				</el-form>
 			</el-col>
 
-			<el-table border :data="tableData2" id="exportTable2" style="width: 100%" :header-cell-style="{background:'#fafafa'}"
-			 ref="table2">
+			<el-table border :data="tableData2" id="exportTable2" style="width: 100%"
+				:header-cell-style="{background:'#fafafa'}" ref="table2">
 				<el-table-column type="index" label="序号" align="center" width="50"></el-table-column>
-				<el-table-column prop="BusinessNumber" label="流水号" align="center"></el-table-column>
+				<el-table-column prop="BusinessNumber" label="流水号" align="center" width="200px"></el-table-column>
 				<el-table-column prop="PaymentState" label="收支类型" align="center">
 					<template slot-scope="scope">
 						<span v-if="scope.row.PaymentState==1" class="success">收入</span>
@@ -117,6 +129,7 @@
 						<span v-if="scope.row.PaymentState==1" class="success">{{scope.row.TransactionAmount}}</span>
 						<span v-if="scope.row.PaymentState==2" class="danger">{{scope.row.TransactionAmount}}</span>
 						<span v-if="scope.row.PaymentState==3" class="warning">{{scope.row.TransactionAmount}}</span>
+						<div v-if="scope.row.CbrRemarks" class="info fz10">{{scope.row.CbrRemarks}}</div>
 					</template>
 				</el-table-column>
 				<el-table-column prop="TransactionTime" label="交易时间" align="center"></el-table-column>
@@ -125,26 +138,26 @@
 
 			<!--工具条-->
 			<el-col :span="24" class="toolbar">
-				<el-pagination style="float: right;" @size-change="handleSizeChange2" @current-change="handleCurrentChange2"
-				 :current-page="pageIndex2" :page-sizes="[10, 20, 50, 100]" :page-size="pageSize2" layout="total, sizes, prev, pager, next, jumper"
-				 :total="total2">
-				</el-pagination>
-			</el-col>
-
-			<div slot="footer" class="dialog-footer">
-				<div style="float: left;">
+				<div style="float: left;margin-top: 5px;">
 					<span>余额：<span class="primary">{{allNow}}</span></span>
 					<span class="ml30">总收入：<span class="success">{{allIn}}</span></span>
 					<span class="ml30">总支出：<span class="danger">{{allOut}}</span></span>
 				</div>
+				<el-pagination style="float: right;" @size-change="handleSizeChange2"
+					@current-change="handleCurrentChange2" :current-page="pageIndex2" :page-sizes="[10, 20, 50, 100]"
+					:page-size="pageSize2" layout="total, sizes, prev, pager, next, jumper" :total="total2">
+				</el-pagination>
+			</el-col>
+
+			<div slot="footer" class="dialog-footer">
 				<el-button @click="closeBalanceModal">关 闭</el-button>
 			</div>
 		</el-dialog>
 
 		<!-- 重新分配所属用户（用户列表） -->
 		<el-dialog v-dialogDrag title="用户列表" :visible.sync="userModal" :close-on-click-modal="false">
-			<el-table border :data="tableData3" id="exportTable3" style="width: 100%" :header-cell-style="{background:'#fafafa'}"
-			 @row-click="rowClick3" ref="table3">
+			<el-table border :data="tableData3" id="exportTable3" style="width: 100%"
+				:header-cell-style="{background:'#fafafa'}" @row-click="rowClick3" ref="table3">
 				<el-table-column type="index" label="序号" align="center" width="50"></el-table-column>
 				<el-table-column prop="Name" label="姓名" align="center"></el-table-column>
 				<el-table-column prop="LoginName" label="账号" align="center"></el-table-column>
@@ -197,7 +210,8 @@
 					code: '',
 					name: '',
 					phone: '',
-					money: ''
+					money: '',
+					remark: ''
 				},
 				labelText: '', //充值||提现文字
 				balanceModal: false, //余额信息弹窗
@@ -313,6 +327,7 @@
 				_this.$prompt('为了验证您的身份，已向您的手机 ' + phonev + ' 发送了验证码，请将验证码填入下方输入框进行验证', '身份验证', {
 					confirmButtonText: '确定',
 					cancelButtonText: '取消',
+					closeOnClickModal: false,
 					inputPattern: /\S/,
 					inputErrorMessage: '验证码不能为空'
 				}).then(({
@@ -392,7 +407,8 @@
 						let params = {
 							Id: _this.checkBoxData[0].Id,
 							Accountbalance: _this.editForm.money,
-							State: type
+							State: type,
+							CbrRemarks: _this.editForm.remark
 						}
 						customerRecharge(params).then(res => {
 							_this.btnLoading = false
@@ -467,7 +483,8 @@
 					code: '',
 					name: '',
 					phone: '',
-					money: ''
+					money: '',
+					remark: ''
 				}
 			},
 

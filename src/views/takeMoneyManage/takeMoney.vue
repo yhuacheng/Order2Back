@@ -31,7 +31,7 @@
 			ref="table">
 			<el-table-column type="selection" align="center"></el-table-column>
 			<el-table-column type="index" label="序号" align="center" width="50"></el-table-column>
-			<el-table-column prop="RemoveMoenyNumber" label="提现记录号" align="center" width="140"></el-table-column>
+			<el-table-column prop="RemoveMoenyNumber" label="流水号" align="center" width="140"></el-table-column>
 			<el-table-column prop="CustomerId" label="客户编码" align="center"></el-table-column>
 			<el-table-column prop="Name" label="客户名称" align="center"></el-table-column>
 			<el-table-column prop="Phone" label="客户手机" align="center"></el-table-column>
@@ -41,11 +41,11 @@
 				</template>
 			</el-table-column>
 			<el-table-column prop="RemoveMoenyTime" label="申请时间" align="center" width="180"></el-table-column>
-			<el-table-column prop="RemoveMoneyState" label="状态" align="center">
+			<el-table-column prop="RemoveMoenyStae" label="状态" align="center">
 				<template slot-scope="scope">
-					<span v-if="scope.row.RemoveMoneyState==1">待处理</span>
-					<span v-if="scope.row.RemoveMoneyState==2" class="success">提现成功</span>
-					<span v-if="scope.row.RemoveMoneyState==3" class="danger">提现失败</span>
+					<span v-if="scope.row.RemoveMoenyStae==1">待处理</span>
+					<span v-if="scope.row.RemoveMoenyStae==2" class="success">提现成功</span>
+					<span v-if="scope.row.RemoveMoenyStae==3" class="danger">提现失败</span>
 				</template>
 			</el-table-column>
 			<el-table-column prop="Bank" label="开户银行" align="center"></el-table-column>
@@ -210,7 +210,7 @@
 				_this.checkBoxData = val
 				let checkNum = _this.checkBoxData.length
 				if (checkNum == 1) {
-					let state = _this.checkBoxData[0].RemoveMoneyState
+					let state = _this.checkBoxData[0].RemoveMoenyStae
 					if (state == 1) {
 						_this.disabled = false
 						_this.disabledMore = false

@@ -268,7 +268,7 @@
 			<pl-table-column prop="AmazonNumber" label="购买单号" align="center" width="140"></pl-table-column>
 			<pl-table-column prop="AddTime" label="填单时间" align="center" width="145" :sortable="true"
 				:sort-method="sortByAddTime"></pl-table-column>
-			<pl-table-column prop="DealIamge" label="交易截图" align="center">
+			<pl-table-column prop="DealIamge" label="返款截图" align="center">
 				<template slot-scope="scope">
 					<el-image style="width: 40px;height: 40px;" v-if="scope.row.DealIamge"
 						:src="$IMG_URL+scope.row.DealIamge" @click.stop="showImage(scope.$index,scope.row,2)">
@@ -708,7 +708,7 @@
 					</el-col>
 				</el-row>
 				<div v-show="view.ServiceType==2">
-					<p class="info-title">交易信息</p>
+					<p class="info-title">返款信息</p>
 					<el-row>
 						<el-col :span="24">
 							<el-form-item label='返款时间：'>
@@ -716,7 +716,7 @@
 							</el-form-item>
 						</el-col>
 						<el-col :span="24">
-							<el-form-item label='交易截图：'>
+							<el-form-item label='返款截图：'>
 								<el-image style="width: 80px" class="pointer" v-if="view.DealIamge"
 									:src="view.DealIamge" :preview-src-list="(view.DealIamge || '').split(',')">
 								</el-image>
@@ -1669,7 +1669,7 @@
 					_this.taskProductImgUrl = this.$IMG_URL + row.OrderProductPictures
 				}
 				if (val == '2') {
-					_this.title2 = '任务【' + row.OrderNumbers + '】交易截图'
+					_this.title2 = '任务【' + row.OrderNumbers + '】返款截图'
 					if (row.DealIamge) {
 						_this.taskProductImgUrl = this.$IMG_URL + row.DealIamge
 					}
@@ -2140,7 +2140,7 @@
 						type: 'text'
 					},
 					{
-						title: '交易截图',
+						title: '返款截图',
 						key: 'ExpDealIamge',
 						type: 'image',
 						width: 100,
@@ -2150,7 +2150,7 @@
 						title: '状态',
 						key: 'ExpTaskState',
 						type: 'text'
-					},
+					}
 				]
 
 				// 1.title为列名

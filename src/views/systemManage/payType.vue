@@ -13,16 +13,15 @@
 			ref="table">
 			<el-table-column type="selection" align="center"></el-table-column>
 			<el-table-column type="index" label="序号" align="center" width="50"></el-table-column>
-			<el-table-column prop="AccountNumber" label="收款账号" align="center"></el-table-column>
-			<el-table-column prop="PaymentName" label="收款名称" align="center"></el-table-column>
 			<el-table-column prop="PaymentState" label="支付方式" align="center" :formatter="toText"></el-table-column>
+			<el-table-column prop="PaymentName" label="收款姓名" align="center"></el-table-column>
+			<el-table-column prop="AccountNumber" label="收款账号" align="center"></el-table-column>
 			<el-table-column prop="Image" label="收款二维码" align="center">
 				<template slot-scope="scope">
 					<img style="width: 40px;height: 40px;" v-show="scope.row.Image" :src="scope.row.Image"
-						@click="showImage(scope.$index,scope.row)" />
+						@click.stop="showImage(scope.$index,scope.row)" />
 				</template>
 			</el-table-column>
-			<el-table-column prop="Remarks" label="备注" align="center"></el-table-column>
 			<el-table-column prop="Enabled" label="状态" align="center">
 				<template slot-scope="scope">
 					<span v-if="scope.row.Enabled==1" class="success">有效</span>
@@ -35,18 +34,21 @@
 		<el-dialog v-dialogDrag :title='title' :visible.sync='editModal' :close-on-click-modal='false'
 			:before-close="closeModal" width="30%">
 			<el-form :model='editForm' ref='editForm' :rules='Rules' label-width='90px' status-icon>
-				<el-form-item label='收款账号' prop='AccountNumber'>
-					<el-input v-model='editForm.AccountNumber'></el-input>
-				</el-form-item>
-				<el-form-item label='收款名称' prop='PaymentName'>
-					<el-input v-model='editForm.PaymentName'></el-input>
-				</el-form-item>
 				<el-form-item label='支付方式' prop='PaymentState'>
 					<el-select v-model="editForm.PaymentState" placeholder="请选择支付方式" style="width: 100%;">
 						<el-option :value="1" label="支付宝"></el-option>
 						<el-option :value="2" label="微信"></el-option>
 						<el-option :value="3" label="银行卡"></el-option>
 					</el-select>
+				</el-form-item>
+				<el-form-item v-if="editForm.PaymentState==3" label="开户银行" prop="Remarks">
+					<el-input v-model='editForm.Remarks'></el-input>
+				</el-form-item>
+				<el-form-item label='收款姓名' prop='PaymentName'>
+					<el-input v-model='editForm.PaymentName'></el-input>
+				</el-form-item>
+				<el-form-item label='收款账号' prop='AccountNumber'>
+					<el-input v-model='editForm.AccountNumber'></el-input>
 				</el-form-item>
 				<el-form-item label='收款二维码' prop='Image'>
 					<el-upload class="avatar-uploader" name="Image" action="/api/Payment/GetProductPictures"
@@ -57,9 +59,6 @@
 						<i v-else class="el-icon-plus avatar-uploader-icon"></i>
 					</el-upload>
 					<el-input v-show="false" v-model='editForm.Image'></el-input>
-				</el-form-item>
-				<el-form-item label="备注" prop="Remarks">
-					<el-input type="textarea" :rows="3" v-model='editForm.Remarks'></el-input>
 				</el-form-item>
 			</el-form>
 			<div slot="footer" class="dialog-footer">
@@ -139,6 +138,11 @@
 						message: '请选择支付方式',
 						trigger: 'blur'
 					}],
+					Remarks: [{
+						required: true,
+						message: '请输入开户银行',
+						trigger: 'blur'
+					}],
 				}
 			}
 		},
@@ -156,7 +160,7 @@
 					text = '微信'
 				}
 				if (row.PaymentState == 3) {
-					text = '银行卡'
+					text = '银行卡 / ' + row.Remarks
 				}
 				return text
 			},

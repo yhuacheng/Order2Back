@@ -515,8 +515,8 @@
 					<el-col :span="24">
 						<el-form-item label='产品图：'>
 							<el-image style="width: 80px" class="pointer" v-if="view.OrderProductPictures"
-								:src="view.OrderProductPictures"
-								:preview-src-list="(view.OrderProductPictures || '').split(',')"></el-image>
+								:src="$IMG_URL+view.OrderProductPictures"
+								:preview-src-list="($IMG_URL+view.OrderProductPictures || '').split(',')"></el-image>
 						</el-form-item>
 					</el-col>
 					<el-col :span="24">
@@ -718,7 +718,8 @@
 						<el-col :span="24">
 							<el-form-item label='返款截图：'>
 								<el-image style="width: 80px" class="pointer" v-if="view.DealIamge"
-									:src="view.DealIamge" :preview-src-list="(view.DealIamge || '').split(',')">
+									:src="$IMG_URL+view.DealIamge"
+									:preview-src-list="($IMG_URL+view.DealIamge || '').split(',')">
 								</el-image>
 							</el-form-item>
 						</el-col>
@@ -1655,8 +1656,6 @@
 				_this.taskId = row.Id
 				_this.getRateInfo(row.CountryId)
 				_this.view = Object.assign({}, row)
-				_this.view.OrderProductPictures = this.$IMG_URL + row.OrderProductPictures
-				_this.view.DealIamge = this.$IMG_URL + row.DealIamge
 				_this.viewModal = true
 			},
 

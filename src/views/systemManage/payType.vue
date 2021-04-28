@@ -292,11 +292,16 @@
 			},
 
 			//选中行
-			rowClick(val) {
+			rowClick(row) {
 				let _this = this
-				_this.$refs.table.clearSelection()
-				_this.$refs.table.toggleRowSelection(val, true)
-				_this.checkBoxData[0] = val
+				let findResult = _this.checkBoxData.findIndex((value, index) => {
+					return value == row
+				})
+				if (findResult != -1) {
+					_this.$refs.table.toggleRowSelection(row, false);
+				} else {
+					_this.$refs.table.toggleRowSelection(row, true);
+				}
 			},
 
 			// 是否有选中

@@ -19,7 +19,6 @@
 
 		<el-table border :data="tableData" v-loading="listLoading" id="exportTable" style="width: 100%" :header-cell-style="{background:'#fafafa'}"
 		 ref="table">
-			<el-table-column type="selection" align="center"></el-table-column>
 			<el-table-column type="index" label="序号" align="center" width="50"></el-table-column>
 			<el-table-column prop="Start" label="开始区间" align="center"></el-table-column>
 			<el-table-column prop="Ent" label="结束区间" align="center"></el-table-column>

@@ -24,7 +24,7 @@
 			<el-table-column prop="CountryName" label="关联国家" align="center"></el-table-column>
 			<el-table-column prop="HandFee" label="官方手续费率" align="center"></el-table-column>
 			<el-table-column prop="HandMoney" label="固定手续费用" align="center"></el-table-column>
-			<el-table-column label="操作" align="center" width="100">
+			<el-table-column label="操作" align="center" width="200">
 				<template v-slot="scope">
 					<el-button size="mini" type="primary" @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
 				</template>

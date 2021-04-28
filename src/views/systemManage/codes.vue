@@ -32,7 +32,7 @@
 					<span v-if="scope.row.State==0" class="danger">无效</span>
 				</template>
 			</el-table-column>
-			<el-table-column label="操作" align="center" width="100">
+			<el-table-column label="操作" align="center" width="200">
 				<template v-slot="scope">
 					<el-button v-if="scope.row.State==0" size="mini" type="success" @click="changeState(scope.$index, scope.row,1)">有效</el-button>
 					<el-button v-if="scope.row.State==1" size="mini" type="warning" @click="changeState(scope.$index, scope.row,0)">无效</el-button>

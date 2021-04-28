@@ -138,7 +138,7 @@
 					Id: sessionStorage.getItem('userId')
 				}
 				phoneCode(params).then(res => {
-					if (res.Code == 'ok') {
+					if (res.IsSuccess) {
 						_this.codeInput()
 					}
 				}).catch((e) => {})
@@ -152,6 +152,7 @@
 				_this.$prompt('为了验证您的身份，已向您的手机 ' + phonev + ' 发送了验证码，请将验证码填入下方输入框进行验证', '身份验证', {
 					confirmButtonText: '确定',
 					cancelButtonText: '取消',
+					closeOnClickModal: false,
 					inputPattern: /\S/,
 					inputErrorMessage: '验证码不能为空'
 				}).then(({
@@ -167,7 +168,7 @@
 					Code: value
 				}
 				phoneCodeCheck(params).then(res => {
-					if (res.Code == 'ok') {
+					if (res.IsSuccess) {
 						sessionStorage.setItem('code', 'pass')
 					}
 				}).catch((e) => {})

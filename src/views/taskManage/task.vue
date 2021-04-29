@@ -23,7 +23,7 @@
 						range-separator="至" start-placeholder="开始时间" end-placeholder="结束时间"
 						value-format="yyyy-MM-dd HH:mm:ss" style="width: 350px;"></el-date-picker>
 				</el-form-item>
-				<el-form-item label="订单类型">
+				<el-form-item label="任务类型">
 					<el-select v-model="searchForm.serveType" placeholder="请选择" style="width: 150px;">
 						<el-option value="0" label="全部"></el-option>
 						<el-option value="1" label="评后返（代返）"></el-option>

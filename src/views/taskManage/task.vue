@@ -1435,8 +1435,7 @@
 					}
 				}
 				//核算总金额(总额+增值服+服务费)
-				params.Total = (Number(_this.totalValue) + Number(_this.addFee) + Number(_this.serviceFei))
-					.toFixed(2)
+				params.Total = Math.round(Number(_this.totalValue) + Number(_this.addFee) + Number(_this.serviceFei)) * 100 / 100
 				taskBuy(params).then(res => {
 					_this.btnLoading = false
 					_this.closeBuyModal()

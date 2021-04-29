@@ -190,7 +190,10 @@
 				_this.$refs.editForm.validate((valid) => {
 					if (valid) {
 						_this.btnLoading = true
-						let params = Object.assign({}, this.editForm)
+						if (_this.editForm.PaymentState != 3) {
+							_this.editForm.Remarks = ''
+						}
+						let params = Object.assign({}, _this.editForm)
 						payTypeAdd(params).then(res => {
 							_this.btnLoading = false
 							_this.closeModal()
@@ -227,7 +230,10 @@
 				_this.$refs.editForm.validate((valid) => {
 					if (valid) {
 						_this.btnLoading = true
-						let params = Object.assign({}, this.editForm)
+						if (_this.editForm.PaymentState != 3) {
+							_this.editForm.Remarks = ''
+						}
+						let params = Object.assign({}, _this.editForm)
 						params.Id = _this.checkBoxData[0].Id
 						payTypeEdit(params).then(res => {
 							_this.btnLoading = false

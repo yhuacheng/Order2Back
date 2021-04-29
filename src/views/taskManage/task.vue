@@ -295,7 +295,7 @@
 					<el-button size="mini" type="warning"
 						v-if="btnShow2 && (scope.row.TaskState==4 || scope.row.TaskState==5)"
 						@click.stop="commentModalShow(scope.$index,scope.row)">评价</el-button>
-					<el-button size="mini" type="danger"
+					<el-button size="mini" type="danger" :loading="btnLoading"
 						v-if="(btnShow && scope.row.TaskState!=6 && scope.row.TaskState!=7) || (btnShow4 && scope.row.TaskState==8)"
 						@click.stop="changeState(scope.$index,scope.row)">取消</el-button>
 				</template>
@@ -1271,7 +1271,7 @@
 					taskState(params).then((res) => {
 						_this.getAllData()
 						_this.getTaskStateNum()
-					})
+					}).catch(() => {})
 				}).catch(() => {})
 			},
 
@@ -1289,7 +1289,7 @@
 					taskStateMore(params).then((res) => {
 						_this.getAllData()
 						_this.getTaskStateNum()
-					})
+					}).catch(() => {})
 				}).catch(() => {})
 			},
 

@@ -8,21 +8,6 @@
 						v-model="searchForm.searchWords" placeholder="任务号/Asin/店铺/操作员/外派员/客户号/购买单号/PP号"
 						style="width: 350px;"></el-input>
 				</el-form-item>
-				<el-form-item label="填单时间">
-					<el-date-picker v-model="searchForm.time" :unlink-panels='true' type="datetimerange"
-						range-separator="至" start-placeholder="开始时间" end-placeholder="结束时间"
-						value-format="yyyy-MM-dd HH:mm:ss" style="width: 350px;"></el-date-picker>
-				</el-form-item>
-				<el-form-item label="上评时间">
-					<el-date-picker v-model="searchForm.timeSP" :unlink-panels='true' type="datetimerange"
-						range-separator="至" start-placeholder="开始时间" end-placeholder="结束时间"
-						value-format="yyyy-MM-dd HH:mm:ss" style="width: 350px;"></el-date-picker>
-				</el-form-item>
-				<el-form-item label="返款时间">
-					<el-date-picker v-model="searchForm.timeFK" :unlink-panels='true' type="datetimerange"
-						range-separator="至" start-placeholder="开始时间" end-placeholder="结束时间"
-						value-format="yyyy-MM-dd HH:mm:ss" style="width: 350px;"></el-date-picker>
-				</el-form-item>
 				<el-form-item label="任务类型">
 					<el-select v-model="searchForm.serveType" placeholder="请选择" style="width: 150px;">
 						<el-option value="0" label="全部"></el-option>
@@ -63,6 +48,21 @@
 						<el-option value="-1" label="正常"></el-option>
 						<el-option value="1" label="重复"></el-option>
 					</el-select>
+				</el-form-item>
+				<el-form-item label="填单时间">
+					<el-date-picker v-model="searchForm.time" :unlink-panels='true' type="datetimerange"
+						range-separator="至" start-placeholder="开始时间" end-placeholder="结束时间"
+						value-format="yyyy-MM-dd HH:mm:ss" style="width: 350px;"></el-date-picker>
+				</el-form-item>
+				<el-form-item label="上评时间">
+					<el-date-picker v-model="searchForm.timeSP" :unlink-panels='true' type="datetimerange"
+						range-separator="至" start-placeholder="开始时间" end-placeholder="结束时间"
+						value-format="yyyy-MM-dd HH:mm:ss" style="width: 350px;"></el-date-picker>
+				</el-form-item>
+				<el-form-item label="返款时间">
+					<el-date-picker v-model="searchForm.timeFK" :unlink-panels='true' type="datetimerange"
+						range-separator="至" start-placeholder="开始时间" end-placeholder="结束时间"
+						value-format="yyyy-MM-dd HH:mm:ss" style="width: 350px;"></el-date-picker>
 				</el-form-item>
 				<el-form-item label="评价类型">
 					<el-select v-model="searchForm.commentType" placeholder="请选择" style="width: 136px;">
@@ -1435,7 +1435,8 @@
 					}
 				}
 				//核算总金额(总额+增值服+服务费)
-				params.Total = Math.round(Number(_this.totalValue) + Number(_this.addFee) + Number(_this.serviceFei)) * 100 / 100
+				params.Total = Math.round(Number(_this.totalValue) + Number(_this.addFee) + Number(_this.serviceFei)) *
+					100 / 100
 				taskBuy(params).then(res => {
 					_this.btnLoading = false
 					_this.closeBuyModal()

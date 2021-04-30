@@ -499,7 +499,7 @@
 				</el-form-item>
 			</el-form>
 			<div slot="footer" class="dialog-footer">
-				<span v-for="(item,i) in serviceOtherData" :key="i" style="float: left;">
+				<span v-for="(item,index) in serviceOtherData" :key="index" style="float: left;">
 					<el-button type="danger" @click="commentSubmit(item.Id)" class="mr15">{{item.ServiceName}}
 					</el-button>
 				</span>
@@ -694,15 +694,20 @@
 					</el-col>
 					<el-col :span="24">
 						<el-form-item label='评价链接：'>
-							<span>{{view.ProductLink}}</span>
+							<el-link type="primary" :underline="false" :href="view.ProductLink" target="_blank">
+								{{view.ProductLink}}
+							</el-link>
 						</el-form-item>
 					</el-col>
 					<el-col :span="24">
 						<el-form-item label='评价截图：'>
-							<span v-for="(item,i) in (view.ProductImage || '').split(',')" :key="i" class="mr15">
-								<el-image style="width: 80px" class="pointer" v-if="view.ProductImage" :src="item"
-									:preview-src-list="(view.ProductImage || '').split(',')">
-								</el-image>
+							<span v-if="view.ProductImage">
+								<span v-for="(item,index) in (view.ProductImage || '').split(',')" :key="index"
+									class="mr15">
+									<el-image style="width: 80px" class="pointer" :src="item"
+										:preview-src-list="(view.ProductImage || '').split(',')">
+									</el-image>
+								</span>
 							</span>
 						</el-form-item>
 					</el-col>
@@ -1647,6 +1652,7 @@
 				}
 				_this.imageUrl = ''
 				_this.fileList = []
+				_this.fileListArr = []
 			},
 
 			//任务详情

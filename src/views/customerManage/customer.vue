@@ -116,15 +116,15 @@
 			<el-table border :data="tableData2" id="exportTable2" style="width: 100%"
 				:header-cell-style="{background:'#fafafa'}" ref="table2">
 				<el-table-column type="index" label="序号" align="center" width="50"></el-table-column>
-				<el-table-column prop="BusinessNumber" label="流水号" align="center" width="200px"></el-table-column>
-				<el-table-column prop="PaymentState" label="收支类型" align="center">
+				<el-table-column prop="BusinessNumber" label="流水号" align="center" width="200"></el-table-column>
+				<el-table-column prop="PaymentState" label="收支类型" align="center" width="250">
 					<template slot-scope="scope">
 						<span v-if="scope.row.PaymentState==1" class="success">收入</span>
 						<span v-if="scope.row.PaymentState==2" class="danger">支出</span>
 						<span v-if="scope.row.PaymentState==3" class="warning">退单返本</span>
 					</template>
 				</el-table-column>
-				<el-table-column prop="TransactionAmount" class="danger" label="金额" align="center">
+				<el-table-column prop="TransactionAmount" class="danger" label="金额" align="center" width="250">
 					<template slot-scope="scope">
 						<span v-if="scope.row.PaymentState==1" class="success">{{scope.row.TransactionAmount}}</span>
 						<span v-if="scope.row.PaymentState==2" class="danger">{{scope.row.TransactionAmount}}</span>
@@ -132,7 +132,7 @@
 						<div v-if="scope.row.CbrRemarks" class="info fz10">{{scope.row.CbrRemarks}}</div>
 					</template>
 				</el-table-column>
-				<el-table-column prop="TransactionTime" label="交易时间" align="center"></el-table-column>
+				<el-table-column prop="TransactionTime" label="交易时间" align="center" width="300"></el-table-column>
 				<el-table-column prop="Remarks" label="备注"></el-table-column>
 			</el-table>
 

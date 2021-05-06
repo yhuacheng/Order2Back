@@ -411,7 +411,7 @@
 						</el-input>
 					</el-form-item>
 					<el-form-item label='总额' class="disabled-font-color">
-						<el-input v-model='totalValue' :disabled="true">
+						<el-input v-model='totalValue[0]' :disabled="true">
 							<template slot="prepend" class="danger">￥</template>
 						</el-input>
 					</el-form-item>
@@ -1026,7 +1026,7 @@
 				let all = (Number(this.buyForm.AmazonProductPrice) + Number(this.buyForm.Freight) + Number(this.buyForm
 						.Taxation) +
 					Number(this.buyForm.Other)) * (1 + Number(this.handFee)) + Number(this.handMoney)
-				return (all * Number(this.rate)).toFixed(2)
+				return [Math.round((all * Number(this.rate)) * 100) / 100, all * Number(this.rate)]
 			}
 		},
 		methods: {
@@ -1442,8 +1442,8 @@
 					}
 				}
 				//核算总金额(总额+增值服+服务费)
-				params.Total = Math.round(Number(_this.totalValue) + Number(_this.addFee) + Number(_this.serviceFei)) *
-					100 / 100
+				params.Total = Math.round((Number(_this.totalValue[1]) + Number(_this.addFee) + Number(_this.serviceFei)) *
+					100) / 100
 				taskBuy(params).then(res => {
 					_this.btnLoading = false
 					_this.closeBuyModal()

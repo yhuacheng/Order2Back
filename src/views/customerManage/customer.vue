@@ -133,7 +133,7 @@
 					</template>
 				</el-table-column>
 				<el-table-column prop="TransactionTime" label="交易时间" align="center"></el-table-column>
-				<el-table-column prop="Remarks" label="备注" align="center"></el-table-column>
+				<el-table-column prop="Remarks" label="备注"></el-table-column>
 			</el-table>
 
 			<!--工具条-->

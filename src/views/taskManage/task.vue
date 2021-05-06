@@ -675,7 +675,9 @@
 					</el-col>
 					<el-col :span="12">
 						<el-form-item label='服务费：'>
-							<span>￥</span> <span>{{view.OrderUnitPriceSerCharge}}</span>
+							<span
+								v-show="view.TaskState>2&&view.TaskState!=7&&(view.NoComment==0 || view.NoComment==null)">￥{{view.OrderUnitPriceSerCharge}}</span>
+							<span v-show="view.NoComment>0">￥{{view.ServiceAmount}} {{view.ServiceName}}</span>
 						</el-form-item>
 					</el-col>
 					<el-col :span="24">
@@ -1532,7 +1534,7 @@
 							}
 						} else {
 							if (link) {
-								this.$message.error('免评单请不要填写评价链接！')
+								this.$message.error('非正常评价请不要填写评价链接！')
 							} else {
 								this.noComment(val)
 							}

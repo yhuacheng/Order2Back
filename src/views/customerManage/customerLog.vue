@@ -3,18 +3,36 @@
 		<!--工具条-->
 		<el-col :span="24" class="toolbar" style="padding-bottom: 0px;">
 			<el-form :inline="true" :model="searchForm" size="small">
+				<el-form-item label="搜索">
+					<el-input v-model="searchForm.searchWords" placeholder="客户编码"></el-input>
+				</el-form-item>
+				<el-form-item label="交易类型">
+					<el-select v-model="searchForm.state" placeholder="请选择类型">
+						<el-option :value="0" label="全部"></el-option>
+						<el-option :value="1" label="收入"></el-option>
+						<el-option :value="2" label="支出"></el-option>
+						<el-option :value="3" label="退单返本"></el-option>
+					</el-select>
+				</el-form-item>
+				<el-form-item label="交易时间">
+					<el-date-picker v-model="searchForm.time" :unlink-panels='true' type="datetimerange"
+						range-separator="至" start-placeholder="开始时间" end-placeholder="结束时间"
+						value-format="yyyy-MM-dd HH:mm:ss"></el-date-picker>
+				</el-form-item>
 				<el-form-item>
+					<el-button @click="searchData">查询</el-button>
+					<el-button @click="resetSearch">重置</el-button>
 					<el-button type="warning" @click="exportExcel">导出</el-button>
 				</el-form-item>
 			</el-form>
 		</el-col>
 
 		<pl-table border :data="tableData" v-loading="listLoading" id="exportTable" style="width: 100%"
-			:header-cell-style="{background:'#fafafa'}" ref="table" use-virtual max-height="750" :row-height="45">
+			:header-cell-style="{background:'#fafafa'}" ref="table" use-virtual max-height="680" :row-height="45">
 			<pl-table-column type="index" label="序号" align="center" width="50"></pl-table-column>
 			<pl-table-column prop="BusinessNumber" label="流水号" align="center"></pl-table-column>
-			<pl-table-column prop="CustomerId" label="客户编号" align="center"></pl-table-column>
-			<pl-table-column prop="PaymentState" label="收支类型" align="center">
+			<pl-table-column prop="CustomerId" label="客户编码" align="center"></pl-table-column>
+			<pl-table-column prop="PaymentState" label="交易类型" align="center">
 				<template slot-scope="scope">
 					<span v-if="scope.row.PaymentState==1" class="success">收入</span>
 					<span v-if="scope.row.PaymentState==2" class="danger">支出</span>
@@ -29,9 +47,16 @@
 				</template>
 			</pl-table-column>
 			<pl-table-column prop="TransactionTime" label="交易时间" align="center"></pl-table-column>
-			<pl-table-column prop="Remarks" label="备注" align="center" :show-overflow-tooltip='true' width="400">
+			<pl-table-column prop="Remarks" label="备注" width="400">
 			</pl-table-column>
 		</pl-table>
+		<!--工具条-->
+		<el-col :span="24" class="toolbar">
+			<el-pagination style="float: right;" @size-change="handleSizeChange" @current-change="handleCurrentChange"
+				:current-page="pageIndex" :page-sizes="[10, 20, 50, 100, 1000, 10000,100000]" :page-size="pageSize"
+				layout="total, sizes, prev, pager, next, jumper" :total="total">
+			</el-pagination>
+		</el-col>
 	</section>
 </template>
 
@@ -52,7 +77,9 @@
 				listLoading: false,
 				btnLoading: false,
 				searchForm: {
-					searchWords: ''
+					searchWords: '',
+					state: 0,
+					time: []
 				}
 			}
 		},
@@ -64,17 +91,32 @@
 			getAllData() {
 				let _this = this
 				_this.listLoading = true
-				let params = {}
+				let time = _this.searchForm.time
+				let time1 = ''
+				let time2 = ''
+				if (time != '' && time != null) {
+					time1 = time[0]
+					time2 = time[1]
+				}
+				let params = {
+					KeyWords: _this.searchForm.searchWords,
+					State: _this.searchForm.state,
+					StartTime: time1,
+					EndTime: time2,
+					pageIndex: _this.pageIndex,
+					pageSize: _this.pageSize
+				}
 				customerLog(params).then(res => {
 					_this.listLoading = false
-					_this.tableData = res
+					_this.tableData = res.Entity
+					_this.total = Number(res.TotalCount)
 				}).catch((e) => {})
 			},
 
 			//查询
 			searchData() {
 				let _this = this
-				_this.currentPage = 1 //页码归1
+				_this.pageIndex = 1 //页码归1
 				_this.getAllData()
 			},
 
@@ -82,9 +124,11 @@
 			resetSearch() {
 				let _this = this
 				_this.searchForm = {
-					searchWords: ''
+					searchWords: '',
+					state: 0,
+					time: []
 				}
-				_this.currentPage = 1
+				_this.pageIndex = 1
 				_this.getAllData()
 			},
 
@@ -96,7 +140,7 @@
 			},
 			handleCurrentChange(val) {
 				let _this = this
-				_this.currentPage = val
+				_this.pageIndex = val
 				_this.getAllData()
 			},
 
@@ -118,7 +162,7 @@
 						type: 'text'
 					},
 					{
-						title: '收支类型',
+						title: '交易类型',
 						key: 'ExpType',
 						type: 'text'
 					},
@@ -147,10 +191,13 @@
 				for (const t in data) {
 					let TxtType = ''
 					if (data[t].PaymentState == 1) {
-						TxtType = '余额收入'
+						TxtType = '收入'
 					}
 					if (data[t].PaymentState == 2) {
-						TxtType = '余额支出'
+						TxtType = '支出'
+					}
+					if (data[t].PaymentState == 3) {
+						TxtType = '退单返本'
 					}
 					data[t].ExpType = TxtType
 				}

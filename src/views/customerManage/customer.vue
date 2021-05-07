@@ -95,16 +95,16 @@
 			<!--工具条-->
 			<el-col :span="24" class="toolbar" style="padding-bottom: 0;">
 				<el-form :inline="true" :model="searchForm2" size="small">
-					<el-form-item label="收支类型">
+					<el-form-item label="搜索内容">
+						<el-input v-model="searchForm2.searchWords" placeholder="请输入流水号/备注信息"></el-input>
+					</el-form-item>
+					<el-form-item label="交易类型">
 						<el-select v-model="searchForm2.state" placeholder="请选择类型">
 							<el-option :value="0" label="全部"></el-option>
 							<el-option :value="1" label="收入"></el-option>
 							<el-option :value="2" label="支出"></el-option>
 							<el-option :value="3" label="退单返本"></el-option>
 						</el-select>
-					</el-form-item>
-					<el-form-item label="搜索内容">
-						<el-input v-model="searchForm2.searchWords" placeholder="请输入流水号/备注信息"></el-input>
 					</el-form-item>
 					<el-form-item>
 						<el-button type="primary" @click="searchBalanceData">查询</el-button>
@@ -117,7 +117,7 @@
 				:header-cell-style="{background:'#fafafa'}" ref="table2">
 				<el-table-column type="index" label="序号" align="center" width="50"></el-table-column>
 				<el-table-column prop="BusinessNumber" label="流水号" align="center" width="200"></el-table-column>
-				<el-table-column prop="PaymentState" label="收支类型" align="center" width="250">
+				<el-table-column prop="PaymentState" label="交易类型" align="center" width="250">
 					<template slot-scope="scope">
 						<span v-if="scope.row.PaymentState==1" class="success">收入</span>
 						<span v-if="scope.row.PaymentState==2" class="danger">支出</span>

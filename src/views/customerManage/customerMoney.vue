@@ -19,7 +19,7 @@
 			<el-table-column type="index" label="序号" align="center" width="50"></el-table-column>
 			<el-table-column prop="BusinessNumber" label="流水号" align="center"></el-table-column>
 			<el-table-column prop="CustomerId" label="客户编码" align="center"></el-table-column>
-			<el-table-column prop="PaymentState" label="收支类型" align="center">
+			<el-table-column prop="PaymentState" label="交易类型" align="center">
 				<template slot-scope="scope">
 					<span v-if="scope.row.PaymentState==1" class="success">收入</span>
 					<span v-if="scope.row.PaymentState==2" class="danger">支出</span>

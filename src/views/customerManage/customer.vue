@@ -297,12 +297,8 @@
 			//查询
 			searchData() {
 				let _this = this
-				_this.$refs.searchForm.validate((valid) => {
-					if (valid) {
-						_this.pageIndex = 1 //页码归1
-						_this.getAllData()
-					}
-				})
+				_this.pageIndex = 1 //页码归1
+				_this.getAllData()
 			},
 
 			//获取手机验证码
@@ -408,7 +404,7 @@
 							Id: _this.checkBoxData[0].Id,
 							Accountbalance: _this.editForm.money,
 							State: type,
-							CbrRemarks: _this.editForm.remark
+							CbrRemarks: _this.editForm.remark ? _this.editForm.remark : ''
 						}
 						customerRecharge(params).then(res => {
 							_this.btnLoading = false
@@ -469,7 +465,6 @@
 				_this.searchForm = {
 					searchWords: ''
 				}
-				_this.$refs['searchForm'].resetFields()
 				_this.pageIndex = 1
 				_this.getAllData()
 			},

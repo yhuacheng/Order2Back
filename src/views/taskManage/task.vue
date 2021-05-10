@@ -1128,21 +1128,21 @@
 				let time = _this.searchForm.time
 				let time1 = ''
 				let time2 = ''
-				if (time.length > 0) {
+				if (time != '' && time != null) {
 					time1 = time[0]
 					time2 = time[1]
 				}
 				let timeSP = _this.searchForm.timeSP
 				let timeSP1 = ''
 				let timeSP2 = ''
-				if (timeSP.length > 0) {
+				if (timeSP != '' && timeSP != null) {
 					timeSP1 = timeSP[0]
 					timeSP2 = timeSP[1]
 				}
 				let timeFK = _this.searchForm.timeFK
 				let timeFK1 = ''
 				let timeFK2 = ''
-				if (timeFK.length > 0) {
+				if (timeFK != '' && timeFK != null) {
 					timeFK1 = timeFK[0]
 					timeFK2 = timeFK[1]
 				}
@@ -1199,21 +1199,21 @@
 				let time = _this.searchForm.time
 				let time1 = ''
 				let time2 = ''
-				if (time.length > 0) {
+				if (time != '' && time != null) {
 					time1 = time[0]
 					time2 = time[1]
 				}
 				let timeSP = _this.searchForm.timeSP
 				let timeSP1 = ''
 				let timeSP2 = ''
-				if (timeSP.length > 0) {
+				if (timeSP != '' && timeSP != null) {
 					timeSP1 = timeSP[0]
 					timeSP2 = timeSP[1]
 				}
 				let timeFK = _this.searchForm.timeFK
 				let timeFK1 = ''
 				let timeFK2 = ''
-				if (timeFK.length > 0) {
+				if (timeFK != '' && timeFK != null) {
 					timeFK1 = timeFK[0]
 					timeFK2 = timeFK[1]
 				}

@@ -5,7 +5,7 @@
 			<div class="mt15 fz16">{{name}}</div>
 			<div class="mt15 fz16">
 				<span>角色：{{userData.RoleName}}</span>
-				<span class="ml10" v-if="userData.Code && roleId.indexOf('5')<0">推荐码：{{userData.Code}}</span>
+				<span class="ml10" v-if="showCode">推荐码：{{userData.Code}}</span>
 			</div>
 			<div class="mt30">欢迎来到下单后台管理系统</div>
 		</div>
@@ -22,8 +22,8 @@
 		data() {
 			return {
 				userData: {},
-				roleId: [],
-				name: sessionStorage.getItem('userName')
+				name: sessionStorage.getItem('userName'),
+				showCode: false
 			}
 		},
 		created() {
@@ -45,7 +45,10 @@
 					for (let x in data) {
 						if (data[x].Id == userId) {
 							_this.userData = data[x]
-							_this.roleId = data[x].RoolId.split(',')
+							let roleId = data[x].RoolId
+							if (roleId.indexOf(5) < 0) {
+								_this.showCode = true
+							}
 						}
 					}
 				}).catch((e) => {})

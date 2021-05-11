@@ -1342,11 +1342,12 @@
 					let state = res.State
 					if (state == 1) {
 						this.$confirm('PP号【' + pp + '】是黑名单PP号', '信息警告', {
-							confirmButtonText: '我不管，我就要填它',
-							cancelButtonText: '重写填写',
+							confirmButtonText: '知道了，我要重新填写',
+							showCancelButton: false,
+							showClose: false,
 							type: 'error',
 							closeOnClickModal: false
-						}).then(() => {}).catch(() => {
+						}).then(() => {
 							if (val == 1) {
 								_this.buyForm.PayAccount = ''
 								this.$refs.PayAccount.focus()
@@ -1355,7 +1356,7 @@
 								_this.commentForm.PPaccount = ''
 								this.$refs.PPaccount.focus()
 							}
-						})
+						}).catch(() => {})
 					}
 				}).catch((e) => {})
 			},

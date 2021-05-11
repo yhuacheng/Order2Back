@@ -188,6 +188,7 @@
 				},
 				year1: new Date().getFullYear(),
 				year2: new Date().getFullYear(),
+				chartData5Rows: [],
 				chartData5: {
 					columns: ['time', 'num'],
 					rows: []
@@ -200,6 +201,7 @@
 						'num': '订单数'
 					}
 				},
+				chartData6Rows: [],
 				chartData6: {
 					columns: ['time', 'num'],
 					rows: []
@@ -224,8 +226,8 @@
 			this.taskNumChart()
 			this.commentNumChart()
 			this.taskProgressChart()
-			this.orderCountYear()
-			this.taskCountYear()
+			this.orderCountYearSum()
+			this.taskCountYearSum()
 		},
 
 		methods: {
@@ -388,51 +390,77 @@
 				}).catch((e) => {})
 			},
 
-			//年度订单数据
-			orderCountYear() {
+			//年度订单每月数据
+			orderCountYear(m) {
+				let d = 30
+				if (m == 2) {
+					d = 28
+				} else if (m == 1 || m == 3 || m == 5 || m == 7 || m == 8 || m == 10 || m == 12) {
+					d = 31
+				} else {
+					d = 30
+				}
 				let params = {
 					keyWord: '',
-					state: 0,
 					countryId: 0,
 					type: 0,
 					Diff: 0,
-					startTime: this.year1 + '-1-1',
-					endTime: this.year1 + '-12-31',
 					ServerType: 0,
-					pageIndex: 1,
-					pageSize: 100000000
+					startTime: this.year1 + '-' + m + '-1',
+					endTime: this.year1 + '-' + m + '-' + d
 				}
-				orderList(params).then(res => {
-					let v = res.Entity
-					let data = []
-					for (let x in v) {
-						let vArr = v[x].OrderTime.split('/')
-						data.push(vArr[0] + '-' + vArr[1])
+				orderStateNum(params).then(res => {
+					let data = res
+					let obj = {
+						'time': this.year1 + '-' + m,
+						'num': Number(res.TotalCount)
 					}
-					this.orderChartShow(data)
+					this.chartData5Rows.push(obj)
+					this.chartData5Rows.sort(function(a, b) {
+						let num1 = a.time.split('-')[1]
+						let num2 = b.time.split('-')[1]
+						return num1 - num2
+					})
 				}).catch((e) => {})
+			},
+
+			//年度订单每年月汇总数据
+			orderCountYearSum() {
+				for (let m = 1; m <= 12; m++) {
+					this.orderCountYear(m)
+				}
+				this.chartData5.rows = this.chartData5Rows
 			},
 
 			//订单年度统计切换年度
 			changeOrderYear(val) {
+				this.chartData5Rows = []
 				let year = this.year1
 				let newYear = Number(year) + Number(val)
 				this.year1 = newYear
-				this.orderCountYear()
+				this.orderCountYearSum()
 			},
 
-			//年度任务数据
-			taskCountYear() {
+			//年度任务每月上评数据
+			taskCountYear(m) {
+				let d = 30
+				if (m == 2) {
+					d = 28
+				} else if (m == 1 || m == 3 || m == 5 || m == 7 || m == 8 || m == 10 || m == 12) {
+					d = 31
+				} else {
+					d = 30
+				}
 				let params = {
 					Id: 1,
 					Key: 'Michale_009',
 					keyWord: '',
-					State: 0,
+					RoolId: 1,
 					countryId: 0,
 					type: 0,
 					Diff: 0,
-					startTime: this.year2 + '-1-1',
-					endTime: this.year2 + '-12-31',
+					startTime: this.year2 + '-' + m + '-1',
+					endTime: this.year2 + '-' + m + '-' + d,
 					startEvaluateTime: '',
 					endEvaluateTime: '',
 					startDealTime: '',
@@ -441,112 +469,38 @@
 					RepeatState: 0,
 					PayState: 0,
 					againTaskState: 0,
-					NoComment: -1,
-					pageIndex: 1,
-					pageSize: 100000000,
-					RoolId: 1,
+					NoComment: -1
 				}
-				taskList(params).then(res => {
-					let v = res.Entity
-					let data = []
-					for (let x in v) {
-						let vArr = v[x].AddTime.split('/')
-						data.push(vArr[0] + '-' + vArr[1])
+				taskStateNum(params).then(res => {
+					let data = res
+					let obj = {
+						'time': this.year2 + '-' + m,
+						'num': Number(res.TotalCount)
 					}
-					this.taskChartShow(data)
+					this.chartData6Rows.push(obj)
+					this.chartData6Rows.sort(function(a, b) {
+						let num1 = a.time.split('-')[1]
+						let num2 = b.time.split('-')[1]
+						return num1 - num2
+					})
 				}).catch((e) => {})
+			},
+
+			//年度任务每年月填单汇总数据
+			taskCountYearSum() {
+				for (let m = 1; m <= 12; m++) {
+					this.taskCountYear(m)
+				}
+				this.chartData6.rows = this.chartData6Rows
 			},
 
 			//填单年度统计切换年度
 			changeTaskYear(val) {
+				this.chartData6Rows = []
 				let year = this.year2
 				let newYear = Number(year) + Number(val)
 				this.year2 = newYear
-				this.taskCountYear()
-			},
-
-			//年度订单走势图展示
-			orderChartShow(data) {
-				let obj = {}
-				for (let i = 0; i < data.length; i++) {
-					let item = data[i]
-					obj[item] = (obj[item] + 1) || 1
-				}
-				let dataNew = []
-				for (let i in obj) {
-					dataNew.push({
-						time: i,
-						num: obj[i]
-					})
-				}
-				let year = this.year1
-				let xData = []
-				for (let i = 1; i <= 12; i++) {
-					let v = year + '-' + i
-					xData.push({
-						time: v,
-						num: 0
-					})
-				}
-				let list = Array.from(new Set(xData.concat(dataNew)))
-				let arr = [list[0]]
-				for (let i = 1; i < list.length; i++) {
-					let item = list[i]
-					let repeat = false
-					for (let j = 0; j < arr.length; j++) {
-						if (item.time == arr[j].time) {
-							arr[j].num = item.num
-							repeat = true
-							break
-						}
-					}
-					if (!repeat) {
-						arr.push(item)
-					}
-				}
-				this.chartData5.rows = arr
-			},
-
-			//年度填单数走势图展示
-			taskChartShow(data) {
-				let obj = {}
-				for (let i = 0; i < data.length; i++) {
-					let item = data[i]
-					obj[item] = (obj[item] + 1) || 1
-				}
-				let dataNew = []
-				for (let i in obj) {
-					dataNew.push({
-						time: i,
-						num: obj[i]
-					})
-				}
-				let year = this.year2
-				let xData = []
-				for (let i = 1; i <= 12; i++) {
-					let v = year + '-' + i
-					xData.push({
-						time: v,
-						num: 0
-					})
-				}
-				let list = Array.from(new Set(xData.concat(dataNew)))
-				let arr = [list[0]]
-				for (let i = 1; i < list.length; i++) {
-					let item = list[i]
-					let repeat = false
-					for (let j = 0; j < arr.length; j++) {
-						if (item.time == arr[j].time) {
-							arr[j].num = item.num
-							repeat = true
-							break
-						}
-					}
-					if (!repeat) {
-						arr.push(item)
-					}
-				}
-				this.chartData6.rows = arr
+				this.taskCountYearSum()
 			}
 
 		}

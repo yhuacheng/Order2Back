@@ -2128,7 +2128,7 @@
 					},
 					{
 						title: '评价链接',
-						Key: 'ProductLink',
+						key: 'ProductLink',
 						type: 'text'
 					},
 					{

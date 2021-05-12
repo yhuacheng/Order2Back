@@ -5,7 +5,7 @@
 			<el-form :inline="true" :model="searchForm" size="small">
 				<el-form-item label="搜索内容">
 					<el-input @keyup.native="searchToTrim" @keyup.enter.native="searchData"
-						v-model="searchForm.searchWords" placeholder="任务号/Asin/店铺/操作员/外派员/客户号/购买单号/PP号"
+						v-model="searchForm.searchWords" placeholder="任务号/ASIN/店铺/操作员/外派员/客户号/购买单号/PP号"
 						style="width: 350px;"></el-input>
 				</el-form-item>
 				<el-form-item label="任务类型">
@@ -226,7 +226,7 @@
 					</div>
 				</template>
 			</pl-table-column>
-			<pl-table-column prop="OrderProductPictures" label="产品图" align="center" width="70px">
+			<pl-table-column prop="OrderProductPictures" label="产品图" align="center" width="70">
 				<template slot-scope="scope">
 					<el-image style="width: 40px;height: 40px;" v-if="scope.row.OrderProductPictures"
 						:src="$IMG_URL+scope.row.OrderProductPictures"
@@ -240,8 +240,8 @@
 					<span v-if="scope.row.ServiceType==2">评后返(自返)</span>
 				</template>
 			</pl-table-column>
-			<pl-table-column prop="CountryName" label="国家" align="center"></pl-table-column>
-			<pl-table-column prop="Asin" label="ASIN" align="center" width="120"></pl-table-column>
+			<pl-table-column prop="CountryName" label="国家" align="center" width="70"></pl-table-column>
+			<pl-table-column prop="Asin" label="ASIN" align="center" width="115"></pl-table-column>
 			<pl-table-column prop="ProductName" label="产品名称" align="center" :show-overflow-tooltip='true'>
 			</pl-table-column>
 			<pl-table-column prop="OrderShopName" label="店铺" align="center" :show-overflow-tooltip='true'>
@@ -265,7 +265,7 @@
 					<span>{{scope.row.BuyRemarks}}</span>
 				</template>
 			</pl-table-column>
-			<pl-table-column prop="AmazonNumber" label="购买单号" align="center" width="140"></pl-table-column>
+			<pl-table-column prop="AmazonNumber" label="购买单号" align="center" width="165"></pl-table-column>
 			<pl-table-column prop="AddTime" label="填单时间" align="center" width="145" :sortable="true"
 				:sort-method="sortByAddTime"></pl-table-column>
 			<pl-table-column prop="DealIamge" label="返款截图" align="center">

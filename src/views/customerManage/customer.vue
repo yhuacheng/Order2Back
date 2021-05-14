@@ -129,7 +129,7 @@
 						<span v-if="scope.row.PaymentState==1" class="success">{{scope.row.TransactionAmount}}</span>
 						<span v-if="scope.row.PaymentState==2" class="danger">{{scope.row.TransactionAmount}}</span>
 						<span v-if="scope.row.PaymentState==3" class="warning">{{scope.row.TransactionAmount}}</span>
-						<div v-if="scope.row.CbrRemarks" class="info fz10">{{scope.row.CbrRemarks}}</div>
+						<div v-if="scope.row.CbrRemarks" class="info fz12">{{scope.row.CbrRemarks}}</div>
 					</template>
 				</el-table-column>
 				<el-table-column prop="TransactionTime" label="交易时间" align="center" width="300"></el-table-column>

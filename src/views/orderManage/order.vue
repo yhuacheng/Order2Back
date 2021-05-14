@@ -99,7 +99,7 @@
 						{{scope.row.OrderNumber}}
 					</el-link>
 					<div>
-						<span v-if="scope.row.Overtime<0"><span class="danger fz10">超时</span></span>
+						<span v-if="scope.row.Overtime<0"><span class="danger fz12">超时</span></span>
 					</div>
 				</template>
 			</pl-table-column>
@@ -190,7 +190,7 @@
 					<template slot-scope="scope">
 						<span v-if="scope.row.AgainTaskState!=1">{{scope.row.OrderNumbers}}</span>
 						<span v-if="scope.row.AgainTaskState==1">{{scope.row.OrderNumbers}}
-							<div class="danger fz10">追加任务</div>
+							<div class="danger fz12">追加任务</div>
 						</span>
 					</template>
 				</el-table-column>

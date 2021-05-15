@@ -129,11 +129,15 @@
 						<span v-if="scope.row.PaymentState==1" class="success">{{scope.row.TransactionAmount}}</span>
 						<span v-if="scope.row.PaymentState==2" class="danger">{{scope.row.TransactionAmount}}</span>
 						<span v-if="scope.row.PaymentState==3" class="warning">{{scope.row.TransactionAmount}}</span>
-						<div v-if="scope.row.CbrRemarks" class="info fz12">{{scope.row.CbrRemarks}}</div>
 					</template>
 				</el-table-column>
 				<el-table-column prop="TransactionTime" label="交易时间" align="center" width="300"></el-table-column>
-				<el-table-column prop="Remarks" label="备注"></el-table-column>
+				<el-table-column prop="Remarks" label="备注">
+					<template slot-scope="scope">
+						<span>{{scope.row.Remarks}}</span>
+						<div v-if="scope.row.CbrRemarks" class="danger fz12">{{scope.row.CbrRemarks}}</div>
+					</template>
+				</el-table-column>
 			</el-table>
 
 			<!--工具条-->
@@ -632,7 +636,7 @@
 				try {
 					FileSaver.saveAs(new Blob([wbout], {
 						type: 'application/octet-stream'
-					}), '客户管理.xlsx')
+					}), '客户信息.xlsx')
 				} catch (e) {
 					if (typeof console !== 'undefined') {
 						console.log(e, wbout)

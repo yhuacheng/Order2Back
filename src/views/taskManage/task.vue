@@ -1341,8 +1341,8 @@
 				blackCheck(params).then(res => {
 					let state = res.State
 					if (state == 1) {
-						this.$confirm('PP号【' + pp + '】是黑名单PP号', '信息警告', {
-							confirmButtonText: '知道了，我要重新填写',
+						this.$confirm('PP号【' + pp + '】是黑名单买家', '信息警告', {
+							confirmButtonText: '知道了',
 							showCancelButton: false,
 							showClose: false,
 							type: 'error',

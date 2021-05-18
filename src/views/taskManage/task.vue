@@ -1084,7 +1084,7 @@
 				let z2 = roleId.indexOf(7) //操作员2（拥有外派功能的操作员）
 				if (x >= 0 || y >= 0) {
 					show = 'Michale_009'
-				} else if (z >= 0 || w >= 0) {
+				} else if (z >= 0 || z2 >= 0 || w >= 0) {
 					show = 'Thomers_120146'
 				} else {
 					show = 'No'
@@ -1098,7 +1098,7 @@
 					_this.btnShow4 = true
 				}
 				//判断如果是操作员或外派员则显示列表中的购买与评价按钮
-				if (z >= 0 || w >= 0) {
+				if (z >= 0 || z2 >= 0 || w >= 0) {
 					_this.btnShow2 = true
 				}
 				//判断如果有管理员权限或者子管理员权限则显示转派按钮（新增特殊操作员拥有转派功能）
@@ -1106,7 +1106,7 @@
 					_this.btnShow3 = true
 				}
 				//判断如不是外派员并且不是业务员则显示列表上方操作按钮
-				if (x >= 0 || y >= 0 || z >= 0) {
+				if (x >= 0 || y >= 0 || z >= 0 || z2 >= 0) {
 					_this.menuBtnShow = true
 				}
 				//判断如果有财务权限则显示财务对应的按钮(本佣付款、导出)
@@ -1114,7 +1114,7 @@
 					_this.CWbtnShow = true
 				}
 				//判断如果不是业务员则显示列表中的操作按钮
-				if (x >= 0 || y >= 0 || z >= 0 || w >= 0) {
+				if (x >= 0 || y >= 0 || z >= 0 || z2 >= 0 || w >= 0) {
 					_this.tableBtnShow = true
 				} else if (s >= 0) {
 					_this.tableBtnShow = false
@@ -1122,7 +1122,7 @@
 					_this.tableBtnShow = false
 				}
 				//根据角色判断列表显示哪些列(管理员、子管理员、操作员、业务员、财务显示所有；外派员显示改后服务费、改后汇率、改后总额)
-				if (x >= 0 || y >= 0 || z >= 0 || c >= 0 || s >= 0) {
+				if (x >= 0 || y >= 0 || z >= 0 || z2 >= 0 || c >= 0 || s >= 0) {
 					_this.In = true
 				}
 				if (w >= 0) {
@@ -1192,9 +1192,10 @@
 				let z = roleId.indexOf(4) //操作员
 				let w = roleId.indexOf(5) //外派员
 				let s = roleId.indexOf(6) //业务员
+				let z2 = roleId.indexOf(7) //操作员2（拥有外派功能的操作员）
 				if (x >= 0 || y >= 0) {
 					show = 'Michale_009'
-				} else if (z >= 0 || w >= 0) {
+				} else if (z >= 0 || z2 >= 0 || w >= 0) {
 					show = 'Thomers_120146'
 				} else {
 					show = 'No'

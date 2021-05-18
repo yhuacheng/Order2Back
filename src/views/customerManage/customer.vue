@@ -29,11 +29,31 @@
 			ref="table">
 			<el-table-column type="selection" align="center"></el-table-column>
 			<el-table-column type="index" label="序号" align="center" width="50"></el-table-column>
-			<el-table-column prop="Id" label="客户编码" align="center"></el-table-column>
+			<el-table-column prop="Id" label="客户编码" align="center">
+				<template slot-scope="scope">
+					<div v-if="scope.row.WeCate || scope.row.QQ">
+						<el-popover trigger="hover" placement="right">
+							<p>微信：{{ scope.row.WeCate }}</p>
+							<p>扣扣：{{ scope.row.QQ }}</p>
+							<div slot="reference" class="name-wrapper">
+								<span>{{ scope.row.Id }} </span>
+								<span><i class="el-icon-postcard primary"></i></span>
+							</div>
+						</el-popover>
+					</div>
+					<div v-else>
+						<span>{{ scope.row.Id }}</span>
+					</div>
+				</template>
+			</el-table-column>
 			<el-table-column prop="Name" label="客户名称" align="center"></el-table-column>
 			<el-table-column prop="Phone" label="手机" align="center"></el-table-column>
-			<el-table-column prop="WeCate" label="微信" align="center"></el-table-column>
-			<el-table-column prop="QQ" label="QQ" align="center"></el-table-column>
+			<el-table-column prop="PassWord" label="密码" align="center">
+				<template slot-scope="scope">
+					<span v-if="showPswd">{{scope.row.PassWord}}</span>
+					<span v-else>******</span>
+				</template>
+			</el-table-column>
 			<el-table-column prop="BackName" label="所属用户" align="center"></el-table-column>
 			<el-table-column prop="AccountBalance" label="余额" align="center" width="130">
 				<template slot-scope="scope">
@@ -255,7 +275,8 @@
 				btnShow2: false, //充值扣款按钮是否显示
 				btnShow3: false, //重新分配所属用户按钮是否显示
 				userModal: false, //用户信息弹窗
-				tableData3: []
+				tableData3: [],
+				showPswd: false //列表显示客户密码
 			}
 		},
 		created() {
@@ -276,6 +297,7 @@
 				if (x >= 0) {
 					_this.btnShow1 = true
 					_this.btnShow3 = true
+					_this.showPswd = true
 				}
 				//判断如果有子管理员权限则显示有效无效按钮
 				if (y >= 0) {

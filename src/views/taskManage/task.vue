@@ -1533,11 +1533,7 @@
 								}).catch((e) => {})
 							}
 						} else {
-							if (link) {
-								this.$message.error('非正常评价请不要填写评价链接！')
-							} else {
-								this.noComment(val)
-							}
+							this.noComment(val)
 						}
 					}
 				})

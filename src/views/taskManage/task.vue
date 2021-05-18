@@ -362,12 +362,14 @@
 					<el-input v-model='buyForm.AmazonNumber'></el-input>
 				</el-form-item>
 				<el-form-item label='购买截图' prop="image">
-					<el-upload class="avatar-uploader" name="Image" action="/api/Payment/GetProductPictures"
+					<img v-if="imageUrl" :src="imageUrl" class="avatar"
+						style="float: left;margin-right: 10px;border: 1px solid #f1f1f1;">
+					<el-upload drag class="avatar-uploader" name="Image" action="/api/Payment/GetProductPictures"
 						:headers="headers" :show-file-list="false" :on-success="handleAvatarSuccessBuy"
 						:on-error="handleError" :before-upload="beforeAvatarUpload"
 						accept="image/jpeg,image/png,image/gif,image/bmp">
-						<img v-if="imageUrl" :src="imageUrl" class="avatar">
-						<i v-else class="el-icon-plus avatar-uploader-icon"></i>
+						<i class="el-icon-upload"></i>
+						<div class="el-upload__text">拖文件，或<em>点击上传</em></div>
 					</el-upload>
 					<el-input v-show="false" v-model='buyForm.Image'></el-input>
 				</el-form-item>
@@ -482,12 +484,13 @@
 					<el-input v-model='commentForm.Link'></el-input>
 				</el-form-item>
 				<el-form-item label='评价截图' prop="image">
-					<el-upload class="avatar-uploader" name="Image" action="/api/Payment/GetProductPictures"
+					<el-upload drag class="avatar-uploader" name="Image" action="/api/Payment/GetProductPictures"
 						:headers="headers" list-type="picture-card" :on-success="handleAvatarSuccess"
 						:on-error="handleError" :before-upload="beforeAvatarUpload"
 						accept="image/jpeg,image/png,image/gif,image/bmp" :on-preview="handlePictureCardPreview"
 						:on-remove="handleRemove" :file-list="fileListArr" :limit="3">
-						<i class="el-icon-plus"></i>
+						<i class="el-icon-upload"></i>
+						<div class="el-upload__text">拖文件或<em>点击上传</em></div>
 					</el-upload>
 					<el-dialog v-dialogDrag title="评价截图大图预览" :visible.sync="dialogImg" :modal-append-to-body="false"
 						:append-to-body="true">
@@ -1078,6 +1081,7 @@
 				let z = roleId.indexOf(4) //操作员
 				let w = roleId.indexOf(5) //外派员
 				let s = roleId.indexOf(6) //业务员
+				let z2 = roleId.indexOf(7) //操作员2（拥有外派功能的操作员）
 				if (x >= 0 || y >= 0) {
 					show = 'Michale_009'
 				} else if (z >= 0 || w >= 0) {
@@ -1097,8 +1101,8 @@
 				if (z >= 0 || w >= 0) {
 					_this.btnShow2 = true
 				}
-				//判断如果有管理员权限或者子管理员权限则显示转派按钮
-				if (x >= 0 || y >= 0) {
+				//判断如果有管理员权限或者子管理员权限则显示转派按钮（新增特殊操作员拥有转派功能）
+				if (x >= 0 || y >= 0 || z2 >= 0) {
 					_this.btnShow3 = true
 				}
 				//判断如不是外派员并且不是业务员则显示列表上方操作按钮

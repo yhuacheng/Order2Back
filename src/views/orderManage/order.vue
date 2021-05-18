@@ -903,7 +903,7 @@
 						let roleId = data[x].RoolId ? data[x].RoolId : ''
 						let state = data[x].State
 						//如果角色包含4(操作员)并且状态为有效
-						if (roleId.indexOf(4) >= 0 && state == 1) {
+						if ((roleId.indexOf(4) >= 0 || roleId.indexOf(7) >= 0) && state == 1) {
 							arr.push(data[x])
 						}
 					}

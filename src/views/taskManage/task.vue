@@ -107,6 +107,9 @@
 			<el-button
 				v-if="(btnShow && searchForm.state!=0 && searchForm.state!=6 && searchForm.state!=7) || (btnShow4 && searchForm.state==8)"
 				type="danger" size="mini" @click="changeStateMore" :disabled="disabledMore">批量取消</el-button>
+			<el-button type="primary" size="mini"
+				v-if="(btnShow || CWbtnShow) && (searchForm.state==4 || searchForm.state==5)" :disabled="disabled"
+				@click="editPriceShow">改价</el-button>
 			<el-button type="warning" size="mini" v-if="menuBtnShow||CWbtnShow" @click="exportExcel">导出</el-button>
 			<div class="tagMenu">
 				<el-badge :value="all" type="success" class="item">
@@ -819,7 +822,8 @@
 		countryList,
 		payBYmoney,
 		serviceOtherList,
-		blackCheck
+		blackCheck,
+		editPrice
 	} from '@/api/api';
 	export default {
 		name: 'task',
@@ -1901,6 +1905,7 @@
 				_this.$prompt('请输入要追加的任务数', '信息提示', {
 					confirmButtonText: '确定',
 					cancelButtonText: '取消',
+					closeOnClickModal: false,
 					inputPattern: /^[1-9]\d*$/,
 					inputErrorMessage: '任务数必须为正整数'
 				}).then(({
@@ -1960,6 +1965,36 @@
 					principal: '',
 					commission: ''
 				}
+			},
+
+			//改价弹窗
+			editPriceShow() {
+				let _this = this
+				_this.$prompt('请输入新价格', '信息提示', {
+					confirmButtonText: '确定',
+					cancelButtonText: '取消',
+					closeOnClickModal: false,
+					inputValue: _this.checkBoxData[0].AmazonProductPrice,
+					inputPattern: /^[0-9]+([.]{1}[0-9]+){0,1}$/,
+					inputErrorMessage: '金额格式不正确'
+				}).then(({
+					value
+				}) => {
+					_this.editPriceSubmit(value)
+				}).catch(() => {})
+			},
+
+			//改价提交
+			editPriceSubmit(val) {
+				let _this = this
+				let params = {
+					Id: _this.checkBoxData[0].Id,
+					UserId: _this.checkBoxData[0].CustomerUserId,
+					Money: val
+				}
+				editPrice(params).then(res => {
+					_this.getAllData()
+				}).catch((e) => {})
 			},
 
 			//复制任务编号

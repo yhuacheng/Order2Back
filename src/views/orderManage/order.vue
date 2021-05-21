@@ -908,7 +908,7 @@
 						}
 					}
 					_this.tableData3 = arr
-					_this.userModal = true //获取数据后显示模态框
+					_this.userModal = true //获取数据后显示模态框 
 				}).catch((e) => {})
 			},
 

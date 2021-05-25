@@ -668,18 +668,18 @@
 								<span v-show="view.Other">{{symbol}}</span><span>{{view.Other}}</span>
 							</el-form-item>
 						</el-col>
-						<el-col :span="12">
+						<el-col :span="12" v-if="In">
 							<el-form-item label='总额：'>
 								<span v-show="view.Total">￥</span><span>{{view.Total}}</span>
 							</el-form-item>
 						</el-col>
 					</div>
-					<el-col :span="12">
+					<el-col :span="12" v-if="In">
 						<el-form-item label='汇率：'>
 							<span>{{view.OrderExchangeRate}}</span>
 						</el-form-item>
 					</el-col>
-					<el-col :span="12">
+					<el-col :span="12" v-if="In">
 						<el-form-item label='服务费：'>
 							<span
 								v-show="view.TaskState>2&&view.TaskState!=7&&(view.NoComment==0 || view.NoComment==null)">￥{{view.OrderUnitPriceSerCharge}}</span>

@@ -506,7 +506,8 @@
 			</el-form>
 			<div slot="footer" class="dialog-footer">
 				<span v-for="(item,index) in serviceOtherData" :key="index" style="float: left;">
-					<el-button type="danger" @click="commentSubmit(item.Id)" class="mr15">{{item.ServiceName}}
+					<el-button v-if="Number(item.ServiceMoney)!=0" type="danger" @click="commentSubmit(item.Id)"
+						class="mr15">{{item.ServiceName}}
 					</el-button>
 				</span>
 				<el-button @click="closeCommentModal">取 消</el-button>
